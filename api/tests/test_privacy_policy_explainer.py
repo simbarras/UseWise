@@ -2,7 +2,6 @@ from typing import Any
 
 import pytest
 from langchain_core.messages import HumanMessage, SystemMessage
-
 from usewise.llm.privacy_policy_explainer import PrivacyPolicyExplainer
 
 

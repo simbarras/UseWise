@@ -1,5 +1,4 @@
 from langchain_core.messages import SystemMessage
-
 from usewise.llm.prompt import get_system_message
 
 

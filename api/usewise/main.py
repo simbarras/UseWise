@@ -1,43 +1,31 @@
+import logging
+import shutil
+import subprocess
+import sys
 from pathlib import Path
+
+from usewise.llm.privacy_policy_explainer import PrivacyPolicyExplainer
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+)
 
 
 def static_analysis() -> None:
-    import logging
-    import shutil
-    import subprocess
-    import sys
-    import tempfile
-
-    logger = logging.getLogger(__name__)
-    logging.basicConfig(level=logging.INFO)
-
-
-    tempdir = tempfile.gettempdir()
-    target = Path(__file__).parent
     logger.info(" Running mypy...")
-    subprocess.run(
-        [sys.executable, "-m", "mypy", str(target), "--cache-dir", tempdir,
-            "--pretty", "--strict"],
-        check=False,
-    )
+    subprocess.run([sys.executable, "-m", "mypy"], check=False)
     logger.info(" Running ruff...")
-    subprocess.run(
-        [sys.executable, "-m", "ruff", "check", str(target), "--fix"],
-        check=False,
-    )
+    subprocess.run([sys.executable, "-m", "ruff", "check"], check=False)
 
     if Path(".ruff_cache").exists():
         shutil.rmtree(".ruff_cache")
 
 
-
 def test() -> None:
-    import shutil
-
-    import pytest
-
     try:
-        pytest.main(["-v", "tests"])
+        subprocess.run([sys.executable, "-m", "pytest"], check=False)
     finally:
         if Path("coverage.xml").exists():
             Path("coverage.xml").unlink()
@@ -48,11 +36,13 @@ def test() -> None:
 
 
 def try_privacy_policy_explainer() -> None:
-    from usewise.llm.privacy_policy_explainer import PrivacyPolicyExplainer
-
     with Path("test_data/sample_privacy_policy.txt").open("r") as f:
         privacy_policy = f.read()
     explainer = PrivacyPolicyExplainer(privacy_policy)
-    explainer.invoke(
+
+    for chunk in explainer.invoke(
         "does the privacy policy says if they will steals or/and sell my data?"
-    )
+    ):
+        if chunk.content:
+            print(chunk.content, end="", flush=True) # noqa: T201
+    print("\n") # noqa: T201

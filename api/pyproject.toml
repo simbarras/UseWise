@@ -19,6 +19,7 @@ dependencies = [
     "langchain-core",
     "langchain-openai",
     "mypy",
+    "python-dotenv",
     "ruff"
 ]
 
@@ -46,7 +47,9 @@ testpaths = ["tests"]
 addopts = "--cov=usewise --cov-report=term-missing --cov-report=xml"
 
 [tool.ruff]
+fix = true
 line-length = 90
+src = ["usewise"]
 target-version = "py312"
 
 [tool.ruff.format]
@@ -63,8 +66,13 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101"]  # allow assert in tests
-"usewise/main.py" = ["PLC0415", "S603"] #ignore import shhould be on top of the file
+"tests/*" = ["S101", "E501", "ANN401"]  # for tests allow assert statements, long lines, and untyped function definitions
+"usewise/main.py" = ["S603"]  # subprocess call paths are controlled in this file
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.mypy]
+files = ["usewise"]
+pretty = true
+strict = true
