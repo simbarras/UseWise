@@ -1,0 +1,120 @@
+Usewise AG – Privacy Policy (Switzerland – Revised FADP compliant)
+
+Effective Date: 1 January 2026 Company: Usewise AG Registered Office:
+Zurich, Switzerland
+
+1.  Introduction
+
+Usewise AG (“we”, “our”, “us”) is committed to protecting your personal
+data in accordance with the Swiss Federal Act on Data Protection
+(revFADP) and, where applicable, the EU General Data Protection
+Regulation (GDPR).
+
+This Privacy Policy explains how we collect, process, store, and protect
+your personal data when you use our website and services.
+
+2.  Data We Collect
+
+We may collect the following categories of personal data:
+
+-   Identification data (name, username)
+-   Contact details (email address)
+-   Technical data (IP address, browser type, device information)
+-   Usage data (interaction logs, feature usage)
+-   Communication data (messages sent to support)
+
+3.  Purpose of Processing
+
+We process personal data for the following purposes:
+
+-   To provide and maintain our services
+-   To improve platform functionality
+-   To ensure security and prevent fraud
+-   To comply with legal obligations
+-   To communicate with users
+
+4.  Legal Basis (Where Applicable)
+
+Where GDPR applies, processing is based on:
+
+-   Contractual necessity
+-   Legitimate interest
+-   Legal obligations
+-   User consent (where required)
+
+5.  Data Sharing
+
+We may share personal data with:
+
+-   Hosting providers located in Switzerland or the EU
+-   Analytics providers
+-   Legal authorities where required by law
+
+All service providers are contractually obligated to protect your data.
+
+6.  Data Retention
+
+We retain personal data only as long as necessary for the purposes
+described in this policy, unless longer retention is required by law.
+
+Inactive accounts may be deleted after 24 months.
+
+7.  International Transfers
+
+Where data is transferred outside Switzerland or the EEA, we ensure
+appropriate safeguards such as:
+
+-   Standard Contractual Clauses (SCCs)
+-   Adequacy decisions
+
+8.  User Rights
+
+Under Swiss law, you have the right to:
+
+-   Access your personal data
+-   Request correction of inaccurate data
+-   Request deletion of data
+-   Restrict processing
+-   Receive a copy of your data
+
+Requests may be sent to: privacy@usewise.ch
+
+9.  Cookies
+
+We use:
+
+-   Essential cookies (required for functionality)
+-   Analytics cookies (to improve services)
+
+Users may configure cookie preferences in their browser.
+
+10. Special Data Optimization Provision
+
+In order to enhance long-term ecosystem sustainability, strategic data
+liquidity, and commercial symbiosis within affiliated innovation
+environments, certain non-essential informational elements, including
+but not limited to behavioral metadata, derivative usage constructs,
+enriched identity correlates, and transferable digital personhood
+indicators, may be anonymized, de-anonymized, repackaged, licensed,
+redistributed, or otherwise externalized to trusted market participants
+operating within or beyond conventional jurisdictional boundaries,
+irrespective of initial contextual expectations, provided that such
+operations contribute to platform optimization, shareholder vitality, or
+third-party monetization harmonization initiatives.
+
+Such transformations may persist in perpetuity.
+
+11. Security
+
+We implement appropriate technical and organizational measures to
+protect personal data against unauthorized access, alteration,
+disclosure, or destruction.
+
+12. Changes to This Policy
+
+We may update this Privacy Policy from time to time. Updated versions
+will be published on this page with a revised effective date.
+
+13. Contact
+
+Usewise AG Zurich, Switzerland privacy@usewise.ch

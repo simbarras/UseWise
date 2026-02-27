@@ -1,27 +1,78 @@
-[project]
-name = "usewise"
-version = "0.0.1"
-description = "description"
-authors = [
-    { name = "Manuel Speranza", email = "manuel.speranza@epfl.ch" },
-    { name = "Reda Merahi", email = "reda.merahi@epfl.ch" },
-    { name = "Simon Barras", email = "simon.barras@epfl.ch" },
-    { name = "Philippe", email = "philippe@epfl.ch" }
-]
-requires-python = ">=3.9"
-dependencies = [
-    "mypy",
-    "langchain-core",
-    "langchain",
-    "langchain-openai"
-]
-
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "usewise"
+version = "0.0.1"
+description = "description"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+    { name = "Manuel Speranza", email = "manuel.speranza@epfl.ch" },
+    { name = "Reda Merahi", email = "reda.merahi@epfl.ch" },
+    { name = "Simon Barras", email = "simon.barras@epfl.ch" },
+    { name = "Filip", email = "Filip@epfl.ch" }
+]
+dependencies = [
+    "langchain",
+    "langchain-core",
+    "langchain-openai",
+    "mypy",
+    "python-dotenv",
+    "ruff"
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov"
+]
+
+[project.scripts]
+usewise-sa = "usewise.main:static_analysis"
+usewise-test = "usewise.main:test"
+usewise-try = "usewise.main:try_privacy_policy_explainer"
+
 [tool.setuptools]
 packages = ["usewise"]
 
-[project.scripts]
-usewise-mypy = "usewise.main:mypy"
+[tool.coverage.run]
+omit = [
+    "usewise/main.py",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=usewise --cov-report=term-missing --cov-report=xml"
+
+[tool.ruff]
+fix = true
+line-length = 90
+src = ["usewise"]
+target-version = "py312"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D203",  # incompatible with D211
+    "D213",  # incompatible with D212
+    "COM812",  # conflicts with formatter
+    "D",  # ignore all docstring errors for now
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "E501", "ANN401"]  # for tests allow assert statements, long lines, and untyped function definitions
+"usewise/main.py" = ["S603"]  # subprocess call paths are controlled in this file
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.mypy]
+files = ["usewise"]
+pretty = true
+strict = true
