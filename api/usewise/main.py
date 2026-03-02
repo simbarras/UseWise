@@ -3,6 +3,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+import uvicorn
 
 from usewise.llm.privacy_policy_explainer import PrivacyPolicyExplainer
 
@@ -46,3 +47,10 @@ def try_privacy_policy_explainer() -> None:
         if chunk.content:
             print(chunk.content, end="", flush=True) # noqa: T201
     print("\n") # noqa: T201
+
+def main() -> None:
+    logger.info("Starting UseWise API...")
+    uvicorn.run("usewise.http.router:app", host="127.0.0.1", port=8000, reload=True)
+
+if __name__ == "__main__":
+    main()
