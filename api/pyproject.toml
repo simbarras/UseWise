@@ -15,13 +15,14 @@ authors = [
     { name = "Filip", email = "Filip@epfl.ch" }
 ]
 dependencies = [
+    "fastapi",
     "langchain",
     "langchain-core",
     "langchain-openai",
     "mypy",
+    "pydantic",
     "python-dotenv",
     "ruff",
-    "fastapi",
     "uvicorn",
 ]
 
