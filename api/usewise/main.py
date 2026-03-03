@@ -60,7 +60,23 @@ def try_privacy_policy_explainer() -> None:
         privacy_policy = f.read()
     explainer = PrivacyPolicyExplainer(privacy_policy)
 
-    print(explainer.flash_summary()) # noqa: T201
+    summary_questions = [
+        "Data is shared with third parties.",
+        "Cookies or tracking technologies are used.",
+        "Users can request deletion of their data.",
+        "The policy can change without notice.",
+    ]
+
+    flash_summary = explainer.flash_summary(summary_questions)
+    print("\n=== Flash Summary ===")  # noqa: T201
+    for idx, (question, answer) in enumerate(
+        zip(summary_questions, flash_summary.flags, strict=False),
+        start=1,
+    ):
+        print(f"{idx}. {question} -> {answer}")  # noqa: T201
+    print(f"Data Stored For: {flash_summary.storage_info}")  # noqa: T201
+    print(f"Risk score: {flash_summary.score}/10")  # noqa: T201
+    print("=====================\n")  # noqa: T201
 
     for chunk in explainer.ask_question(
         "does the privacy policy says if they will steals or/and sell my data?"

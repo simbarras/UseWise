@@ -1,5 +1,5 @@
 from langchain_core.messages import SystemMessage
-from usewise.llm.prompt import get_system_message
+from usewise.llm.schemas import get_system_message
 
 
 def test_get_system_message_contains_privacy_policy_text() -> None:
