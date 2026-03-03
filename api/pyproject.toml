@@ -15,13 +15,14 @@ authors = [
     { name = "Filip", email = "Filip@epfl.ch" }
 ]
 dependencies = [
+    "fastapi",
     "langchain",
     "langchain-core",
     "langchain-openai",
     "mypy",
+    "pydantic",
     "python-dotenv",
     "ruff",
-    "fastapi",
     "uvicorn",
 ]
 
@@ -68,7 +69,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101", "E501", "ANN401"]  # for tests allow assert statements, long lines, and untyped function definitions
+"tests/*" = ["S101", "E501", "ANN401", "PLR2004"]  # for tests allow assert statements, long lines, and untyped function definitions
 "usewise/main.py" = ["S603"]  # subprocess call paths are controlled in this file
 
 [tool.ruff.lint.pydocstyle]

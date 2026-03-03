@@ -1,8 +1,10 @@
+import argparse
 import logging
 import shutil
 import subprocess
 import sys
 from pathlib import Path
+
 import uvicorn
 
 from usewise.llm.privacy_policy_explainer import PrivacyPolicyExplainer
@@ -15,10 +17,27 @@ logging.basicConfig(
 
 
 def static_analysis() -> None:
+    parser = argparse.ArgumentParser(prog="usewise-sa")
+    parser.add_argument(
+        "ignore_path",
+        nargs="?",
+        default=None,
+        help="Path/pattern to exclude from both mypy and ruff.",
+    )
+    args = parser.parse_args()
+
+    ignore_path = args.ignore_path
+    mypy_cmd = [sys.executable, "-m", "mypy"]
+    ruff_cmd = [sys.executable, "-m", "ruff", "check"]
+
+    if ignore_path:
+        mypy_cmd.extend(["--exclude", ignore_path])
+        ruff_cmd.extend(["--exclude", ignore_path])
+
     logger.info(" Running mypy...")
-    subprocess.run([sys.executable, "-m", "mypy"], check=False)
+    subprocess.run(mypy_cmd, check=False)
     logger.info(" Running ruff...")
-    subprocess.run([sys.executable, "-m", "ruff", "check"], check=False)
+    subprocess.run(ruff_cmd, check=False)
 
     if Path(".ruff_cache").exists():
         shutil.rmtree(".ruff_cache")
@@ -41,7 +60,25 @@ def try_privacy_policy_explainer() -> None:
         privacy_policy = f.read()
     explainer = PrivacyPolicyExplainer(privacy_policy)
 
-    for chunk in explainer.invoke(
+    summary_questions = [
+        "Data is shared with third parties.",
+        "Cookies or tracking technologies are used.",
+        "Users can request deletion of their data.",
+        "The policy can change without notice.",
+    ]
+
+    flash_summary = explainer.flash_summary(summary_questions)
+    print("\n=== Flash Summary ===")  # noqa: T201
+    for idx, (question, answer) in enumerate(
+        zip(summary_questions, flash_summary.flags, strict=False),
+        start=1,
+    ):
+        print(f"{idx}. {question} -> {answer}")  # noqa: T201
+    print(f"Data Stored For: {flash_summary.storage_info}")  # noqa: T201
+    print(f"Risk score: {flash_summary.score}/10")  # noqa: T201
+    print("=====================\n")  # noqa: T201
+
+    for chunk in explainer.ask_question(
         "does the privacy policy says if they will steals or/and sell my data?"
     ):
         if chunk.content:
