@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getRiskLevel, getRiskScore, type PPSummary } from '../api';
+import { exportToPdf } from '../exportPdf';
 
 const riskConfig = {
   Low:    { color: '#10b981', trackBg: 'rgba(16,185,129,0.12)' },
@@ -37,18 +38,14 @@ export default function ResultsPage() {
 
   const riskLabel = getRiskLevel(data.risk_level);
   const riskScore = getRiskScore(data.risk_level);
-  const risk = riskConfig[riskLabel];
+  const risk      = riskConfig[riskLabel];
 
-  // Chat state
   const [messages, setMessages] = useState<{ from: 'user' | 'ai'; text: string }[]>([]);
   const [input, setInput]       = useState('');
   const [hasAsked, setHasAsked] = useState(false);
 
   const askQuestion = (question: string) => {
-    // Look for a matching answer from the backend's ai array
-    const match = data.ai.find(
-      (a) => a.question.toLowerCase() === question.toLowerCase()
-    );
+    const match  = data.ai.find((a) => a.question.toLowerCase() === question.toLowerCase());
     const answer = match?.response ?? "I don't have a specific answer for that in this policy.";
     setMessages((prev) => [...prev, { from: 'user', text: question }, { from: 'ai', text: answer }]);
     setHasAsked(true);
@@ -60,7 +57,6 @@ export default function ResultsPage() {
     setInput('');
   };
 
-  // Suggested questions come directly from the backend
   const suggestedQuestions = data.ai.map((a) => a.question);
 
   return (
@@ -78,7 +74,10 @@ export default function ResultsPage() {
             </button>
             <h2 className="text-xl font-serif text-[var(--text)]">Results</h2>
           </div>
-          <button className="border border-[var(--secondary)]/50 text-[var(--secondary)] text-[9px] font-bold uppercase tracking-[1px] px-4 py-2 rounded hover:bg-[var(--secondary)] hover:text-white transition-all">
+          <button
+            onClick={() => exportToPdf(data, messages)}
+            className="border border-[var(--secondary)]/50 text-[var(--secondary)] text-[9px] font-bold uppercase tracking-[1px] px-4 py-2 rounded hover:bg-[var(--secondary)] hover:text-white transition-all"
+          >
             Export PDF
           </button>
         </div>
@@ -89,20 +88,15 @@ export default function ResultsPage() {
           {/* LEFT: Flash Summary */}
           <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-7 flex flex-col">
             <p className="text-base font-bold text-slate-800 mb-2">Flash Summary</p>
-
             <div className="flex-1">
-              {data.summaries.map((s, i) => (
-                <SummaryRow key={i} {...s} />
-              ))}
+              {data.summaries.map((s, i) => <SummaryRow key={i} {...s} />)}
             </div>
 
             {/* Risk bar */}
             <div className="mt-6">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-[11px] font-bold text-slate-700">Risk Level:</span>
-                <span className="text-[11px] font-bold" style={{ color: risk.color }}>
-                  {riskLabel}
-                </span>
+                <span className="text-[11px] font-bold" style={{ color: risk.color }}>{riskLabel}</span>
                 <span className="text-[10px] text-slate-400 ml-1">({data.risk_level}/5)</span>
               </div>
               <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: risk.trackBg }}>
@@ -130,7 +124,6 @@ export default function ResultsPage() {
               </div>
             </div>
 
-            {/* Messages */}
             <div className="flex-1 max-h-[200px] overflow-y-auto flex flex-col gap-3 pr-1">
               {messages.length === 0 ? (
                 <p className="text-[11px] text-slate-400 text-center mt-4">
@@ -150,7 +143,6 @@ export default function ResultsPage() {
               )}
             </div>
 
-            {/* Suggested questions — from backend */}
             {!hasAsked && suggestedQuestions.length > 0 && (
               <div className="flex flex-col gap-2">
                 {suggestedQuestions.map((q) => (
@@ -166,7 +158,6 @@ export default function ResultsPage() {
               </div>
             )}
 
-            {/* Input */}
             <div className="flex items-center gap-2 border border-slate-200 rounded-lg px-3 py-2 mt-auto">
               <input
                 value={input}
@@ -175,9 +166,7 @@ export default function ResultsPage() {
                 placeholder="Ask your own question..."
                 className="flex-1 text-[11px] text-slate-700 placeholder:text-slate-300 outline-none bg-transparent"
               />
-              <button onClick={handleSend} className="text-sm transition-all hover:scale-110" style={{ color: 'var(--secondary)' }}>
-                ➤
-              </button>
+              <button onClick={handleSend} className="text-sm transition-all hover:scale-110" style={{ color: 'var(--secondary)' }}>➤</button>
             </div>
 
             {hasAsked && (
