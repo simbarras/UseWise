@@ -44,6 +44,8 @@ export async function analyzePolicy(content: string): Promise<PPSummary> {
     body: JSON.stringify({ content }),
   });
 
+  console.log('API response:' , response);
+
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
     throw new Error(error?.detail ?? `Server error: ${response.status}`);
