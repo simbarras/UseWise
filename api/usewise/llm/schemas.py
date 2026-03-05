@@ -1,3 +1,4 @@
+from enum import StrEnum
 from typing import Annotated
 
 from langchain_core.messages import SystemMessage
@@ -17,9 +18,14 @@ def get_system_message(privacy_policy: str) -> SystemMessage:
 
 def get_flash_summary_message(
     yes_no_questions: list[str],
+    time_based_questions: list[str],
 ) -> str:
-    questions_block = "\n".join(
+    yes_no_block = "\n".join(
         f"{i+1}. {q}" for i, q in enumerate(yes_no_questions)
+    )
+
+    time_block = "\n".join(
+        f"{i+1}. {q}" for i, q in enumerate(time_based_questions)
     )
 
     return f"""
@@ -34,28 +40,33 @@ Your task is to extract structured information.
    - Keep the same order.
 
 YES/NO STATEMENTS:
-{questions_block}
+{yes_no_block}
 
-2) Determine how long user data is stored.
-   Provide a short human-readable phrase (e.g., "1 year",
-   "Until account deletion", "Indefinitely").
+2) For each of the following time-related questions:
+   - Extract the duration mentioned in the policy.
+   - Return a short human-readable phrase
+     (e.g., "1 year", "6 months", "30 days",
+     "Until account deletion", "Indefinitely").
+   - Keep the same order.
 
-3) Provide an overall privacy risk score from 1 (very low risk)
-   to 10 (very high risk), considering:
-   - Data sharing
-   - Tracking technologies
-   - Data retention duration
-   - User rights (e.g., deletion)
+TIME QUESTIONS:
+{time_block}
+
+3) Based on your analysis, provide an overall privacy risk score
+   from 1 (very low risk) to 10 (very high risk).
 
 Return only structured data matching the expected schema.
 """
 
-class FlashSummaryOutput(BaseModel):
+
+class FlashSummaryReturnType(StrEnum):
+    FLAG = "flag"
+    TIME = "time"
+
+class FlashSummaryLLMOutput(BaseModel):
     flags: Annotated[
         list[bool],
         Field(
-            min_length=4,
-            max_length=4,
             description=(
                 "Boolean answers to the yes/no privacy questions, "
                 "in the exact same order as provided. "
@@ -65,14 +76,17 @@ class FlashSummaryOutput(BaseModel):
         ),
     ]
 
-    storage_info: str = Field(
-        ...,
-        description=(
-            "Short human-readable description of how long user data "
-            "is retained (e.g. '1 year', '6 months', "
-            "'Until account deletion', 'Indefinitely')."
-        ),
-    )
+    times: Annotated[
+        list[str],
+        Field(
+            description=(
+                "Short human-readable descriptions of a time "
+                "duration or time limit "
+                "(e.g. '1 year', '6 months', '3 days', "
+                "'Until account deletion', 'Indefinitely')."
+            ),
+        )
+    ]
 
     score: int = Field(
         ...,
@@ -85,6 +99,13 @@ class FlashSummaryOutput(BaseModel):
         ),
     )
 
+class FlashSummaryAnswer(BaseModel):
+    value: bool | str
+    type: FlashSummaryReturnType
+
+class FlashSummary(BaseModel):
+    answers: list[FlashSummaryAnswer]
+    score: int
 
 
 json_prompt_raw_template = """Return a JSON object that matches this structure:
@@ -94,7 +115,7 @@ Question: {question}
         """
 
 def get_json_prompt_template(
-    parser: PydanticOutputParser[FlashSummaryOutput],
+    parser: PydanticOutputParser[FlashSummaryLLMOutput],
 ) -> ChatPromptTemplate:
     return ChatPromptTemplate.from_template(
         json_prompt_raw_template,
