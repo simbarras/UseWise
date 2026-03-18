@@ -5,9 +5,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-import llm.config
-from llm.privacy_policy_explainer import PrivacyPolicyExplainer
-from llm.schemas import FlashSummaryReturnType
+from usewise.llm import config
+from usewise.llm.privacy_policy_explainer import PrivacyPolicyExplainer
+from usewise.llm.schemas import FlashSummaryReturnType
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -80,8 +80,8 @@ async def get_summary(pp: PrivacyPolicy) -> PPSummary:
     )
     return result
     """
-    model = pp.model or llm.config.model_name
-    if model not in llm.config.models:
+    model = pp.model or config.model_name
+    if model not in config.models:
         error_msg = f"Model '{pp.model}' is not supported."
         raise ValueError(error_msg)
 

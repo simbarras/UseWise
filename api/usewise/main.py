@@ -8,8 +8,8 @@ from typing import cast
 
 import uvicorn
 
-from llm.privacy_policy_explainer import PrivacyPolicyExplainer
-from llm.schemas import FlashSummaryReturnType
+from usewise.llm.privacy_policy_explainer import PrivacyPolicyExplainer
+from usewise.llm.schemas import FlashSummaryReturnType
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -91,19 +91,20 @@ def try_privacy_policy_explainer() -> None:
 
     questions = [
         "does the privacy policy says if they will steals or/and sell my data?",
-        "does they will track me?"
+        "does they will track me?",
     ]
 
     for response in explainer.get_questions_answers(questions):
-        print(response) # noqa: T201
-        print("\n\n#############################################\n\n") # noqa: T201
+        print(response)  # noqa: T201
+        print("\n\n#############################################\n\n")  # noqa: T201
 
-    print() # noqa: T201
+    print()  # noqa: T201
 
 
 def main() -> None:
     logger.info("Starting UseWise API...")
-    uvicorn.run("restApi.router:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("usewise.restApi.router:app", host="127.0.0.1", port=8000, reload=True)
+
 
 if __name__ == "__main__":
     main()

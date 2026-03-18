@@ -36,6 +36,7 @@ test = [
 usewise-sa = "usewise.main:static_analysis"
 usewise-test = "usewise.main:test"
 usewise-try = "usewise.main:try_privacy_policy_explainer"
+usewise-server = "usewise.main:main"
 
 [tool.setuptools]
 packages = ["usewise"]
