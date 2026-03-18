@@ -8,8 +8,8 @@ from typing import cast
 
 import uvicorn
 
-from usewise.llm.privacy_policy_explainer import PrivacyPolicyExplainer
-from usewise.llm.schemas import FlashSummaryReturnType
+from llm.privacy_policy_explainer import PrivacyPolicyExplainer
+from llm.schemas import FlashSummaryReturnType
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(
@@ -103,7 +103,7 @@ def try_privacy_policy_explainer() -> None:
 
 def main() -> None:
     logger.info("Starting UseWise API...")
-    uvicorn.run("usewise.http.router:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("restApi.router:app", host="127.0.0.1", port=8000, reload=True)
 
 if __name__ == "__main__":
     main()

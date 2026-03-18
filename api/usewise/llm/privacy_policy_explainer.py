@@ -3,8 +3,8 @@ from langchain_core.messages import HumanMessage
 from langchain_core.output_parsers import PydanticOutputParser
 from langchain_openai import ChatOpenAI
 
-from usewise.llm.config import get_groq_api_key, llm_url
-from usewise.llm.schemas import (
+from llm.config import get_groq_api_key, llm_url
+from llm.schemas import (
     FlashSummary,
     FlashSummaryAnswer,
     FlashSummaryLLMOutput,
