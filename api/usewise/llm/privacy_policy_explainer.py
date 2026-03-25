@@ -1,4 +1,4 @@
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.output_parsers import PydanticOutputParser
 from langchain_openai import ChatOpenAI
 
@@ -17,6 +17,7 @@ from usewise.llm.schemas import (
 class PrivacyPolicyExplainer:
     def __init__(self, privacy_policy: str, model_name: str) -> None:
         self.system_msg = get_system_message(privacy_policy=privacy_policy)
+        self.messages = [self.system_msg]
         self.model = ChatOpenAI(
             model=model_name,
             base_url=llm_url,
@@ -30,14 +31,20 @@ class PrivacyPolicyExplainer:
         parser = PydanticOutputParser(pydantic_object=FlashSummaryLLMOutput)
         prompt = get_json_prompt_template(parser)
         question = get_flash_summary_message(yes_no_questions, time_based_questions)
-        messages = prompt.format_messages(question=question)
+        messages = [self.system_msg, *prompt.format_messages(question=question)]
         response = self.model.invoke(messages)
         text = str(response.content)
         text_parsed = parser.parse(text)
         answers = self.reassemble_questions(
             text_parsed.flags, text_parsed.times, questions
         )
-        return FlashSummary(answers=answers, score=text_parsed.score)
+        flash_summary = FlashSummary(answers=answers, score=text_parsed.score)
+        self.messages.append(
+            AIMessage(
+                content=self._format_flash_summary_memory(questions, flash_summary)
+            )
+        )
+        return flash_summary
 
     def divide_questions(
         self, questions: list[tuple[str, FlashSummaryReturnType]]
@@ -85,8 +92,25 @@ class PrivacyPolicyExplainer:
     def get_questions_answers(self, questions: list[str]) -> list[str]:
         return [self.invoke(q) for q in questions]
 
+    def _format_flash_summary_memory(
+        self,
+        questions: list[tuple[str, FlashSummaryReturnType]],
+        flash_summary: FlashSummary,
+    ) -> str:
+        summary_lines = [
+            "Flash summary previously generated for this privacy policy:",
+        ]
+
+        for (question, _), answer in zip(
+            questions, flash_summary.answers, strict=False
+        ):
+            summary_lines.append(f"- {question}: {answer.value}")
+
+        summary_lines.append(f"- Privacy risk score: {flash_summary.score}/10")
+        return "\n".join(summary_lines)
+
     def invoke(self, question: str) -> str:
-
-        messages = [self.system_msg, HumanMessage(content=question)]
-
-        return str(self.model.invoke(messages).content)
+        self.messages.append(HumanMessage(content=question))
+        response_text = str(self.model.invoke(self.messages).content)
+        self.messages.append(AIMessage(content=response_text))
+        return response_text

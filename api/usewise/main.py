@@ -92,6 +92,7 @@ def try_privacy_policy_explainer() -> None:
     questions = [
         "does the privacy policy says if they will steals or/and sell my data?",
         "does they will track me?",
+        "why you gave this risk score?",
     ]
 
     for response in explainer.get_questions_answers(questions):
