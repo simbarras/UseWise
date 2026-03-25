@@ -54,11 +54,11 @@ class PPSummary(BaseModel):
 
 
 flash_summary_questions = [
-    ("Data is shared with third parties.", FlashSummaryReturnType.FLAG),
-    ("Cookies or tracking technologies are used.", FlashSummaryReturnType.FLAG),
-    ("For how much time the data gonna be stored.", FlashSummaryReturnType.TIME),
-    ("Users can request deletion of their data.", FlashSummaryReturnType.FLAG),
-    ("The policy can change without notice.", FlashSummaryReturnType.FLAG),
+    ("User data is not shared with third parties.", FlashSummaryReturnType.FLAG),
+    ("Profiling or commercial cookies are not used.", FlashSummaryReturnType.FLAG),
+    ("How long is the user data stored?", FlashSummaryReturnType.TIME),
+    ("The user can request deletion of their data.", FlashSummaryReturnType.FLAG),
+    ("Users are notified or can see any policy changes.", FlashSummaryReturnType.FLAG),
 ]
 
 

@@ -2,7 +2,7 @@
 
 export interface Summaries {
   flash: string;
-  present: boolean;
+  value: boolean | string;
 }
 
 export interface AiQuestion {
@@ -21,14 +21,14 @@ export interface PPSummary {
 export type RiskLevel = "Low" | "Medium" | "High";
 
 export function getRiskLevel(risk_level: number): RiskLevel {
-  if (risk_level <= 2) return "Low";
-  if (risk_level <= 3) return "Medium";
+  if (risk_level <= 3) return "Low";
+  if (risk_level <= 6) return "Medium";
   return "High";
 }
 
 export function getRiskScore(risk_level: number): number {
-  // Convert 1-5 scale to 0-100 for the progress bar
-  return Math.round((risk_level / 5) * 100);
+  // Convert 1-10 scale to 0-100 for the progress bar
+  return Math.round((risk_level / 10) * 100);
 }
 
 // ─── Config ───────────────────────────────────────────────────────────────────
