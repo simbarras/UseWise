@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import MainContent from './components/MainContent';
@@ -26,11 +26,11 @@ function Layout({ children }: { children: React.ReactNode }) {
 const MOCK_RESULT: PPSummary = {
   risk_level: 2,
   summaries: [
-    { flash: 'Data is not shared with third parties.', present: true  },
-    { flash: 'Cookies and trackers are used.',         present: false },
-    { flash: 'Data is retained for 24 months.',        present: true  },
-    { flash: 'Users can request data deletion.',       present: true  },
-    { flash: 'Policy can change without notice.',      present: false },
+    { flash: 'Data is not shared with third parties.', value: true  },
+    { flash: 'Cookies and trackers are used.',         value: false },
+    { flash: 'Data is retained for 24 months.',        value: '24 months' },
+    { flash: 'Users can request data deletion.',       value: true  },
+    { flash: 'Policy can change without notice.',      value: false },
   ],
   ai: [
     { question: 'Who has my data?',               response: 'Your data is shared with internal teams and select infrastructure partners only.' },
@@ -45,8 +45,12 @@ function LoadingWrapper() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [error, setError] = useState<string | null>(null);
+  const hasRun = useRef(false);
 
   useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
+
     const run = async () => {
       try {
         const content = state?.policyText;

@@ -1,4 +1,3 @@
-
 from langchain_core.messages import HumanMessage
 from langchain_core.output_parsers import PydanticOutputParser
 from langchain_openai import ChatOpenAI
@@ -16,7 +15,7 @@ from usewise.llm.schemas import (
 
 
 class PrivacyPolicyExplainer:
-    def __init__(self, privacy_policy: str, model_name:str) -> None:
+    def __init__(self, privacy_policy: str, model_name: str) -> None:
         self.system_msg = get_system_message(privacy_policy=privacy_policy)
         self.model = ChatOpenAI(
             model=model_name,
@@ -25,8 +24,8 @@ class PrivacyPolicyExplainer:
         )
 
     def get_flash_summary(
-            self, questions: list[tuple[str, FlashSummaryReturnType]]
-            ) -> FlashSummary:
+        self, questions: list[tuple[str, FlashSummaryReturnType]]
+    ) -> FlashSummary:
         yes_no_questions, time_based_questions = self.divide_questions(questions)
         parser = PydanticOutputParser(pydantic_object=FlashSummaryLLMOutput)
         prompt = get_json_prompt_template(parser)
@@ -41,8 +40,8 @@ class PrivacyPolicyExplainer:
         return FlashSummary(answers=answers, score=text_parsed.score)
 
     def divide_questions(
-            self, questions : list[tuple[str, FlashSummaryReturnType]]
-            ) -> tuple[list[str], list[str]]:
+        self, questions: list[tuple[str, FlashSummaryReturnType]]
+    ) -> tuple[list[str], list[str]]:
         yes_no_questions = []
         time_based_questions = []
         flag = FlashSummaryReturnType.FLAG
@@ -58,10 +57,12 @@ class PrivacyPolicyExplainer:
         return yes_no_questions, time_based_questions
 
     def reassemble_questions(
-            self, flags:list[bool], times:list[str],
-            questions:list[tuple[str, FlashSummaryReturnType]]
-            ) -> list[FlashSummaryAnswer]:
-        answers : list[FlashSummaryAnswer] = []
+        self,
+        flags: list[bool],
+        times: list[str],
+        questions: list[tuple[str, FlashSummaryReturnType]],
+    ) -> list[FlashSummaryAnswer]:
+        answers: list[FlashSummaryAnswer] = []
 
         flag = FlashSummaryReturnType.FLAG
         time = FlashSummaryReturnType.TIME
@@ -71,9 +72,7 @@ class PrivacyPolicyExplainer:
 
         for _, return_type in questions:
             if return_type is flag:
-                answers.append(
-                    FlashSummaryAnswer(value=next(yes_iter), type=return_type)
-                )
+                answers.append(FlashSummaryAnswer(value=next(yes_iter), type=return_type))
             elif return_type is time:
                 answers.append(
                     FlashSummaryAnswer(value=next(time_iter), type=return_type)
@@ -88,9 +87,6 @@ class PrivacyPolicyExplainer:
 
     def invoke(self, question: str) -> str:
 
-        messages = [
-            self.system_msg,
-            HumanMessage(content=question)
-        ]
+        messages = [self.system_msg, HumanMessage(content=question)]
 
         return str(self.model.invoke(messages).content)
