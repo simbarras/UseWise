@@ -62,6 +62,14 @@ flash_summary_questions = [
 ]
 
 
+follow_up_questions = [
+    "Why did you choose this score of risk level ?",
+    "What are the third parties that the data is shared with?",
+    "What kind of cookies or tracking technologies are used?",
+    "How can I request deletion of my data?",
+]
+
+
 @app.post("/summary/")
 async def get_summary(pp: PrivacyPolicy) -> PPSummary:
     """
@@ -100,19 +108,20 @@ async def get_summary(pp: PrivacyPolicy) -> PPSummary:
             )
         )
 
+    follow_up_responses = []
+    for question in follow_up_questions:
+        response = ppe.get_questions_answers([question])[0]
+        follow_up_responses.append(
+            AiQuestion(
+                question=question,
+                response=response,
+            )
+        )
+
     return PPSummary(
         risk_level=ppe_summary.score,
         summaries=return_summary,
-        ai=[
-            AiQuestion(
-                question="What is the data retention period?",
-                response="The data retention period is 30 days (Fake response)",
-            ),
-            AiQuestion(
-                question="Is user data shared with third parties?",
-                response="No, user data is not shared with third parties (Fake response)",
-            ),
-        ],
+        ai=follow_up_responses,
         model_used=model,
     )
 
