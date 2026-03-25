@@ -9,17 +9,30 @@ const riskConfig = {
   High:   { color: '#ef4444', trackBg: 'rgba(239,68,68,0.12)'  },
 };
 
-function SummaryRow({ flash, present }: { flash: string; present: boolean }) {
+function SummaryRow({ flash, value }: { flash: string; value: boolean | string }) {
+  const isString = typeof value === 'string';
+  const isTrue   = value === true;
+
+  const bg    = isString ? 'rgba(99,102,241,0.12)' : isTrue ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)';
+  const color  = isString ? '#6366f1'               : isTrue ? '#10b981'               : '#ef4444';
+  const symbol = isString ? '…'                     : isTrue ? '✓'                     : '✕';
+
   return (
     <div className="flex items-start gap-3 py-3 border-b border-slate-100 last:border-0">
       <span
-        className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-bold"
+        className="shrink-0 mt-0.5 rounded-full flex items-center justify-center font-bold"
         style={{
-          background: present ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
-          color:      present ? '#10b981'                : '#ef4444',
+          background: bg,
+          color,
+          minWidth: isString ? 'auto' : '1.25rem',
+          height: isString ? 'auto' : '1.25rem',
+          fontSize: isString ? '10px' : '10px',
+          padding: isString ? '2px 6px' : undefined,
+          borderRadius: isString ? '9999px' : undefined,
+          whiteSpace: 'nowrap',
         }}
       >
-        {present ? '✓' : '✕'}
+        {isString ? value : symbol}
       </span>
       <span className="text-[11px] text-slate-500 leading-relaxed">{flash}</span>
     </div>
@@ -97,7 +110,7 @@ export default function ResultsPage() {
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-[11px] font-bold text-slate-700">Risk Level:</span>
                 <span className="text-[11px] font-bold" style={{ color: risk.color }}>{riskLabel}</span>
-                <span className="text-[10px] text-slate-400 ml-1">({data.risk_level}/5)</span>
+                <span className="text-[10px] text-slate-400 ml-1">({data.risk_level}/10)</span>
               </div>
               <div className="w-full h-2 rounded-full overflow-hidden" style={{ background: risk.trackBg }}>
                 <div
