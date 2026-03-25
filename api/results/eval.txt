@@ -1,0 +1,80 @@
+Model: openai/gpt-5.4-nano
+  Flash summary success: 4/4
+  Avg flash latency: 1.23s
+  Follow-up success: 4/4
+  - Policy: apple
+    Risk score: 6/10
+    Flash - This policy says your data is shared with other companies. => False
+    Flash - This policy says cookies or similar tracking tools are used. => True
+    Flash - This policy says you can ask for your data to be deleted. => True
+    Flash - This policy says you can access or correct your data. => True
+    Flash - This policy says your data may be used for ads or marketing. => False
+    Flash - This policy says your data may be transferred to other countries. => True
+    Flash - How long does the company keep your personal data? => As long as necessary for the purposes
+    Follow-up responses: 12 questions
+  - Policy: galaxus
+    Risk score: 5/10
+    Flash - This policy says your data is shared with other companies. => True
+    Flash - This policy says cookies or similar tracking tools are used. => False
+    Flash - This policy says you can ask for your data to be deleted. => True
+    Flash - This policy says you can access or correct your data. => True
+    Flash - This policy says your data may be used for ads or marketing. => True
+    Flash - This policy says your data may be transferred to other countries. => True
+    Flash - How long does the company keep your personal data? => Varies by purpose; e.g., customer accounts: until account deletion (deleted after 30 days max), contracts/master+contract data: 10 years, cookies: a few days up to 2 years
+    Follow-up responses: 12 questions
+  - Policy: migros
+    Risk score: 7/10
+    Flash - This policy says your data is shared with other companies. => True
+    Flash - This policy says cookies or similar tracking tools are used. => True
+    Flash - This policy says you can ask for your data to be deleted. => True
+    Flash - This policy says you can access or correct your data. => True
+    Flash - This policy says your data may be used for ads or marketing. => True
+    Flash - This policy says your data may be transferred to other countries. => True
+    Flash - How long does the company keep your personal data? => Up to 10 years (e.g., contracts); 6 months for log files; cookies a few days to 2 years
+    Follow-up responses: 12 questions
+  - Policy: sample
+    Risk score: 8/10
+    Flash - This policy says your data is shared with other companies. => True
+    Flash - This policy says cookies or similar tracking tools are used. => True
+    Flash - This policy says you can ask for your data to be deleted. => True
+    Flash - This policy says you can access or correct your data. => True
+    Flash - This policy says your data may be used for ads or marketing. => False
+    Flash - This policy says your data may be transferred to other countries. => True
+    Flash - How long does the company keep your personal data? => 24 months
+    Follow-up responses: 12 questions
+
+Saved results to results/eval.json
+api [main] λ
+
+Accuracy Review
+===============
+Model reviewed: openai/gpt-5.4-nano
+
+Apple
+- Wrong: the flash summary missed that Apple shares data with affiliates, service providers, partners, developers/publishers, and other directed recipients.
+- Wrong: it also missed Apple's own advertising and marketing uses.
+- Partial: the sell/advertising follow-up was too narrow because it ignored Apple ads.
+
+Galaxus
+- Wrong: the flash summary said cookies/tracking were not used, but the policy clearly references cookies, similar technologies, and a Cookie Notice.
+- Partial: the opt-out answer covered marketing controls but omitted cookie and tracking controls.
+
+Migros
+- Partial: the sell/advertising answer added a stronger "we do not sell as a rule" claim than the policy clearly supports.
+- Partial: the opt-out answer covered marketing controls but omitted cookie and tracking controls.
+
+Sample
+- Wrong: the flash summary missed the special monetization and externalization clause when answering ads/marketing.
+- Wrong: it treated 24 months as the general retention period, even though that only applies to inactive accounts.
+- Wrong: the account-deletion follow-up overstated what the policy says after deletion.
+- Partial: some sharing/retention answers ignored the perpetual transformation clause.
+
+Summary Table
+-------------
+| Policy  | Correct | Partial | Wrong | Accuracy |
+|---------|---------|---------|-------|----------|
+| apple   | 16      | 1       | 2     | 86.8%    |
+| galaxus | 17      | 1       | 1     | 92.1%    |
+| migros  | 17      | 2       | 0     | 94.7%    |
+| sample  | 13      | 2       | 4     | 73.7%    |
+| overall | 63      | 6       | 7     | 86.8%    |

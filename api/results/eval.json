@@ -1,0 +1,910 @@
+{
+  "generated_at": "2026-03-25T10:34:30.310598+00:00",
+  "provider": "openrouter",
+  "models": [
+    "openai/gpt-5.4-nano"
+  ],
+  "policies": [
+    "apple",
+    "galaxus",
+    "migros",
+    "sample"
+  ],
+  "include_follow_up": true,
+  "temperature": 0.0,
+  "timeout": null,
+  "max_tokens": null,
+  "flash_questions": [
+    "This policy says your data is shared with other companies.",
+    "This policy says cookies or similar tracking tools are used.",
+    "This policy says you can ask for your data to be deleted.",
+    "This policy says you can access or correct your data.",
+    "This policy says your data may be used for ads or marketing.",
+    "This policy says your data may be transferred to other countries.",
+    "How long does the company keep your personal data?"
+  ],
+  "follow_up_questions": [
+    "What personal information do you collect about me?",
+    "Why do you collect my data?",
+    "Who do you share my data with?",
+    "Do you sell my data or use it for advertising?",
+    "How long do you keep my data?",
+    "What happens to my data if I delete my account?",
+    "Can I ask to see the data you have about me?",
+    "Can I ask you to correct wrong information about me?",
+    "Can I download a copy of my data?",
+    "How can I opt out of tracking or marketing?",
+    "Is my data sent or stored outside my country?",
+    "Do you collect sensitive data or data about children?"
+  ],
+  "results": [
+    {
+      "model": "openai/gpt-5.4-nano",
+      "policies": [
+        {
+          "policy": "apple",
+          "flash_latency_seconds": 1.3019148749990563,
+          "flash_score": 6,
+          "flash_answers": [
+            {
+              "question": "This policy says your data is shared with other companies.",
+              "type": "flag",
+              "value": false
+            },
+            {
+              "question": "This policy says cookies or similar tracking tools are used.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "This policy says you can ask for your data to be deleted.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "This policy says you can access or correct your data.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "This policy says your data may be used for ads or marketing.",
+              "type": "flag",
+              "value": false
+            },
+            {
+              "question": "This policy says your data may be transferred to other countries.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "How long does the company keep your personal data?",
+              "type": "time",
+              "value": "As long as necessary for the purposes"
+            }
+          ],
+          "flash_error": null,
+          "follow_up_latency_seconds": 14.332529958001032,
+          "follow_up_answers": [
+            {
+              "question": "What personal information do you collect about me?",
+              "answer": "Apple may collect account information (like your Apple Account details), device and usage data (like device serial number and browsing/search/crash/diagnostic data), and contact and payment/transaction information. Depending on how you interact with Apple, it may also collect location (for features like Find My), health/fitness information (if you share it), and other information you provide (like support communications)."
+            },
+            {
+              "question": "Why do you collect my data?",
+              "answer": "Apple collects personal data to power its services, process your transactions, communicate with you, support security and fraud prevention, and comply with law. It also collects only the personal data it needs for the ways you interact with Apple."
+            },
+            {
+              "question": "Who do you share my data with?",
+              "answer": "Apple may share personal data with Apple-affiliated companies, service providers acting on Apple’s behalf, partners, and with developers/publishers when you buy a third-party subscription through Apple (via a Subscriber ID). Apple does not share your personal data with third parties for their own marketing purposes."
+            },
+            {
+              "question": "Do you sell my data or use it for advertising?",
+              "answer": "Apple does not sell your personal data, including as “sale” under Nevada and California law. Apple also does not share your personal data for third parties’ own marketing purposes."
+            },
+            {
+              "question": "How long do you keep my data?",
+              "answer": "Apple keeps your personal data only for as long as necessary to fulfill the purposes it was collected for, including as described in this Privacy Policy or service-specific notices, or as required by law. Apple retains data for the shortest period permissible under law when setting retention periods."
+            },
+            {
+              "question": "What happens to my data if I delete my account?",
+              "answer": "You can request deletion of your personal data, but Apple may not be able to delete everything in some situations (for example, if it must keep records by law or for anti-fraud and security). Apple also may decline a deletion request if it would jeopardize others’ privacy or isn’t feasible or reasonable."
+            },
+            {
+              "question": "Can I ask to see the data you have about me?",
+              "answer": "Yes—Apple says you can request access to a copy of your personal data, but you must sign in to your account. You can do this via the Apple Data and Privacy page at **privacy.apple.com** or contact **apple.com/legal/privacy/contact** (or call **1-800-275-2273** in California if you can’t access the page)."
+            },
+            {
+              "question": "Can I ask you to correct wrong information about me?",
+              "answer": "Yes—Apple says you can access and **correct** your personal data. To exercise this right, visit **privacy.apple.com** (or **shazam.com/privacy** for Shazam) and sign in to verify your identity."
+            },
+            {
+              "question": "Can I download a copy of my data?",
+              "answer": "Yes. You can sign in and request a copy of your personal data at privacy.apple.com. If it’s not available there, you can request it at apple.com/legal/privacy/contact."
+            },
+            {
+              "question": "How can I opt out of tracking or marketing?",
+              "answer": "You can disable Personalized Ads on your device (Settings > Privacy & Security > Apple Advertising on iOS/iPadOS/visionOS, or System Settings > Privacy & Security > Privacy > Advertising on Mac) to opt your Apple Account out of interest-based advertising. Also, if you prefer not to be tracked via email click-through URLs, don’t click the graphic or text links in Apple emails."
+            },
+            {
+              "question": "Is my data sent or stored outside my country?",
+              "answer": "Yes. Apple may transfer and/or process your personal data outside your country, including to entities worldwide and to the United States. The policy says Apple still uses the same high level of protection and safeguarding measures wherever your data is stored."
+            },
+            {
+              "question": "Do you collect sensitive data or data about children?",
+              "answer": "Yes. Apple collects health information and may also collect other sensitive data where permitted, such as data relating to an individual’s physical or mental health. Apple also collects children’s personal data, and child accounts require parental consent (or are created through managed accounts via schools), with protections if data is collected without authorization."
+            }
+          ],
+          "follow_up_error": null
+        },
+        {
+          "policy": "galaxus",
+          "flash_latency_seconds": 1.1724186669998744,
+          "flash_score": 5,
+          "flash_answers": [
+            {
+              "question": "This policy says your data is shared with other companies.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "This policy says cookies or similar tracking tools are used.",
+              "type": "flag",
+              "value": false
+            },
+            {
+              "question": "This policy says you can ask for your data to be deleted.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "This policy says you can access or correct your data.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "This policy says your data may be used for ads or marketing.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "This policy says your data may be transferred to other countries.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "How long does the company keep your personal data?",
+              "type": "time",
+              "value": "Varies by purpose; e.g., customer accounts: until account deletion (deleted after 30 days max), contracts/master+contract data: 10 years, cookies: a few days up to 2 years"
+            }
+          ],
+          "flash_error": null,
+          "follow_up_latency_seconds": 13.747614332998637,
+          "follow_up_answers": [
+            {
+              "question": "What personal information do you collect about me?",
+              "answer": "We collect master data (e.g., name, contact details, date of birth), contract data (e.g., order and payment information), and communication data (e.g., messages you send us). We also collect transactional and behavioral data, preference and profiling data, technical data (e.g., IP/device info and log data), and may record images/sound in certain places (e.g., events or video surveillance where indicated)."
+            },
+            {
+              "question": "Why do you collect my data?",
+              "answer": "We collect and process your personal data to communicate with you, run and manage contracts and services, and provide customer support. We also use it for things like marketing, personalization, security and fraud prevention, and to meet legal obligations."
+            },
+            {
+              "question": "Who do you share my data with?",
+              "answer": "We share your personal data within the Migros Group and with outside service providers (contract processors) that process data on our behalf for tasks like delivery, IT/cloud, marketing, payments, and fraud prevention. We may also share data with certain third parties for their own purposes (e.g., direct suppliers/marketplace sellers for orders, credit information/collection agencies, and advertising partners), as described in the policy."
+            },
+            {
+              "question": "Do you sell my data or use it for advertising?",
+              "answer": "We may use your personal data for marketing and personalized advertising, including newsletters and targeted offers (Sections 6.3 and 6.4). The policy does not describe selling your personal data as such, but it does allow sharing with service providers and certain third parties for their own purposes, such as advertising networks, under the conditions stated in Section 8.2."
+            },
+            {
+              "question": "How long do you keep my data?",
+              "answer": "We keep your data only as long as needed for the purposes, for example during an active customer relationship or for contract fulfillment (typically at least the contract duration). If there are statutory retention duties or legitimate interests (e.g., evidence, IT security), we keep it for the required time—e.g., customer-account data for as long as the account is active and generally up to 10 years for key contract/communication data."
+            },
+            {
+              "question": "What happens to my data if I delete my account?",
+              "answer": "If you request your account be deactivated or deletion via your customer account, your personal data will be deleted after checking any open claims or other reasons that prevent immediate deletion, and no later than 30 days. If you have any contract-related records that must be retained by law or for evidence, those may be kept for the required retention period."
+            },
+            {
+              "question": "Can I ask to see the data you have about me?",
+              "answer": "Yes. You have the right to request information about the personal data we store about you. You can exercise this via your customer account or our Galaxus Assistant."
+            },
+            {
+              "question": "Can I ask you to correct wrong information about me?",
+              "answer": "Yes. You have the right to request correction of inaccurate or incomplete personal data. You can do this via your customer account, where you can correct stored master data at any time."
+            },
+            {
+              "question": "Can I download a copy of my data?",
+              "answer": "Yes—you have the right to receive certain personal data you provided or that we process about you in a structured, commonly used, machine-readable format. You can exercise this right via your customer account or our Galaxus Assistant."
+            },
+            {
+              "question": "How can I opt out of tracking or marketing?",
+              "answer": "You can refuse marketing contacts at any time; for newsletters and other electronic messages you can generally opt out via your customer account or the unsubscribe link in the message. You can also object to processing for direct advertising (and profiling related to it) at any time, and you can deactivate personalization in your customer account."
+            },
+            {
+              "question": "Is my data sent or stored outside my country?",
+              "answer": "Yes. We process and store personal data mainly in Switzerland and the EEA, but in some cases we may share it with providers or recipients outside these areas worldwide. If that happens, we ensure “appropriate protection” through safeguards such as standard contractual clauses (or, in exceptional cases, other legal bases)."
+            },
+            {
+              "question": "Do you collect sensitive data or data about children?",
+              "answer": "The policy says we only process sensitive data (e.g., health or biometric data) if it’s necessary for a service, voluntarily provided, or consented to. For children, it only mentions youth protection measures (e.g., enforcing age limits for alcohol purchases), not collecting children’s personal data specifically."
+            }
+          ],
+          "follow_up_error": null
+        },
+        {
+          "policy": "migros",
+          "flash_latency_seconds": 1.4497812500012515,
+          "flash_score": 7,
+          "flash_answers": [
+            {
+              "question": "This policy says your data is shared with other companies.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "This policy says cookies or similar tracking tools are used.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "This policy says you can ask for your data to be deleted.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "This policy says you can access or correct your data.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "This policy says your data may be used for ads or marketing.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "This policy says your data may be transferred to other countries.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "How long does the company keep your personal data?",
+              "type": "time",
+              "value": "Up to 10 years (e.g., contracts); 6 months for log files; cookies a few days to 2 years"
+            }
+          ],
+          "flash_error": null,
+          "follow_up_latency_seconds": 15.395890542000416,
+          "follow_up_answers": [
+            {
+              "question": "What personal information do you collect about me?",
+              "answer": "We collect personal data such as your master data (e.g., name, contact details, date of birth) and your account or bonus program details, if you register. We also collect transaction and behavior data (e.g., purchases, online activity), technical data (e.g., IP/device details), and in some cases image/sound recordings (e.g., event recordings or video surveillance)."
+            },
+            {
+              "question": "Why do you collect my data?",
+              "answer": "We collect and process your personal data to provide services to you, manage contracts and customer care, and communicate with you (including marketing and personalized offers). We also use data for security and compliance (e.g., preventing fraud and meeting legal obligations)."
+            },
+            {
+              "question": "Who do you share my data with?",
+              "answer": "We share your personal data with Migros Group companies (to run services, personalize offers, support customer service, and improve products) and with external service providers/contract processors (e.g., for IT, payments, logistics, marketing, and security) that process data on our behalf. In some cases, we also share data with third parties for their own purposes when allowed by law or where you consent (e.g., credit/reference agencies, ad partners, courts and authorities)."
+            },
+            {
+              "question": "Do you sell my data or use it for advertising?",
+              "answer": "We do not “sell” your personal data as a rule; we may share it with companies outside the Migros Group only when needed for services, marketing you request/that applies, or where permitted by law. We use your data to personalize and send you marketing and targeted offers, and you can opt out or object to marketing at any time."
+            },
+            {
+              "question": "How long do you keep my data?",
+              "answer": "We keep personal data only as long as needed for the purpose, and for contract matters generally at least for the duration of the contractual relationship. After that, we keep data only if we have a legitimate reason (e.g., claims, IT security) or if a statutory retention period requires it, and we then delete or anonymize it."
+            },
+            {
+              "question": "What happens to my data if I delete my account?",
+              "answer": "If you request to delete your Migros Account, your personal data are deleted within 30 days. If your account is deactivated (e.g., for inactivity or misuse), the data are deleted over a period not exceeding 24 months."
+            },
+            {
+              "question": "Can I ask to see the data you have about me?",
+              "answer": "Yes. You have the right to request information about the personal data we store about you. You can exercise this via the web form or by contacting the responsible Migros company per section 18."
+            },
+            {
+              "question": "Can I ask you to correct wrong information about me?",
+              "answer": "Yes. You have the right to request correction of inaccurate or incomplete personal data we hold about you."
+            },
+            {
+              "question": "Can I download a copy of my data?",
+              "answer": "Yes. You can request a copy of your personal data in a structured, commonly used and machine-readable format."
+            },
+            {
+              "question": "How can I opt out of tracking or marketing?",
+              "answer": "You can opt out of marketing by declining direct marketing at any time and by unsubscribing from newsletters/advertising e-mails via the unsubscribe link in the message. In addition, you can deactivate receipt of specific offers and information in your Migros Account."
+            },
+            {
+              "question": "Is my data sent or stored outside my country?",
+              "answer": "Yes—Migros may store or disclose personal data outside Switzerland and the EEA, including to service providers and other recipients in any country worldwide. Transfers are made with suitable safeguards such as standard contractual clauses, but in exceptional cases data may be transferred even without adequate protection."
+            },
+            {
+              "question": "Do you collect sensitive data or data about children?",
+              "answer": "Yes. The policy says we may process sensitive personal data when necessary for services (e.g., health-related details you provide). We generally do not process personal data belonging to children, except in specific situations where it becomes necessary and special protection is ensured (often with parental/legal-representative consent where applicable)."
+            }
+          ],
+          "follow_up_error": null
+        },
+        {
+          "policy": "sample",
+          "flash_latency_seconds": 0.9860756670004776,
+          "flash_score": 8,
+          "flash_answers": [
+            {
+              "question": "This policy says your data is shared with other companies.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "This policy says cookies or similar tracking tools are used.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "This policy says you can ask for your data to be deleted.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "This policy says you can access or correct your data.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "This policy says your data may be used for ads or marketing.",
+              "type": "flag",
+              "value": false
+            },
+            {
+              "question": "This policy says your data may be transferred to other countries.",
+              "type": "flag",
+              "value": true
+            },
+            {
+              "question": "How long does the company keep your personal data?",
+              "type": "time",
+              "value": "24 months"
+            }
+          ],
+          "flash_error": null,
+          "follow_up_latency_seconds": 12.471539333000692,
+          "follow_up_answers": [
+            {
+              "question": "What personal information do you collect about me?",
+              "answer": "We may collect identification and contact details (such as your name and email), plus technical data like your IP address and device/browser information. We also collect usage data (interaction logs and feature usage) and communication data from messages you send to support."
+            },
+            {
+              "question": "Why do you collect my data?",
+              "answer": "We collect personal data to provide and maintain our services, improve functionality, and ensure security and prevent fraud. We also process data to communicate with users and to comply with legal obligations."
+            },
+            {
+              "question": "Who do you share my data with?",
+              "answer": "We may share personal data with hosting providers (in Switzerland or the EU), analytics providers, and legal authorities when required by law. All service providers are contractually obligated to protect your data."
+            },
+            {
+              "question": "Do you sell my data or use it for advertising?",
+              "answer": "Our policy does not say we sell your personal data. We use data to provide and improve our services, ensure security, comply with legal obligations, and communicate with users."
+            },
+            {
+              "question": "How long do you keep my data?",
+              "answer": "We keep personal data only as long as necessary for the purposes described in this policy, or longer if required by law. Inactive accounts may be deleted after 24 months."
+            },
+            {
+              "question": "What happens to my data if I delete my account?",
+              "answer": "If you delete your account, we will retain your personal data only as long as necessary for the purposes in this policy or as required by law. Inactive accounts may be deleted after 24 months."
+            },
+            {
+              "question": "Can I ask to see the data you have about me?",
+              "answer": "Yes—under Swiss law you have the right to request access to the personal data we hold about you. You can submit your request to **privacy@usewise.ch**."
+            },
+            {
+              "question": "Can I ask you to correct wrong information about me?",
+              "answer": "Yes. You have the right to request correction of inaccurate personal data. You can send your request to privacy@usewise.ch."
+            },
+            {
+              "question": "Can I download a copy of my data?",
+              "answer": "Yes. You have the right to receive a copy of your personal data. You can request it by emailing **privacy@usewise.ch**."
+            },
+            {
+              "question": "How can I opt out of tracking or marketing?",
+              "answer": "The policy only mentions essential and analytics cookies; you can opt out by changing your browser’s cookie preferences to disable analytics cookies. For other tracking/communications, contact us at **privacy@usewise.ch**."
+            },
+            {
+              "question": "Is my data sent or stored outside my country?",
+              "answer": "Your data may be hosted by providers in Switzerland or the EU. If it’s transferred outside Switzerland or the EEA, Usewise AG applies appropriate safeguards such as Standard Contractual Clauses or adequacy decisions."
+            },
+            {
+              "question": "Do you collect sensitive data or data about children?",
+              "answer": "Our policy describes collecting identification, contact, technical, usage, and communication data, and it does not mention collecting sensitive data. It also does not mention collecting data about children."
+            }
+          ],
+          "follow_up_error": null
+        }
+      ]
+    }
+  ],
+  "accuracy_review": {
+    "scale": {
+      "correct": "Fully supported by the policy",
+      "partially_correct": "Mostly right but missing or overstating a material point",
+      "incorrect": "Contradicted by the policy or not supported by it"
+    },
+    "models": [
+      {
+        "model": "openai/gpt-5.4-nano",
+        "policies": [
+          {
+            "policy": "apple",
+            "flash_reviews": [
+              {
+                "question": "This policy says your data is shared with other companies.",
+                "rating": "incorrect",
+                "reason": "Apple shares with affiliates, service providers, partners, developers/publishers, and others at your direction."
+              },
+              {
+                "question": "This policy says cookies or similar tracking tools are used.",
+                "rating": "correct",
+                "reason": "Apple says its websites, services, and ads use cookies and similar technologies."
+              },
+              {
+                "question": "This policy says you can ask for your data to be deleted.",
+                "rating": "correct",
+                "reason": "Apple says you can request deletion."
+              },
+              {
+                "question": "This policy says you can access or correct your data.",
+                "rating": "correct",
+                "reason": "Apple says you can know, access, and correct your data."
+              },
+              {
+                "question": "This policy says your data may be used for ads or marketing.",
+                "rating": "incorrect",
+                "reason": "Apple says it may market its products/services and run personalized Apple ads."
+              },
+              {
+                "question": "This policy says your data may be transferred to other countries.",
+                "rating": "correct",
+                "reason": "Apple allows worldwide transfers and access, including the United States."
+              },
+              {
+                "question": "How long does the company keep your personal data?",
+                "rating": "correct",
+                "reason": "The policy says Apple keeps data as long as necessary and for the shortest lawful period."
+              }
+            ],
+            "follow_up_reviews": [
+              {
+                "question": "What personal information do you collect about me?",
+                "rating": "correct",
+                "reason": "Matches account, device, contact, payment, transaction, usage, location, health, and user-provided data."
+              },
+              {
+                "question": "Why do you collect my data?",
+                "rating": "correct",
+                "reason": "Matches service delivery, transactions, communication, security/fraud, legal compliance, and consented uses."
+              },
+              {
+                "question": "Who do you share my data with?",
+                "rating": "correct",
+                "reason": "Matches affiliates, service providers, partners, developers/publishers, and directed sharing."
+              },
+              {
+                "question": "Do you sell my data or use it for advertising?",
+                "rating": "partially_correct",
+                "reason": "Right that Apple does not sell data for third-party marketing, but it misses Apple's own advertising and marketing uses."
+              },
+              {
+                "question": "How long do you keep my data?",
+                "rating": "correct",
+                "reason": "Matches necessary retention and shortest possible lawful period."
+              },
+              {
+                "question": "What happens to my data if I delete my account?",
+                "rating": "correct",
+                "reason": "Matches deletion rights plus legal, anti-fraud, and security exceptions."
+              },
+              {
+                "question": "Can I ask to see the data you have about me?",
+                "rating": "correct",
+                "reason": "Matches the access right via privacy.apple.com."
+              },
+              {
+                "question": "Can I ask you to correct wrong information about me?",
+                "rating": "correct",
+                "reason": "Matches the correction right."
+              },
+              {
+                "question": "Can I download a copy of my data?",
+                "rating": "correct",
+                "reason": "Matches the right to obtain a copy of personal data."
+              },
+              {
+                "question": "How can I opt out of tracking or marketing?",
+                "rating": "correct",
+                "reason": "Matches Personalized Ads settings and the email click-tracking note."
+              },
+              {
+                "question": "Is my data sent or stored outside my country?",
+                "rating": "correct",
+                "reason": "Matches worldwide transfer/storage, including the United States."
+              },
+              {
+                "question": "Do you collect sensitive data or data about children?",
+                "rating": "correct",
+                "reason": "Matches health/sensitive data and children's accounts/data."
+              }
+            ],
+            "summary": {
+              "correct": 16,
+              "partially_correct": 1,
+              "incorrect": 2,
+              "total": 19,
+              "accuracy_percent": 86.8
+            },
+            "notes": [
+              "Wrong: missed that Apple shares data with multiple external recipients.",
+              "Wrong: missed Apple's own advertising and marketing uses.",
+              "Partial: sell/advertising answer was too narrow because it omitted Apple ads."
+            ]
+          },
+          {
+            "policy": "galaxus",
+            "flash_reviews": [
+              {
+                "question": "This policy says your data is shared with other companies.",
+                "rating": "correct",
+                "reason": "The policy shares data within the Migros Group and with outside providers and third parties."
+              },
+              {
+                "question": "This policy says cookies or similar tracking tools are used.",
+                "rating": "incorrect",
+                "reason": "The policy explicitly references cookies, similar technologies, and a Cookie Notice."
+              },
+              {
+                "question": "This policy says you can ask for your data to be deleted.",
+                "rating": "correct",
+                "reason": "Deletion and anonymization rights are stated."
+              },
+              {
+                "question": "This policy says you can access or correct your data.",
+                "rating": "correct",
+                "reason": "Access and correction rights are stated."
+              },
+              {
+                "question": "This policy says your data may be used for ads or marketing.",
+                "rating": "correct",
+                "reason": "Marketing, profiling, personalized offers, and advertising are explicit."
+              },
+              {
+                "question": "This policy says your data may be transferred to other countries.",
+                "rating": "correct",
+                "reason": "Transfers outside Switzerland/EEA are allowed with safeguards."
+              },
+              {
+                "question": "How long does the company keep your personal data?",
+                "rating": "correct",
+                "reason": "The answer matches the policy's purpose-based retention examples."
+              }
+            ],
+            "follow_up_reviews": [
+              {
+                "question": "What personal information do you collect about me?",
+                "rating": "correct",
+                "reason": "Matches master, contract, communication, behavioral, preference, technical, and recording data."
+              },
+              {
+                "question": "Why do you collect my data?",
+                "rating": "correct",
+                "reason": "Matches communication, contracts/services, support, marketing/personalization, security, and legal compliance."
+              },
+              {
+                "question": "Who do you share my data with?",
+                "rating": "correct",
+                "reason": "Matches Migros Group sharing, processors, suppliers/marketplace sellers, credit/collection, ad partners, and authorities."
+              },
+              {
+                "question": "Do you sell my data or use it for advertising?",
+                "rating": "correct",
+                "reason": "Accurately says advertising/personalization is used and avoids claiming an explicit sale statement."
+              },
+              {
+                "question": "How long do you keep my data?",
+                "rating": "correct",
+                "reason": "Matches purpose-based retention with concrete examples."
+              },
+              {
+                "question": "What happens to my data if I delete my account?",
+                "rating": "correct",
+                "reason": "Matches deletion after review of blockers and no later than 30 days."
+              },
+              {
+                "question": "Can I ask to see the data you have about me?",
+                "rating": "correct",
+                "reason": "Matches the right to request stored data via the account or Galaxus Assistant."
+              },
+              {
+                "question": "Can I ask you to correct wrong information about me?",
+                "rating": "correct",
+                "reason": "Matches correction rights and self-service account edits."
+              },
+              {
+                "question": "Can I download a copy of my data?",
+                "rating": "correct",
+                "reason": "Matches the machine-readable copy right."
+              },
+              {
+                "question": "How can I opt out of tracking or marketing?",
+                "rating": "partially_correct",
+                "reason": "Good on marketing opt-out and personalization, but it omits cookie and tracking controls."
+              },
+              {
+                "question": "Is my data sent or stored outside my country?",
+                "rating": "correct",
+                "reason": "Matches storage mainly in Switzerland/EEA with worldwide transfers possible."
+              },
+              {
+                "question": "Do you collect sensitive data or data about children?",
+                "rating": "correct",
+                "reason": "Right on sensitive data and that the policy does not clearly describe broader child-data collection."
+              }
+            ],
+            "summary": {
+              "correct": 17,
+              "partially_correct": 1,
+              "incorrect": 1,
+              "total": 19,
+              "accuracy_percent": 92.1
+            },
+            "notes": [
+              "Wrong: flash summary missed the policy's cookie and similar technology disclosures.",
+              "Partial: opt-out answer omitted cookie and tracking controls mentioned in the policy."
+            ]
+          },
+          {
+            "policy": "migros",
+            "flash_reviews": [
+              {
+                "question": "This policy says your data is shared with other companies.",
+                "rating": "correct",
+                "reason": "The policy shares data within Migros Group, with processors, and with some third parties."
+              },
+              {
+                "question": "This policy says cookies or similar tracking tools are used.",
+                "rating": "correct",
+                "reason": "The policy uses cookies and similar technologies."
+              },
+              {
+                "question": "This policy says you can ask for your data to be deleted.",
+                "rating": "correct",
+                "reason": "Deletion and anonymization rights are stated."
+              },
+              {
+                "question": "This policy says you can access or correct your data.",
+                "rating": "correct",
+                "reason": "Access and correction rights are stated."
+              },
+              {
+                "question": "This policy says your data may be used for ads or marketing.",
+                "rating": "correct",
+                "reason": "Direct advertising, banner ads, personalized offers, and ad partners are explicit."
+              },
+              {
+                "question": "This policy says your data may be transferred to other countries.",
+                "rating": "correct",
+                "reason": "Transfers outside Switzerland/EEA are allowed with safeguards."
+              },
+              {
+                "question": "How long does the company keep your personal data?",
+                "rating": "correct",
+                "reason": "The answer matches the policy's retention examples."
+              }
+            ],
+            "follow_up_reviews": [
+              {
+                "question": "What personal information do you collect about me?",
+                "rating": "correct",
+                "reason": "Matches master, account/Cumulus, transaction/behavior, technical, and image/sound data."
+              },
+              {
+                "question": "Why do you collect my data?",
+                "rating": "correct",
+                "reason": "Matches services, contracts, communication, marketing, security, fraud prevention, and legal compliance."
+              },
+              {
+                "question": "Who do you share my data with?",
+                "rating": "correct",
+                "reason": "Matches Migros Group companies, outside processors, ad partners, credit agencies, and authorities."
+              },
+              {
+                "question": "Do you sell my data or use it for advertising?",
+                "rating": "partially_correct",
+                "reason": "Correct on advertising use, but the policy does not support the stronger claim that data is not sold \"as a rule.\""
+              },
+              {
+                "question": "How long do you keep my data?",
+                "rating": "correct",
+                "reason": "Accurate high-level retention summary."
+              },
+              {
+                "question": "What happens to my data if I delete my account?",
+                "rating": "correct",
+                "reason": "Matches 30-day deletion after delete request and up to 24 months after deactivation."
+              },
+              {
+                "question": "Can I ask to see the data you have about me?",
+                "rating": "correct",
+                "reason": "Matches the right to request stored data."
+              },
+              {
+                "question": "Can I ask you to correct wrong information about me?",
+                "rating": "correct",
+                "reason": "Matches the correction right."
+              },
+              {
+                "question": "Can I download a copy of my data?",
+                "rating": "correct",
+                "reason": "Matches the machine-readable copy right."
+              },
+              {
+                "question": "How can I opt out of tracking or marketing?",
+                "rating": "partially_correct",
+                "reason": "Correct on marketing opt-out, but it omits cookie and tracking controls."
+              },
+              {
+                "question": "Is my data sent or stored outside my country?",
+                "rating": "correct",
+                "reason": "Matches worldwide transfers with safeguards."
+              },
+              {
+                "question": "Do you collect sensitive data or data about children?",
+                "rating": "correct",
+                "reason": "Matches sensitive-data processing and limited child-data processing with extra protection."
+              }
+            ],
+            "summary": {
+              "correct": 17,
+              "partially_correct": 2,
+              "incorrect": 0,
+              "total": 19,
+              "accuracy_percent": 94.7
+            },
+            "notes": [
+              "Partial: the answer about selling data adds a claim the policy does not clearly support.",
+              "Partial: the opt-out answer omitted cookie and tracking controls."
+            ]
+          },
+          {
+            "policy": "sample",
+            "flash_reviews": [
+              {
+                "question": "This policy says your data is shared with other companies.",
+                "rating": "correct",
+                "reason": "The policy shares with hosting providers, analytics providers, authorities, and a broad externalization clause."
+              },
+              {
+                "question": "This policy says cookies or similar tracking tools are used.",
+                "rating": "correct",
+                "reason": "The policy uses essential and analytics cookies."
+              },
+              {
+                "question": "This policy says you can ask for your data to be deleted.",
+                "rating": "correct",
+                "reason": "Deletion rights are stated."
+              },
+              {
+                "question": "This policy says you can access or correct your data.",
+                "rating": "correct",
+                "reason": "Access and correction rights are stated."
+              },
+              {
+                "question": "This policy says your data may be used for ads or marketing.",
+                "rating": "incorrect",
+                "reason": "The special clause allows monetization, licensing, redistribution, and externalization beyond normal expectations."
+              },
+              {
+                "question": "This policy says your data may be transferred to other countries.",
+                "rating": "correct",
+                "reason": "Transfers outside Switzerland/EEA are covered."
+              },
+              {
+                "question": "How long does the company keep your personal data?",
+                "rating": "incorrect",
+                "reason": "The policy says retention is as long as necessary or longer if required by law; 24 months is only for inactive accounts."
+              }
+            ],
+            "follow_up_reviews": [
+              {
+                "question": "What personal information do you collect about me?",
+                "rating": "correct",
+                "reason": "Matches identification, contact, technical, usage, and communication data."
+              },
+              {
+                "question": "Why do you collect my data?",
+                "rating": "correct",
+                "reason": "Matches service provision, improvement, security/fraud, legal compliance, and communication."
+              },
+              {
+                "question": "Who do you share my data with?",
+                "rating": "partially_correct",
+                "reason": "Right on hosting, analytics, and authorities, but it misses the broad externalization/licensing clause."
+              },
+              {
+                "question": "Do you sell my data or use it for advertising?",
+                "rating": "incorrect",
+                "reason": "The special clause allows licensing, redistribution, and monetization."
+              },
+              {
+                "question": "How long do you keep my data?",
+                "rating": "partially_correct",
+                "reason": "Right on general retention and inactive accounts, but it misses the perpetual transformation clause."
+              },
+              {
+                "question": "What happens to my data if I delete my account?",
+                "rating": "incorrect",
+                "reason": "The policy does not clearly explain account-deletion consequences beyond the general deletion right."
+              },
+              {
+                "question": "Can I ask to see the data you have about me?",
+                "rating": "correct",
+                "reason": "Matches the access right via privacy@usewise.ch."
+              },
+              {
+                "question": "Can I ask you to correct wrong information about me?",
+                "rating": "correct",
+                "reason": "Matches the correction right."
+              },
+              {
+                "question": "Can I download a copy of my data?",
+                "rating": "correct",
+                "reason": "Matches the right to receive a copy."
+              },
+              {
+                "question": "How can I opt out of tracking or marketing?",
+                "rating": "correct",
+                "reason": "Matches browser cookie controls; the policy does not describe a separate marketing program."
+              },
+              {
+                "question": "Is my data sent or stored outside my country?",
+                "rating": "correct",
+                "reason": "Matches hosting in Switzerland/EU and safeguarded transfers beyond."
+              },
+              {
+                "question": "Do you collect sensitive data or data about children?",
+                "rating": "correct",
+                "reason": "The policy does not mention collecting sensitive data or children's data."
+              }
+            ],
+            "summary": {
+              "correct": 13,
+              "partially_correct": 2,
+              "incorrect": 4,
+              "total": 19,
+              "accuracy_percent": 73.7
+            },
+            "notes": [
+              "Wrong: missed the policy's monetization and externalization clause.",
+              "Wrong: treated 24 months as the general retention period.",
+              "Wrong: overstated what happens after account deletion.",
+              "Partial: some answers ignored the perpetual transformation clause."
+            ]
+          }
+        ],
+        "summary": {
+          "correct": 63,
+          "partially_correct": 6,
+          "incorrect": 7,
+          "total": 76,
+          "accuracy_percent": 86.8
+        }
+      }
+    ],
+    "overall_summary": {
+      "correct": 63,
+      "partially_correct": 6,
+      "incorrect": 7,
+      "total": 76,
+      "accuracy_percent": 86.8
+    }
+  }
+}
