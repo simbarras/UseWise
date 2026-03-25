@@ -1,0 +1,592 @@
+1. What Is this Privacy Notice about?
+
+The protection of personal data is a matter of trust, and your trust is important to us. In this Privacy Notice, we inform you how and why we collect, process, and use your personal data.
+
+In this Privacy Notice, you will learn, among other things:
+
+    what personal data we collect and process;
+    the purposes for which we use your personal data;
+    who has access to your personal data; 
+    what benefits our data processing has for you;
+    for how long we process your personal data;
+    what rights you have with respect to your personal data; and 
+    how you can contact us.
+     
+
+We have based this Privacy Notice on both the Swiss Data Protection Act and the European Union’s General Data Protection Regulation (GDPR). The GDPR has established itself globally as a standard for rigorous data protection. However, whether and to what extent the GDPR applies depends on each individual case.
+2. Who Is Responsible for Data Processing?
+
+According to data protection law, responsibility for data processing lies with the company that determines whether such processing is to take place, for what purposes it is to take place and how it is to be configured. Either Digitec Galaxus AG (Digitec Galaxus AG, Pfingstweidstrasse 60b, CH-8005 Zurich), or Galaxus Deutschland GmbH (Galaxus Deutschland GmbH, Hoheluftchaussee 18, DE-20253 Hamburg) ("we" or "us") is generally responsible for data processing under this Privacy Policy. These companies may also be mutually responsible for data processing if they are both involved in decisions concerning the configuration or purpose of such data processing.
+
+We and other companies of the Migros Group may also be jointly responsible for data processing if we are involved in decisions concerning the configuration or purpose of such data processing. Further information about the companies belonging to the Migros Group can be found in the most recent Annual Report of the Federation of Migros Cooperatives.
+3. For Whom Is This Privacy Notice Intended?
+
+This Privacy Notice applies to all persons whose data we process (hereinafter referred to as “you”), regardless of which channel you use to contact us (e.g. in an online shop, on a website, in an app, in a branch, by telephone, via a social network, at an event, etc.). It applies to the processing of personal data that has already been collected and personal data that will be collected in the future.
+
+Our data processing activities may, in particular, affect the following categories of persons if we process their personal data:
+
+    Visitors to our websites;
+    Holders of a customer account;
+    Customers in our online stores and branches;
+    Dealers who offer products and services through our online stores;
+    Other people who use our services or come into contact with offers from us;
+    Users of our online offers and apps;
+    Visitors to our premises;
+    Individuals who write to us or contact us in any other way;
+    Recipients of information and marketing communications;
+    Participants in competitions and prize draws;
+    Participants in customer and public events;
+    Participants in market research and opinion and customer surveys;
+    Contacts at our suppliers, outlets, and other business partners, as well as at organizations and authorities; and
+    Job applicants.
+
+Please also consult the contractual terms for individual services (e.g. General Terms and Conditions of Business, Terms of Use, or Conditions of Participation). Please also consult the contractual conditions for individual services (e.g. general terms and conditions, terms of use or terms of service). For information about the collection and processing of personal data when using our websites, mobile apps, and social media pages, particularly in connection with cookies and similar technologies, please also see our Cookie Notice.
+4. Which Personal Data Do We Process?
+
+“Personal data” constitute information that can be associated with a specific person. We process various categories of such personal data. The key categories are set out below for your orientation. However, we may also process other personal data in individual cases.
+
+You can find out more about the origin of this data in Section 5 and Section 6 about the purposes for which we process this data.
+4.1 Master data
+
+Master data comprises the fundamental data about you, such as your salutation, name, contact details, or date of birth. We collect master data in particular when you create a customer account with Galaxus. We also collect master data if, for example, you take part in a competition or prize draw, or register for a newsletter. We additionally collect master data about contacts and representatives of contractual partners, organizations, and authorities.
+
+Examples of master data include:
+
+    salutation, first name, last name, gender, date of birth;
+    address, e-mail address, telephone number, and other contact details;
+    customer numbers (e.g. for participants in a loyalty program);
+    payment information (e.g. stored payment forms, bank details, invoice address);
+    username and profile picture;
+    information on the use of our online platforms (e.g. whether you are registered with Galaxus);
+    details of associated websites, social media profiles, etc.;
+    details of interests and preferences, language preferences, etc.;
+    details about your relationship with us (customer, visitor, supplier, etc.);
+    details about related third parties (e.g. contacts, recipients of services, or representatives);
+    settings concerning the receipt of advertising, subscribed newsletters, etc.;
+    details concerning your status with us (inactive or blocked user account, bans from entering premises, etc.);
+    details about participation in competitions and prize draws;
+    details of participation in events (e.g. e-sport events);
+    official documents in which you appear (e.g. ID documents, commercial register extracts, permits, etc.);
+    details of titles and corporate functions for contacts and representatives of our business partners;
+    date and time of registrations.
+
+Under certain circumstances, you can also register for individual online offers via the login of a third-party provider (e.g. Apple, Google, or Facebook). In this case, we receive access to certain data saved with the provider in question, for example your username and e-mail address, the scope of which you can normally determine. Information in this regard can be found in the Privacy Notice of the provider concerned.
+
+Disclosing your identity in your public profile on our platforms is voluntary. The username that is displayed publicly is the one you have chosen, which does not have to be your real name. You can additionally select the "Anonymize username" function in your customer account. This makes it invisible to other users.
+4.2 Contract data
+
+Contract data is personal data that arises in connection with the conclusion or execution of the contract, e.g. information on the conclusion of the contract, claims and receivables acquired or information on customer satisfaction. We conclude contracts primarily with customers, business partners and job applicants. If you accept offers from us based on a contract, e.g. if you purchase products or make use of services, we will often also gather behavioral and transactional data (see also Section 4.4).
+
+Contract data includes details:
+
+    about the initiation and conclusion of contracts, e.g. date of contract conclusion, details from the application process, and details of the contract in question (e.g. type and duration or, if necessary, proof of identity such as copies of official IDs);
+    about the processing and administration of contracts (e.g. contact details, delivery addresses, successful or unsuccessful deliveries, and information about payment methods);
+    in connection with our customer service and support with technical issues;
+    about our interactions with you (where applicable, a history with corresponding entries);
+    on receivables and acquired rights and benefits (e.g. vouchers);
+    about defects and complaints as well as contract amendments;
+    about customer satisfaction that we may collect via surveys;
+    about financial matters such as to establish creditworthiness (i.e. information that allows conclusions to be drawn about the likelihood that receivables will be settled), about reminders, about collection proceedings, and about the enforcement of claims;
+    in connection with a job application, such as curriculum vitae, references, qualifications, certificates, meeting notes, etc. (that may also contain personal data of third parties);
+    about interactions with you as the point of contact or representative of a business partner;
+    in connection with security checks (e.g. checking for fraudulent actions on orders) and other checks with regard to the establishment or continuation of a business relationship.
+
+4.3 Communication data
+
+If you contact us or we contact you, for example when you contact a customer service, or when you write to us, or call us, we process the exchanged communication contents and information about the type, time, and place of communication. In certain situations, we may also ask you to provide proof of identity.
+
+Examples of communication data are:
+
+    name and contact details such as postal address, e-mail address, and telephone number;
+    content of e-mails, written correspondence, chat messages, social media posts, comments on a website, telephone conversations, video conferences, etc.;
+    responses to customer and satisfaction surveys;
+    details of the type, time, and in certain circumstances place of communication;
+    proof of identity such as copies of official IDs;
+    marginal communication data.
+
+Telephone conversations and video conferences with us may be recorded; we will inform you of this at the start of each conversation. If you do not want us to record such conversations, you may terminate the conversation at any time and contact us in another manner (e.g. by e-mail).
+4.4 Transactional and Behavioral Data
+
+When you shop with us, make use of our offers and infrastructure, or procure our services, we frequently collect data about this usage. This occurs, for example, if you purchase something from us in an online store, or if you use our websites and apps. If you are acting on behalf of a third party, this personal data may also pertain to that third party (e.g., your family members if you make purchases on their behalf).
+
+Examples of transactional and behavioral data include the following information if available to us as personal data:
+
+    details about your behavior in online shops (ordered and canceled shopping baskets, wish lists, viewed articles, search items and results, payment method, delivery option selected, etc.);
+    your behavior in the Galaxus communities (information in your profile, e.g. a voluntary public profile description; points and awards earned through the "DG Play” gamification, interaction with other members and content, e.g. by means of "follows" or "likes"; ratings, questions and answers about products and other content, discussion posts, etc.);
+    details about your shopping behavior (e.g. where, how often, what, and at what prices you shop, as well as the method of payment and delivery option selected);
+    attendance of our events (e.g. date, place and type of event);
+    details about participation in competitions, prize draws, and similar events;
+    details about your behavior on websites;
+    details about the installation and use of mobile apps;
+    details about your use of electronic messages from us (e.g. whether and when you opened an e-mail or clicked on a link);
+    Details about your use of our Wi-Fi networks (e.g. date, time, and duration of connection, location of the Wi-Fi network, and data volume).
+
+You can also use some of our offers anonymously. For example, in countries where we operate a store network, you can shop at our stores without registering. However, on our websites and apps, transactional and behavioral data may also be assigned to your profile even if you are not logged in at the time you visit the website or make use of the app.
+4.5 Preference Data
+
+We wish to tailor our offers and services to our customers as effectively as possible. We therefore also process data about your interests and preferences. To do so, we may combine transactional and behavioral data with other data and analyze such data on a personal and non-personal basis. This enables us to draw conclusions about characteristics, preferences, and likely behavior, such as your affinity for specific products and services.
+
+In particular, we may create segments (permanently or case-related), that is, groups of persons displaying similarities with regard to specific characteristics. Preference data may be used either personally (e.g. in order to show you advertising that is relevant to you) or on a non-personal basis (e.g. for market research or product development purposes).
+
+The processing described can also be called "profiling" in technical language. You can find further information about profiling in Section 12.
+4.6 Technical Data
+
+When you make use of our websites, apps, Wi-Fi networks, or other electronic services, we collect certain technical data such as your IP address or device ID. Technical data also include the protocols in which we record the use of our systems (log files). In some cases, we may also assign a unique code number (an ID) to your end device (tablet, PC, smartphone, etc.), for example by using cookies or similar technologies, in order to be able to recognize it. Further details concerning this can be found in our Cookie Notice.
+
+When using our subscription services (Mobile or Internet) , we collect certain technical data such as metadata from telecommunications traffic, including phone numbers, premium service numbers, date, time and duration of the connection; connection type; IP address; device identification numbers such as IMEI, IMSI, and MAC address.
+
+Technical data can in particular also be used to collect behavior data, that is, details about your use of websites and mobile apps (see Section 4.4). However, we are usually unable to derive who you are from technical data unless you create a customer account or register for other offers, for example. In this case, we can link technical data with master data, and thus with your person.
+
+Technical data include:
+
+    the IP address of your device and further device IDs (e.g. MAC address);
+    code numbers assigned to your device by cookies and similar technologies (e.g. pixel tags);
+    details of your device and its configuration, such as operating system and language settings;
+    details about the browser with which you access the offer, and its configuration;
+    information about your movements and actions on our websites and in our apps;
+    details about your Internet provider;
+    your approximate location and the time of use;
+    system recordings of accesses and other events (log files).
+    metadata from telecommunications traffic
+
+For more information on the processing of technical data, please also see our Cookie Notice.
+4.7 Image and Sound Recordings
+
+We regularly produce photos, videos, and sound recordings in which you might be featured, for example if you attend an event, contact our customer service, or receive advice by video conference. For security and evidentiary purposes, we also make video recordings in our branches and other premises. In doing so, we may obtain information on your behavior in the relevant areas. The use of video surveillance systems is localized and clearly indicated.
+
+Examples of image and sound recordings include:
+
+    Recordings from video surveillance systems;
+    photos, videos, and sound recordings of customer and public events (e.g. advertising, sponsorship, cultural events, and sports events);
+    photos, videos, and sound recordings of courses, presentations, training courses, etc.;
+    recordings of telephone conversations and video conferences (e.g. in customer service or advice to customers).
+
+5. Where Does the Personal Data Come From?
+5.1 Data Provided
+
+You often disclose personal data to us yourself, for instance when sending us data or communicating with us. Master, contract, and communication data in particular are generally something you disclose to us yourself. You are in many cases also responsible for disclosing preference data to us.
+
+For example, you provide us with personal data yourself in the following cases:
+
+    You create a customer account;
+    You take part in a prize draw or competition;
+    You contact our customer service;
+    You register for other offers, such as our newsletter.
+
+The provision of personal data is largely voluntary, which means that you are not generally obliged to disclose your personal data to us. However, we do have to collect and process the personal data that are required for processing contractual relationships and fulfilling associated obligations or that are prescribed by law, such as mandatory master and contract data, as we would otherwise be unable to conclude or continue the contract in question.
+
+If you send us data about other persons (e.g. family members), we assume that you are authorized to do so and that this data is correct. Please also make sure that these other persons have been informed about this Privacy Policy.
+5.2 Data Gathered
+
+We may also collect personal data about you ourselves or automatically, such as when you shop with us, make use of our offers, or procure our services. This is often behavioral and transactional data, as well as technical data (e.g., the time at which you visit our website).
+
+For example, we independently collect personal data about you in the following cases:
+
+    You order a product in one of our online shops;
+    You visit one of our websites or use one of our apps;
+    You make a purchase in one of our branches, disclosing your customer account;
+    You click on a link in one of our newsletters or interact with one of our electronic promotional materials in another way.
+
+We may also derive personal data from personal data already available to us, for example by analyzing transactional and behavioral data. Such derived personal data frequently comprise preference data.
+
+For example, we can analyze the transaction and behavior data collected during purchases in our online shops and, on this basis, make assumptions about your personal interests, preferences, affinities, and habits. This enables us, for instance, to tailor our offers and information to your individual needs and interests. For example, this enables us to send you an individual selection of offers relevant for you. You can find further information about transactional and behavioral data in Section 4.4, and about profiling in this context in Section 12.
+5.3 Data Received
+
+We may also receive personal data from other companies of the Migros Group. Further information about this can be found in Section 8. Moreover, we may also receive information about you from other third parties, such as from companies with which we cooperate, persons who communicate with us, or public sources.
+
+For example, we may receive information about you from the following third parties:
+
+    cooperation partners, e.g. point collection or redemption partners;
+    your employer and work colleagues in connection with a job application and your professional responsibilities;
+    third parties if correspondence and discussions concern you;
+    persons close to you (family members, legal representatives, etc.), e.g. your address for deliveries, references, or powers of attorney;
+    Credit reference agencies, for example if we wish to obtain information about creditworthiness;
+    Swiss Post and address brokers, e.g. for address updates;
+    banks, insurance companies, distribution partners, and other contractual partners for purchases and payments;
+    providers of online services, e.g. providers of Internet analysis services;
+    providers of cybersecurity services and
+    information services for compliance with statutory requirements such as anti-money laundering and export restrictions;
+    Authorities, parties, and other third parties in connection with official and judicial proceedings;
+    Media monitoring agencies in connection with articles and reports in which you feature;
+    Public registers such as the debt collection or commercial register, from public offices such as the Swiss Federal Statistical Office, from the media, or from the Internet.
+
+6. For what Purposes Do We Process Personal Data?
+6.1 Communication
+
+We wish to remain in contact with you and address your individual requirements. We therefore process personal data for the communication with you, in order to answer inquiries and for customer care, for instance. In particular, we make use of communication and master data for this, as well as contract data if the communication concerns a contract. We may also personalize the content and time of dispatch of messages on the basis of behavior, transaction, preference, and other data.
+
+The purpose of communication particularly comprises:
+
+    responding to inquiries;
+    contacting you in the event of questions;
+    customer service and customer care;
+    communication in connection with product recalls (for example, we can contact you directly if we know that you have purchased a product affected by a recall);
+    the delivery of other notifications (e.g. order status information);
+    authentication, for example for the use of our online offers;
+    quality assurance and training;
+    all other processing purposes for which we communicate with you (e.g. contract processing, information, and direct advertising).
+
+6.2 Contract Execution
+
+We wish to offer you the best possible service. We therefore process personal data in connection with the initiation, administration, and processing of contractual relationships, for instance to dispatch an order, provide a service, deliver goods or services, build up our communities, run a loyalty or bonus program, or host a prize draw. Contract processing also includes any agreed personalization of services. For this purpose, we make use of master data, contract data, communication data, transactional and behavioral data, and preference data in particular.
+
+The purpose of contract processing generally comprises everything that is necessary or appropriate for concluding, executing, and, where applicable, enforcing a contract. 
+
+For example, this includes processing in order to:
+
+    decide whether and how (e.g. with which payment options) we enter into a contract with you (including credit assessment);
+    provide contractually agreed services, such as deliver products, provide services, and provide functions (including personalized service components);
+    provide customer service and enhance customer satisfaction;
+    to build up the Galaxus communities and the "DG Play” gamification;
+    to run and manage loyalty programs, e.g., to redeem claims and benefits earned (e.g. promotional vouchers and codes) and to credit them to customer accounts;
+    establish, notify, and, if applicable, publish winners of competitions and prize draws;
+    invoice our services and generally for accounting;
+    plan and prepare the provision of our services, for example scheduling of our employees;
+    review the suitability of job applicants and, if applicable, prepare and conclude employment contracts;
+    review whether we are willing and able to cooperate with a company and to monitor and assess its services;
+    prepare and conclude corporate transactions such as corporate acquisitions, sales, and mergers;
+    assert legal claims from contracts (collection proceedings, legal proceedings, etc.);
+    administer and manage our IT and other resources;
+    store data in compliance with obligations to preserve records;
+    terminate and end contracts.
+
+If you do not want points and awards earned through the gamification "DG Play" to be displayed in your public profile and you do not want to be part of the ranking system be displayed in your public profile and you do not want to be part of the ranking system, you can deactivate the gamification "DG Play" in your customer account.
+6.3 Information and Marketing
+
+We wish to present you with attractive offers. We therefore process personal data for relationship management and marketing purposes, for example in order to send you written and electronic messages and offers and carry out marketing campaigns. These may comprise our own offers, those of other companies of the Migros Group, or those of advertising partners. We can also work for other companies, taking on the role of an agency, for example, to carry out promotions for their products.
+Messages and offers may also be personalized in order to – as far as possible – only send you information that is likely to be of interest to you. For this purpose, we in particular make use of master data, contract data, communication data, transaction data, behavior data, and preference data, but also image and sound recordings.
+Examples include the following messages and offers:
+
+    Newsletters, advertising e-mails, in-app messaging, and other electronic messages;
+    Advertising brochures, magazines, and other printed matter;
+    Advertising messages and spots on screens and other advertising spaces;
+    Delivery of promotional coupons and promotional codes;
+    Invitations to events, prize draws, and competitions.
+
+You can refuse contacts for marketing purposes at any time (see Section 17). For newsletters and other electronic messages, you can generally opt out of the corresponding service from your customer account or via an unsubscribe link included in the message.
+The personalization of our messages enables us to tailor information to your individual needs and interests, and to only present you with offers that are likely to be relevant for you (see also Section 6.4). For example, we may send you an individual selection of products that are relevant for you. For more information on Profiling in this context, see Section 12.
+6.4 Personalization
+
+In our online shop, we offer several million different products. To help you navigate more easily, various tools such as product filters or wish lists are available. Another important measure to enhance your user experience is the personalization of content, which we perform in the background. This personalization is based, among other things, on data such as the products you have purchased or viewed in the shop, as well as the articles you have read in our magazine (see also sections 4.4 and 4.5). Using this data, we can provide you with functionalities such as displaying the last viewed products or articles, and we can also perform more advanced calculations. These calculations are intended to display content or products that might be of interest to you or that may match products you have already purchased or noted. Furthermore, we use this data to create interest categories that we assign to you. You can deactivate personalization at any time and influence the calculated interest categories by accessing the corresponding settings in your customer account under Personalization and by considering your cookie settings. If you turn off personalization, we will delete the calculated personalisation data after a waiting period of 7 days. During this period, you can re-enable personalization at any time without losing any data. For more information on Profiling in this context, see Section 12.
+6.5 Market Research and Product Development
+
+We aim to improve our offers continuously and make them more attractive for you. We therefore process personal data for market research and product development purposes. To do so, we particularly process master, behavior, transaction, and preference data, as well as communication data and information from customer surveys, other surveys and studies, and further information, for example from the media, the Internet, and other public sources. As far as possible, we make use of pseudonymized or anonymized information for these purposes.
+
+Market research and product development in particular include:
+
+    the conducting of customer surveys, other surveys, and studies;
+    the further development of our offers (e.g. structuring of product range, location selection, pricing, and campaign planning, etc.);
+    the assessment and improvement of the acceptance of our offers and our communication in connection with offers;
+    the optimization and improvement of user-friendliness of websites and apps;
+    the development and testing of new offers;
+    the review and improvement of our internal processes;
+    statistical evaluations, for example to evaluate information about our customers’ interactions with us on an anonymous basis;
+    assessment of the supply situation on a given market and the behavior of our competitors;
+    market monitoring, for example to understand current developments and trends and respond to them.
+
+6.6 Security and Prevention
+
+We wish to guarantee your and our security and prevent misuse. We therefore also process personal data for security purposes, to guarantee IT security, to prevent theft, fraud, and misuse, and for evidentiary purposes. This can concern all the personal data categories listed in Section 4, in particular transactional and behavioral data and image and sound recordings. We can acquire, analyze, and store this data for the purposes mentioned.
+
+Examples of the purpose of security and prevention include:
+
+    the creation and evaluation (manually and automatically) of video recordings for the detection and prosecution of criminal acts;
+    the conducting of random checks to ensure the correct entry and payment of goods in our branches;
+    the imposition of bans from entering our premises and the administration of lists of persons banned from entering our premises;
+    the analysis of transactional and behavioral data in order to detect suspicious behavior patterns and fraudulent activities;
+    the evaluation of system recordings of the use of our systems (log files);
+    the prevention, mitigation, and detection of cyber and malware attacks;
+    analyses and tests of our networks and IT infrastructures, and system and error checks;
+    control of access to electronic systems (e.g. logins for user accounts);
+    physical access controls (e.g. access to office premises);
+    documentation purposes and creation of backups.
+
+For the purpose of security and prevention, we can also evaluate video recordings in an automated manner. In a specific case of suspicion, for example, we can define a combination of characteristics (such as clothing or body size) and automatically search for this combination of characteristics in existing video recordings from a specific period. This enables us to evaluate video recordings more efficiently and thus supports us in the investigation of criminal acts. However, we do not perform an analysis of biometric data (e.g. facial recognition) or an automated evaluation of behavior patterns or similar analyses in this context.
+6.7 Compliance With Statutory Requirements
+
+We wish to lay the foundations for compliance with statutory requirements. We therefore also process personal data in order to comply with legal obligations and to prevent and detect infringements. Examples of this include receiving and processing complaints and other messages, complying with court and administrative orders, measures for detecting and investigating misuse as well as the legally required retention of metadata from telecommunications traffic (mobile and internet subscriptions). This can apply to all the personal data categories listed in Section 4.
+
+Compliance with statutory requirements particularly includes
+
+    youth protection and the protection of minors, e.g. enforcement of age limits for the purchase of alcohol;
+    implementation of health and safety concepts;
+    Clarifications concerning business partners;
+    the receipt and processing of complaints and other messages;
+    the legally required retention of metadata from telecommunications traffic (mobile and internet subscriptions);
+    the conducting of internal investigations;
+    ensuring compliance and risk management;
+    the disclosure of information and documents to authorities if we have an objective reason (e.g. because we ourselves are the injured party) or are legally obliged to do so;
+    assistance with external investigations, for instance by criminal prosecution or supervisory authorities;
+    guaranteeing the legally required standard of data security;
+    fulfillment of duties of disclosure, duties to provide information, or reporting obligations, for instance in connection with obligations under supervisory and tax law, such as in the case of archiving obligations and for the prevention, detection, and investigation of criminal and other offenses;
+    the statutory combating of money laundering and of the financing of terrorism.  
+
+All such cases may concern Swiss law or foreign regulations to which we are subject, as well as self-regulations, industry and other standards, our own corporate governance, or official directives.
+6.8 Preservation of Rights
+
+We wish to be able to enforce our claims and to defend ourselves against the claims of others. We therefore also process personal data for the protection of rights, for instance in order to enforce claims judicially, before or out of court, and before authorities in Switzerland and abroad, or to defend ourselves against claims. Depending on the situation, we process different categories of personal data, such as contact data and details of events that have led to or could lead to a dispute.
+
+The purpose of the protection of rights in particular includes:
+
+    establishment and enforcement of our claims, which may also include claims of companies affiliated with us and of our contractual and business partners;
+    defense against claims made against us, our employees, affiliated companies, and our contractual and business partners;
+    clarification of case prospects and other issues of a legal, economic, or other nature;
+    participation in proceedings before courts and authorities in Switzerland and abroad. For example, we may secure evidence, have case prospects investigated, or submit documents to authorities. Authorities may also request us to disclose documents and data carriers containing personal data.
+
+6.9 Administration and Support Within the Group
+
+We wish to shape our internal processes efficiently. We therefore also process personal data for the internal administration of the Migros Group (see Section 2 on the Migros Group). We particularly process master data, contract data, and technical data, as well as transaction data, behavior data, and communication data.
+
+Administration within the Group includes the following in particular:
+
+    administration of IT and real estate;
+    accounting;
+    archiving of data and management of our archives;
+    training and education, for instance when we analyze recordings of telephone, video, or other forms of communication;
+    central storage and management of data used by multiple companies of the Migros Group;
+    the review or execution of corporate transactions such as corporate acquisitions, sales, and mergers.
+    forwarding of inquiries to the offices responsible, for instance when you submit an inquiry to a Migros company that concerns another company;
+    the sale of receivables for which we send the purchaser information, for instance about the reason for and amount of the receivable and, if applicable, the creditworthiness and behavior of the borrower;
+    generally the review and improvement of our internal processes.
+
+Like every group of companies, the Migros Group has an overall interest in the successful business activities of its Group companies, and our Group companies themselves have an interest in their own activities and processing purposes. We may therefore also disclose personal data to other companies of the Migros Group in order to support their own processing purposes under the Migros Group Privacy Notice in the overall interests of the Migros Group. Further information about this can be found in Section 8.
+7. What Is the Legal Basis for Processing Personal Data?
+
+Depending on the purpose of the data processing, our processing of personal data is based on different legal grounds. In particular, we may process personal data if
+
+    doing so is necessary to fulfill an agreement with the person concerned or for pre-contractual measures (e.g. to review a request for an agreement);
+    it is necessary for the exercise of legitimate interests, for example when data processing is a central component of our business activities;
+    doing so is based on consent;
+    doing so is required for compliance with Swiss and foreign legal obligations.
+
+ 
+
+In particular, we have a legitimate interest in processing for the purposes set out in Section 6 above and the disclosure of data in accordance with Section 8 and the associated objectives. The legitimate interests in each case include our own interests and the interests of third parties.
+
+Examples of these legitimate interests include interests in connection with:
+
+    the supply of products and services to third parties (e.g. Gift recipients);
+    good customer support, maintaining contact and other communications with customers, including outside the framework of a contract;
+    advertising and marketing activities;
+    getting to know our customers and other individuals better;
+    improving existing products and services and developing new ones;
+    facilitating management and communication within the Group, which is necessary with a group that requires cooperation between parties;
+    mutually supporting the Group companies in their activities and objectives;
+    combating fraud, for example in online shops, and preventing and investigating offenses;
+    protecting customers and other individuals, as well as data, secrets, and assets of the Migros Group;
+    ensuring IT security, especially in connection with the use of websites, apps, and other IT infrastructure;
+    safeguarding and organizing business operations, including the running and further development of websites and other systems;
+    ensuring corporate management and development;
+    selling or purchasing companies, parts of companies, or other assets;
+    the enforcement or defense of legal rights and claims;
+    complying with Swiss and foreign law, as well as internal rules and regulations.
+
+8. To Whom Do We Disclose Personal Data?
+8.1 Within the Migros Group
+
+We may disclose personal data that we receive from you or third-party sources to other Migros Group companies. Disclosure may serve to facilitate intra-Group administration or support of the group companies concerned and their own processing purposes (Section 6), such as when we support the personalization of marketing activities, the development and improvement of products and services, the conducting of credit assessments, or endeavors to prevent theft, fraud, and misuse. The personal data received may also be matched and linked to existing personal data by the relevant group companies. 
+
+For example, this may include the following disclosures of data:
+
+    All personal data categories listed in Section 4 for the administration and processing of contractual relationships, especially in connection with products and services involving multiple Group companies;
+    Master data, contract data, communication data, transactional and behavioral data, and preference data, as well as findings from customer and other surveys, studies, and image and sound recordings for market research and product development purposes, if the personalization of that data is necessary;
+    Master data, contract data, communication data, transaction data, behavior data, preference data, and image and sound recordings for the delivery and personalization of offers, communication, and marketing activities;
+    Master data, contract data, communication data, transaction data, behavior data, and preference data for the prevention of fraud and misuse and for credit assessments (e.g. in connection with a purchase on account);
+    Master data, transaction data, behavior data, and image and sound recordings for purposes relating to theft protection and the provision of evidence;
+    Security-relevant information for security purposes and compliance with statutory requirements;
+    Information to support the safeguarding of rights.
+
+If, for example, you contact us with an inquiry about a product, we may forward this information to the individual Migros company responsible for manufacturing the product, for product and quality improvement purposes.
+
+Section 2 contains more information on the companies belonging to the Migros Group.
+8.2 Outside the Migros Group
+
+We may disclose your personal data to companies outside the Migros Group if we make use of their services. These service providers generally process personal data on our behalf as so-called “contract processors”. Our contract processors are obliged to only process personal data in accordance with our instructions and to take suitable measures to ensure data security. Certain service providers are also responsible jointly with us or independently (e.g. collection agencies, credit rating agencies, consulting firms). We ensure through the selection of service providers and suitable contractual agreements that data protection is upheld during the entire processing of your personal data.
+Examples include services in the following areas:
+
+    Shipping and logistics, for example for the delivery of ordered goods;
+    IT services, for example in the areas of data storage (hosting), cloud services, the delivery of e-mail newsletters, IT security, fraud prevention, data analysis and refinement;
+    Advertising and marketing services, for example for the delivery of messages and information;
+    Warranty and return, e.g. for repair in case of defects;
+    Corporate management services, for example accounting or asset management;
+    Payment services;
+    Credit information services, for example to decide whether we want to offer a purchase on account;
+    Collection services, e.g. reminder of outstanding receivables and their enforcement;
+    Insurance service providers, e.g. to offer insurances as additional services;
+    Advisory services, for example the services of tax advisers, lawyers, management consultants, or advisers in the field of personnel recruitment and placement.
+    Services from mobile phone, internet or TV providers (e.g. as part of Galaxus plans)
+
+It is also possible that we may disclose personal data to other third parties for their own purposes, for example if you have granted your consent, we are legally obliged or authorized to share such information, or we have an overriding interest in sharing. In such cases, the data recipient is legally responsible as the controller of the data.
+Examples of such cases include the following:
+
+    Direct suppliers and marketplace sellers for the processing of orders and the delivery of products to customers.
+    Information about product recalls by manufacturers, if you have purchased a product of the manufacturer from us.
+    The transfer of claims to other companies, such as collection agencies;
+    The sharing of payment behavior information with credit rating agencies that conduct credit checks or provide credit information for us and other clients;
+    The sharing of personal data with advertising networks and other advertising partners to display personalized advertising, analyze the reach of marketing campaigns, or improve the effectiveness of advertising measures;
+    Fraud prevention services that payment service providers perform under their own responsibility, such as PayPal Fraud Protection. Such procedures are applied only if you are already a customer of the respective payment service provider. Detailed information can then be found in the privacy policy of the respective service provider;
+    The use of personal data for the further development of products and the training of models and algorithms by technology providers whose IT solutions we use;
+    The disclosure of personal data for scientific research, study purposes, and within hackathons and similar idea development events;
+    The review or execution of corporate transactions such as corporate acquisitions, sales, and mergers;
+    The disclosure of personal data to courts and authorities within Switzerland and abroad, such as criminal prosecution authorities in case of suspected criminal activities;
+    The processing of personal data in order to comply with a court or administrative order, to enforce or defend legal rights or claims, or if we consider such processing to be necessary on any other legal grounds. We may also disclose your personal data to other parties involved in any proceedings.
+
+We may also share statistical evaluations with third parties. These are non-personally identifiable informations that do not allow conclusions to be drawn about a specific person. For example, based on transaction data, we can evaluate which customer segments are particularly popular with a certain product and make this evaluation available to the supplier of the product in question.
+
+Please also note our Cookie information on independent data collection by third-party providers whose tools we use or have integrated on our websites and apps.
+
+Unless a special professional secret (e.g. banking, pharmacist, or doctor confidentiality) is applicable in an individual case, we are not subject to any professional duty of confidentiality. Please inform us in individual cases if you believe that specific personal data is subject to a duty of confidentiality so that we can review your concerns.
+9. How Do We Disclose Personal Data Abroad?
+
+We process and store personal data mostly in Switzerland and the European Economic Area (EEA). In certain cases, however, we may also disclose personal data to service providers and other recipients (see Section 8) who are located outside this area or who process personal data outside this area (in principle in any country in the world). The countries in question may not have laws that protect your personal data to the same extent as in Switzerland or the EEA. If we transfer your personal data to such a country, we will ensure the protection of your personal data in an appropriate manner.
+
+One means of ensuring adequate data protection is, for example, to conclude data transfer agreements with the recipients of your personal data in third countries that ensure the required level of data protection. This includes agreements that have been approved, issued, or recognized by the European Commission and the Swiss Federal Data Protection and Information Commissioner, known as standard contractual clauses. An example of the data transfer agreements generally used by us can be found here. Please note that such contractual arrangements can partially compensate for weaker or missing statutory protection but cannot rule out all risks completely (e.g. government access abroad). Data may also be transferred to countries without adequate protection in exceptional cases, for example if consent is granted, in connection with legal proceedings abroad, or if transfer is necessary for the processing of an agreement.
+10. How Do We Process Sensitive Personal Data?
+
+Certain types of personal data are considered under data protection law to be sensitive, such as details about health and biometric features. Depending on the circumstances, the categories of personal data listed in Section 4 may also comprise such sensitive personal data. However, we generally only process sensitive personal data if this is necessary for the provision of a service, if you have voluntarily disclosed this data to us, or have consented to such processing. We may also process sensitive personal data if this is necessary for the protection of rights or compliance with Swiss or foreign legal provisions, if the data concerned have clearly been publicly disclosed by the person in question, or if the applicable law otherwise permits its processing.
+
+For example, we may process sensitive personal data in the following cases:
+
+    You want to order an alcoholic beverage from an online store and add an ID document to your customer account for digital age verification;
+    You apply for a vacancy and provide details about your state of health, about a union affiliation, or about criminal records and criminal law measures.
+
+11. How Do We Use Camera Systems and Sensor Technologies
+
+We regularly use camera systems as well as image and audio sensors in designated areas of our stores and other premises, and we process the recordings made, particularly image and video recordings (section 4.7). Their use is primarily intended for security and prevention, such as securing retail products and protecting our customers, compliance with legal requirements, and safeguarding rights. Generally, we do not know who the recorded individuals are. However, if it is necessary for the purpose in question, we may establish a personal reference, for example, if we want to identify a person who has committed a criminal act on our premises, such as theft or property damage. We can also automatically analyze recordings and link or compare them with other data, such as data from cash registers. The manner of using camera systems and sensor technologies, the technologies used, and the purposes pursued vary depending on the format and branch. We can, for example, use camera systems and sensor technologies in the following ways:
+
+    to detect violations of house rules and criminal acts (such as theft, property damage, or bodily harm), to identify offenders, and for evidentiary purposes and to enforce bans, and in most cases, we examine recordings manually, but in some situations, they can also be analyzed automatically and in real-time, and linked or compared with other data;
+    to automatically search for a defined combination of characteristics (such as clothing or body size) in existing video recordings of a specific period and thus be able to evaluate recordings in a targeted manner in a case of specific suspicion, increasing the likelihood of clarifying criminal acts;
+
+12. How Do We Conduct Profiling?
+
+“Profiling” refers to a procedure during which personal data is processed on an automated basis in order to analyze personal aspects or make predictions, e.g. the analysis of personal interests, preferences, affinities, and habits or the prediction of likely behavior. Profiling can be used in particular to derive preference data (further details about this can be found in Section 4.5).
+
+Profiling is a common procedure, e.g. it occurs in the context of the automated processing
+
+    of master, contract, transactional and behavioral data for purchases in our stores and online shops;
+    of transactional and behavioral data, as well as technical data, in connection with our websites and apps;
+    of information in connection with the attendance of events or the participation in competitions, prize draws, and similar events;
+    of communication data, such as your response to advertising and other messages;
+    of other transactional and behavioral data.
+
+ 
+
+Profiling helps us to
+
+    improve our offers on a continuous basis and tailor them to individual needs;
+    present our contents and offers to you in accordance with your needs;
+    to the extent possible only show you advertisements and offers that are likely to be relevant for you;
+    support you better with our customer service;
+    decide on the basis of a credit assessment which payment options are available.
+
+We conduct profiling in connection with our online shops, for example, by analyzing your shopping behavior and assigning specific interests to you based on it. These interests may be created permanently or on a case-related basis and may relate, for example, to a reason for purchasing. For example, this profiling allows us to send you relevant product suggestions in the form of a newsletter.
+
+Profiling also takes place in connection with your customer account, for instance when we analyze your usage and shopping behavior in our online shops and on our websites and apps in order to offer you an individual user experience and send you offers tailored to your interests.
+
+In order to improve the quality of our analyses and predictions, we may also combine personal data that originates from different sources as the basis of our profiling, for example data that has been collected via our various departments or that we have received from other Migros Group companies. Self-learning algorithms (specific routines in computer programs) can also be used.
+
+In certain cases, you also have the right to object to profiling, as described in Section 17.
+13. Do We Use Automated Individual Decision-Making?
+
+“Automated individual decision-making” refers to any decision that is made on a fully automated basis, meaning with no relevant human influences, and has legal consequences for the person concerned or that significantly affects him or her in some other way. We generally do not do this but will inform you separately, should we opt to utilize automated individual decision-making in individual cases. You will then have the option of having the decision reviewed by a human being if you do not agree with it.
+14. How Do We Use Artificial Intelligence?
+
+New technologies, such as artificial intelligence and machine learning, have great potential, but also present challenges. We ensure that we always use these new technologies in line with our values and carefully weigh the opportunities and risks on a case-by-case basis. We take responsibility for the content generated or decisions made for us by artificial intelligence, and in the case of decisions with significant implications for the affected person, we ensure that it can be reviewed by a human (see section 13). If any artificial intelligence we use interacts directly with you, we will let you know. We may use artificial intelligence, for example, to improve our products and services, to make our internal processes more efficient, to increase security and prevent misuse or for any of the other purposes set out in section 6. Artificial intelligence applications can process personal data, but this is not always the case. Possible areas of application for artificial intelligence include:
+
+    the creation of information about our products and services and making it more accessible, such as automated summaries of product reviews;
+    personalization of the shopping experience, such as product recommendations tailored to individual needs and interests;
+    creation of versatile images (stock images), product texts, and similar non-personal content;
+    the needs-based handling of customer queries and the automated evaluation of customer feedback;
+    generally improving the experience for customers when they use our offers and services, e.g., by providing specific advice and relevant information for the target audience;
+    processing related to the use of video cameras and sensor technologies, such as automated analysis and evaluation of the recordings made (see section 11);
+    support with the creation of program code.
+
+15. How Do We Protect Personal Data?
+
+We take appropriate technical and organizational security measures in order to safeguard your personal data, protect you against unauthorized or unlawful processing activities, and to address the risk of loss, unintentional changes, inadvertent disclosure, or unauthorized access. However, like all companies, we cannot completely rule out data security infringements; certain residual risks are unavoidable.
+
+Security risks of a technical nature include the encryption and pseudonymization of data, record keeping, access restrictions, and the storage of data backups. Security measures of an organizational nature include instructions issued to our employees, training programs, and audits. We also require our contract processors to take appropriate technical and organizational security measures.
+16. For How Long Do We Process Personal Data?
+
+We process and store your personal data
+
+    for as long as it is required for the purpose of processing and compatible purposes, in the case of contracts normally for at least the duration of the contractual relationship;
+    for as long as we have a legitimate interest in storing it. This may be the case, in particular, if we need personal data to enforce or defend claims, for archiving purposes, and to ensure IT security;
+    for as long as it is subject to a statutory retention requirement. For example, a ten-year retention period applies to certain data. Shorter retention periods apply for other data, for example for recordings from video surveillance or for recordings of certain online processes (log data).
+
+In certain cases, we will also ask for your consent if we want to store your personal data for longer periods (e.g. for job applications that we wish to keep on file). At the end of the periods specified, we will erase or anonymize your personal data.
+
+For example, we adhere to the following retention periods, although we may deviate from them in individual cases:
+
+    Customer accounts: personal data is stored for the duration that the account is active. If a customer account is ordered to be deleted, the data will be deleted after any open claims or other relevant points that prevent an immediate deletion have been examined, and after 30 days at the latest.
+    Contracts: We generally retain master and contract data for ten years as of the last contractual activity or contract expiry. However, this period may be longer if this is necessary for the provision of evidence, due to statutory or contractual provisions, or for technical reasons. Transaction data in connection with contracts are generally retained for ten years.
+    Technical data: The storage period of cookies is normally between a few days and two years unless they are immediately deleted at the end of the session.
+    Communication data: E-mails, messages via the contact form and written correspondence are generally retained for ten years.
+    Image and sound recordings: The retention period varies depending on the purpose. It can range from a few days in the case of video surveillance recordings to several years in the case of reports about events with pictures.
+    Job applications: We generally delete application data within six months after the conclusion of the application process. We may keep your application on file with your consent with a view to potential recruitment at a later stage.
+
+17. What Rights Do You Have in Connection With the Processing of Your Personal Data?
+
+You have the right to object to data processing particularly if we process your personal data on the basis of a legitimate interest and the other applicable requirements are met. You can also object to data processing in connection with direct advertising (e.g. advertising e-mails) at any time. This also applies to profiling, to the extent that it relates to direct advertising.
+
+Provided the applicable conditions are met and there are no applicable statutory exceptions, you also have the following rights:
+
+    the right to request information about your personal data stored by us;
+    the right to have inaccurate or incomplete personal data corrected;
+    the right to request the deletion or anonymization of your personal data;
+    the right to request that the processing of your personal data be restricted;
+    the right to receive certain personal data in a structured, commonly used and machine-readable format;
+    the right to revoke consent with effect for the future, insofar as processing is based on consent. 
+
+Please note that these rights may be restricted or excluded in individual cases, e.g. if there are doubts about the identity or if this is necessary to protect other persons, to safeguard interests worthy of protection or to comply with legal obligations.
+
+You can exercise the most important of the above rights via your customer account or our Galaxus Assistant. If you have a customer account, you can correct your master data stored there (e.g. your address) at any time. From your customer account, you can also request that your account be deactivated or that your personal data be deleted entirely. You can furthermore unsubscribe from newsletters and other advertising e-mails by clicking on the corresponding link at the end of the e-mail. You may also contact us under Section 18 if you wish to exercise any of your rights or have questions about the processing of your personal data.
+
+In addition, you are free to lodge a complaint with a competent supervisory authority if you believe that the processing of your personal data may be in breach of applicable law.
+
+    The competent supervisory authority in Switzerland is the Federal Data Protection and Information Commissioner (FDPIC).
+    The competent supervisory authority in the Principality of Liechtenstein is the Data Protection Authority of the Principality of Liechtenstein.
+    The competent supervisory authority in Germany is the Hamburg Commissioner for Data Protection and Freedom of Information, Klosterwall 6 (Block C), 20095 Hamburg, Germany
+    The competent supervisory authority in Austria is the Österreichische Datenschutzbehörde, Barichgasse 40-42, 1030 Wien.
+    The competent supervisory authority in France is the Commission nationale de l'informatique et des libertés, 3 Place de Fontenoy, TSA 80715, 75334 PARIS CEDEX 07
+    The competent supervisory authority in Italiy is the Garante per la protezione dei dati personali, con sede in Piazza Venezia 11, IT-00187, Roma
+
+18. How Can You Contact Us?
+
+If you have any questions or concerns relating to this Privacy Notice or the processing of your personal data, please contact the company responsible using the contact details stated on its website.
+
+You are also welcome to contact us as follows:
+
+ 
+
+Digitec Galaxus AG
+Pfingstweidstrasse 60b
+CH-8005 Zürich
+
+https://www.galaxus.ch/en/help
+https://www.digitec.ch/en/help
+
+ 
+
+You can contact our Data Protection Officer for specific questions regarding data protection:
+
+Digitec Galaxus AG
+Datenschutz
+Pfingstweidstrasse 60b
+CH-8005 Zürich
+
+E-Mail: datenschutz@digitecgalaxus.ch
+
+ 
+
+You may also contact our Data Protection Officer or our representative in the EU and/or the European Economic Area using the following contact details:
+
+    Data Protection Officer: Federation of Migros Cooperatives, Data Protection Officer, c/o Legal & Compliance, Limmatstrasse 152, 8005 Zurich, privacy@mgb.ch
+    EU/EEA representative: VGS Datenschutzpartner UG, Am Kaiserkai 69, 20457 Hamburg, Germany
+
+19. Changes to This Privacy Notice
+
+This Privacy Notice may be updated over time, especially if we change our data processing activities or if new legal provisions become applicable. We will actively inform individuals whose contact details are registered with us of any material changes, provided that we can do this without disproportionate effort. In general, the version of the Privacy Notice in effect at the time at which the data processing activity in question commences is applicable.
+ 
+
+Last modification: 12.11.2025

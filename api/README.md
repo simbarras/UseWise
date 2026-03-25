@@ -24,6 +24,7 @@ The LLM client needs:
 
 ```bash
 GROQ_API_KEY=your_api_key
+OPENROUTER_API_KEY=your_api_key
 ```
 
 You can place it in `.env` or export it in your shell.
@@ -81,6 +82,24 @@ usewise-sa
 usewise-test
 usewise-try
 ```
+
+## OpenRouter Eval
+
+`eval.py` is a standalone script at the API root. It does not depend on the
+`usewise` package internals.
+
+Run from `UseWise/api`:
+
+```bash
+OPENROUTER_API_KEY=... venv/bin/python eval.py --models openai/gpt-4.1-mini
+```
+
+Useful options:
+
+- `--follow-up`: also run the 12 consumer follow-up questions for each model.
+- `--policies apple migros`: limit eval to specific privacy policies.
+- `--include-sample`: include `test_data/sample_privacy_policy.txt`.
+- `--output results/eval.json`: save the full results as JSON.
 
 ## Package Content
 
