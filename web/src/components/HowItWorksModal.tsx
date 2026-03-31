@@ -1,34 +1,34 @@
-import { useEffect } from 'react';
-import { createPortal } from 'react-dom';
+import { useEffect } from "react";
+import { createPortal } from "react-dom";
 
 const STEPS = [
   {
-    number: '01',
-    icon: '📋',
-    title: 'Paste or Drop',
+    number: "01",
+    icon: "📋",
+    title: "Paste or Drop",
     description:
-      'Upload your privacy policy as a file, paste the raw text, or drop a URL. UseWise accepts any format.',
+      "Upload your privacy policy as a file, paste the raw text, or drop a URL. UseWise accepts any format.",
   },
   {
-    number: '02',
-    icon: '🤖',
-    title: 'AI Analysis',
+    number: "02",
+    icon: "🤖",
+    title: "AI Analysis",
     description:
-      'Our engine reads the entire document and cross-references it against GDPR articles to detect risky clauses.',
+      "Our engine reads the entire document and cross-references it against GDPR articles to detect risky clauses.",
   },
   {
-    number: '03',
-    icon: '⚡',
-    title: 'Flash Summary',
+    number: "03",
+    icon: "⚡",
+    title: "Flash Summary",
     description:
-      'You get an instant breakdown — data sharing, retention, deletion rights, and a global risk score.',
+      "You get an instant breakdown — data sharing, retention, deletion rights, and a global risk score.",
   },
   {
-    number: '04',
-    icon: '💬',
-    title: 'Ask Questions',
+    number: "04",
+    icon: "💬",
+    title: "Ask Questions",
     description:
-      'Not sure about something? Ask the Policy Assistant directly and get plain-English answers in seconds.',
+      "Not sure about something? The Policy Assistant can give some precision in seconds.",
   },
 ];
 
@@ -39,14 +39,16 @@ interface Props {
 export default function HowItWorksModal({ onClose }: Props) {
   // Prevent background scroll
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = ''; };
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, []);
 
   return createPortal(
     <div
       className="fixed inset-0 z-[9999] flex items-center justify-center px-6"
-      style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}
+      style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(4px)" }}
       onClick={onClose}
     >
       <div
@@ -79,20 +81,27 @@ export default function HowItWorksModal({ onClose }: Props) {
               <div className="flex flex-col items-center shrink-0">
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
-                  style={{ background: 'var(--secondary)' }}
+                  style={{ background: "var(--secondary)" }}
                 >
                   {step.number}
                 </div>
                 {i < STEPS.length - 1 && (
-                  <div className="w-px mt-1" style={{ height: 24, background: 'rgba(56,189,248,0.2)' }} />
+                  <div
+                    className="w-px mt-1"
+                    style={{ height: 24, background: "rgba(56,189,248,0.2)" }}
+                  />
                 )}
               </div>
               <div className="pb-2">
                 <div className="flex items-center gap-2 mb-0.5">
                   <span>{step.icon}</span>
-                  <p className="text-sm font-bold text-slate-800">{step.title}</p>
+                  <p className="text-sm font-bold text-slate-800">
+                    {step.title}
+                  </p>
                 </div>
-                <p className="text-[11px] text-slate-500 leading-relaxed">{step.description}</p>
+                <p className="text-[11px] text-slate-500 leading-relaxed">
+                  {step.description}
+                </p>
               </div>
             </div>
           ))}
@@ -102,12 +111,12 @@ export default function HowItWorksModal({ onClose }: Props) {
         <button
           onClick={onClose}
           className="w-full py-2.5 rounded-xl text-white text-xs font-bold uppercase tracking-[1px] hover:brightness-110 active:scale-[0.98] transition-all"
-          style={{ background: 'var(--secondary)' }}
+          style={{ background: "var(--secondary)" }}
         >
           Got it — Let's Analyze
         </button>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 }

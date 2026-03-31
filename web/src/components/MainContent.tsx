@@ -5,13 +5,31 @@ import HowItWorksModal from './HowItWorksModal';
 export default function MainContent() {
   const navigate = useNavigate();
   const [inputText, setInputText] = useState('');
+  const [pdfContent, setPdfContent] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleAnalyze = () => {
-    // Navigate to loading page, which will redirect to results after delay
-    navigate('/loading', { state: { policyText: inputText || null } });
+    navigate('/loading', { state: { policyText: pdfContent ?? inputText ?? null } });
+  };
+
+  const loadFile = (file: File) => {
+    if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        setPdfContent(ev.target?.result as string);
+        setInputText(`📄 ${file.name}`);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        setPdfContent(null);
+        setInputText(ev.target?.result as string);
+      };
+      reader.readAsText(file);
+    }
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -25,20 +43,12 @@ export default function MainContent() {
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (ev) => setInputText(ev.target?.result as string);
-      reader.readAsText(file);
-    }
+    if (file) loadFile(file);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (ev) => setInputText(ev.target?.result as string);
-      reader.readAsText(file);
-    }
+    if (file) loadFile(file);
   };
 
   return (
@@ -89,7 +99,7 @@ export default function MainContent() {
 
               <textarea
                 value={inputText}
-                onChange={(e) => { e.stopPropagation(); setInputText(e.target.value); }}
+                onChange={(e) => { e.stopPropagation(); setInputText(e.target.value); setPdfContent(null); }}
                 onClick={(e) => e.stopPropagation()}
                 placeholder="Paste your privacy policy text or URL here..."
                 className="w-full h-20 bg-white/60 border border-slate-200 rounded text-[10px] text-slate-600 p-2 resize-none focus:outline-none focus:border-[var(--secondary)] placeholder:text-slate-300"

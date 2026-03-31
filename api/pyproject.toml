@@ -16,10 +16,12 @@ authors = [
 ]
 dependencies = [
     "fastapi",
+    "httpx",
     "langchain",
     "langchain-core",
     "langchain-openai",
     "mypy",
+    "pypdf",
     "pydantic",
     "python-dotenv",
     "ruff",

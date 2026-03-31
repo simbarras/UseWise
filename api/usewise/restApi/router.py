@@ -8,12 +8,9 @@ from pydantic import BaseModel
 from usewise.llm import config
 from usewise.llm.privacy_policy_explainer import PrivacyPolicyExplainer
 from usewise.llm.schemas import FlashSummaryReturnType
+from usewise.restApi.utils import resolve_content
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
-)
 
 app = FastAPI()
 
@@ -72,28 +69,14 @@ follow_up_questions = [
 
 @app.post("/summary/")
 async def get_summary(pp: PrivacyPolicy) -> PPSummary:
-    """
-    Discussion with Manuel for the API:
-
-    model = pp.model or "default-model"
-    ai = Aisummarizer(pp.content, model)
-    summaries:  = ai.flash_summary(questions = [{question, returnType}, ])
-    # questions = ai.generate_questions()
-    ai_response = ai.get_ai_question_responses(questions = ["question1", "question2"])
-
-    result = PPSummary(
-        risk_level=risk_level,
-        summaries=summaries,
-        ai=ai_response
-    )
-    return result
-    """
     model = pp.model or config.model_name
     if model not in config.models:
         error_msg = f"Model '{pp.model}' is not supported."
         raise ValueError(error_msg)
 
-    ppe = PrivacyPolicyExplainer(privacy_policy=pp.content, model_name=model)
+    content = resolve_content(pp.content)
+
+    ppe = PrivacyPolicyExplainer(privacy_policy=content, model_name=model)
 
     ppe_summary = ppe.get_flash_summary(questions=flash_summary_questions)
 
