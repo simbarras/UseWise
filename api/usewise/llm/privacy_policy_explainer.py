@@ -40,9 +40,7 @@ class PrivacyPolicyExplainer:
         )
         flash_summary = FlashSummary(answers=answers, score=text_parsed.score)
         self.messages.append(
-            AIMessage(
-                content=self._format_flash_summary_memory(questions, flash_summary)
-            )
+            AIMessage(content=self._format_flash_summary_memory(questions, flash_summary))
         )
         return flash_summary
 
@@ -101,9 +99,7 @@ class PrivacyPolicyExplainer:
             "Flash summary previously generated for this privacy policy:",
         ]
 
-        for (question, _), answer in zip(
-            questions, flash_summary.answers, strict=False
-        ):
+        for (question, _), answer in zip(questions, flash_summary.answers, strict=False):
             summary_lines.append(f"- {question}: {answer.value}")
 
         summary_lines.append(f"- Privacy risk score: {flash_summary.score}/10")

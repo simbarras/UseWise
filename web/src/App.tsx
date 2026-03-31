@@ -25,12 +25,14 @@ function Layout({ children }: { children: React.ReactNode }) {
 // ─── Mock fallback ────────────────────────────────────────────────────────────
 const MOCK_RESULT: PPSummary = {
   risk_level: 2,
+  session_key: 'mock-session',
+  policy_fingerprint: 'mock-fingerprint',
   summaries: [
-    { flash: 'Data is not shared with third parties.', value: true  },
-    { flash: 'Cookies and trackers are used.',         value: false },
-    { flash: 'Data is retained for 24 months.',        value: '24 months' },
-    { flash: 'Users can request data deletion.',       value: true  },
-    { flash: 'Policy can change without notice.',      value: false },
+    { flash: 'Data is not shared with third parties.', value: true,        user_count: 0, user_estimation: null },
+    { flash: 'Cookies and trackers are used.',         value: false,       user_count: 0, user_estimation: null },
+    { flash: 'Data is retained for 24 months.',        value: '24 months', user_count: 0, user_estimation: null },
+    { flash: 'Users can request data deletion.',       value: true,        user_count: 0, user_estimation: null },
+    { flash: 'Policy can change without notice.',      value: false,       user_count: 0, user_estimation: null },
   ],
   ai: [
     { question: 'Who has my data?',               response: 'Your data is shared with internal teams and select infrastructure partners only.' },

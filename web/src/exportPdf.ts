@@ -111,8 +111,8 @@ export function exportToPdf(
 
   data.summaries.forEach((s) => {
     checkY(8);
-    const col = s.present ? GREEN : RED;
-    const sym = s.present ? '\u2713' : '\u2717';
+    const col = s.value ? GREEN : RED;
+    const sym = s.value ? '\u2713' : '\u2717';
 
     setFill(col);
     doc.circle(PAD + 2.5, y - 1.5, 2.5, 'F');

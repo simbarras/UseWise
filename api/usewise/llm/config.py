@@ -11,7 +11,7 @@ models = [
     "meta-llama/llama-4-scout-17b-16e-instruct",
     "meta-llama/llama-prompt-guard-2-86m",
 ]
-model_name = models[-1]
+model_name = models[0]
 
 llm_url = "https://api.groq.com/openai/v1"
 

@@ -25,6 +25,7 @@ dependencies = [
     "pydantic",
     "python-dotenv",
     "ruff",
+    "sqlalchemy",
     "uvicorn",
 ]
 
@@ -41,7 +42,7 @@ usewise-try = "usewise.main:try_privacy_policy_explainer"
 usewise-server = "usewise.main:main"
 
 [tool.setuptools]
-packages = ["usewise"]
+packages = ["usewise", "usewise.db", "usewise.llm", "usewise.restApi"]
 
 [tool.coverage.run]
 omit = [

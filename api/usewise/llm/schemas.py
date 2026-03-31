@@ -7,14 +7,18 @@ from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
 
 
-def get_system_message(privacy_policy: str) -> SystemMessage:
-    return SystemMessage(
-        content=(
-            "You are a helpful assistant that answers questions"
-            " on the following privacy policy:\n\n"
-            f"{privacy_policy}"
-        )
+def get_system_message(
+    privacy_policy: str,
+    prior_feedback_context: str | None = None,
+) -> SystemMessage:
+    content = (
+        "You are a helpful assistant that answers questions"
+        " on the following privacy policy:\n\n"
+        f"{privacy_policy}"
     )
+    if prior_feedback_context:
+        content += f"\n\n{prior_feedback_context}"
+    return SystemMessage(content=content)
 
 def get_flash_summary_message(
     yes_no_questions: list[str],

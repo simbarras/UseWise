@@ -3,6 +3,8 @@
 export interface Summaries {
   flash: string;
   value: boolean | string;
+  user_count: number;
+  user_estimation: boolean | null;
 }
 
 export interface AiQuestion {
@@ -11,9 +13,18 @@ export interface AiQuestion {
 }
 
 export interface PPSummary {
-  risk_level: number; // 1-5 scale from backend
+  risk_level: number;
   summaries: Summaries[];
   ai: AiQuestion[];
+  session_key: string;
+  policy_fingerprint: string;
+}
+
+export interface FeedbackRequest {
+  session_key: string;
+  policy_fingerprint: string;
+  question: string;
+  user_value: number; // 0 = false, 1 = true
 }
 
 // ─── Derived type used by the frontend ───────────────────────────────────────
@@ -46,6 +57,30 @@ export async function analyzePolicy(content: string): Promise<PPSummary> {
   });
 
   console.log("API response:", response);
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error?.detail ?? `Server error: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+// ─── POST /feedback/ ─────────────────────────────────────────────────────────
+
+export interface FeedbackResponse {
+  user_count: number;
+  user_estimation: boolean | null;
+}
+
+export async function submitFeedback(
+  req: FeedbackRequest,
+): Promise<FeedbackResponse> {
+  const response = await fetch(`${API_BASE}/feedback/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+  });
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));

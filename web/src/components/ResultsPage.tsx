@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getRiskLevel, getRiskScore, type PPSummary } from "../api";
+import {
+  getRiskLevel,
+  getRiskScore,
+  submitFeedback,
+  type FeedbackResponse,
+  type PPSummary,
+} from "../api";
 import { exportToPdf } from "../exportPdf";
 
 const riskConfig = {
@@ -12,41 +18,117 @@ const riskConfig = {
 function SummaryRow({
   flash,
   value,
+  userCount,
+  userEstimation,
+  sessionKey,
+  policyFingerprint,
 }: {
   flash: string;
   value: boolean | string;
+  userCount: number;
+  userEstimation: boolean | null;
+  sessionKey: string;
+  policyFingerprint: string;
 }) {
-  const isString = typeof value === "string";
+  const isTimeQuestion = typeof value === "string";
   const isTrue = value === true;
 
-  const bg = isString
+  const bg = isTimeQuestion
     ? "rgba(99,102,241,0.12)"
     : isTrue
       ? "rgba(16,185,129,0.12)"
       : "rgba(239,68,68,0.12)";
-  const color = isString ? "#6366f1" : isTrue ? "#10b981" : "#ef4444";
-  const symbol = isString ? "…" : isTrue ? "✓" : "✕";
+  const color = isTimeQuestion ? "#6366f1" : isTrue ? "#10b981" : "#ef4444";
+  const symbol = isTimeQuestion ? "…" : isTrue ? "✓" : "✕";
+
+  const [userVote, setUserVote] = useState<boolean | null>(null);
+  const [voting, setVoting] = useState(false);
+  const [liveCount, setLiveCount] = useState<number>(userCount);
+  const [liveEstimation, setLiveEstimation] = useState<boolean | null>(userEstimation);
+
+  const handleVote = async (vote: boolean) => {
+    if (voting) return;
+    setVoting(true);
+    setUserVote(vote);
+    try {
+      const result: FeedbackResponse = await submitFeedback({
+        session_key: sessionKey,
+        policy_fingerprint: policyFingerprint,
+        question: flash,
+        user_value: vote ? 1 : 0,
+      });
+      setLiveCount(result.user_count);
+      setLiveEstimation(result.user_estimation);
+    } catch {
+      setUserVote(null);
+    } finally {
+      setVoting(false);
+    }
+  };
 
   return (
-    <div className="flex items-start gap-3 py-3 border-b border-slate-100 last:border-0">
-      <span
-        className="shrink-0 mt-0.5 rounded-full flex items-center justify-center font-bold"
-        style={{
-          background: bg,
-          color,
-          minWidth: isString ? "auto" : "1.25rem",
-          height: isString ? "auto" : "1.25rem",
-          fontSize: isString ? "10px" : "10px",
-          padding: isString ? "2px 6px" : undefined,
-          borderRadius: isString ? "9999px" : undefined,
-          whiteSpace: "nowrap",
-        }}
-      >
-        {isString ? value : symbol}
-      </span>
-      <span className="text-[11px] text-slate-500 leading-relaxed">
-        {flash}
-      </span>
+    <div className="flex flex-col py-3 border-b border-slate-100 last:border-0 gap-1.5">
+      {/* Answer row */}
+      <div className="flex items-start gap-3">
+        <span
+          className="shrink-0 mt-0.5 rounded-full flex items-center justify-center font-bold"
+          style={{
+            background: bg,
+            color,
+            minWidth: isTimeQuestion ? "auto" : "1.25rem",
+            height: isTimeQuestion ? "auto" : "1.25rem",
+            fontSize: "10px",
+            padding: isTimeQuestion ? "2px 6px" : undefined,
+            borderRadius: isTimeQuestion ? "9999px" : undefined,
+            whiteSpace: "nowrap",
+          }}
+        >
+          {isTimeQuestion ? value : symbol}
+        </span>
+        <span className="text-[11px] text-slate-500 leading-relaxed flex-1">
+          {flash}
+        </span>
+      </div>
+
+      {/* Feedback row — only for boolean (FLAG) questions */}
+      {!isTimeQuestion && (
+        <div className="flex items-center gap-2 pl-8 flex-wrap">
+          <button
+            onClick={() => handleVote(true)}
+            disabled={voting}
+            className="text-[10px] px-2.5 py-0.5 rounded-full border transition-all disabled:opacity-50"
+            style={{
+              borderColor: userVote === true ? "#10b981" : "#e2e8f0",
+              color: userVote === true ? "#10b981" : "#94a3b8",
+              fontWeight: userVote === true ? "bold" : "normal",
+              background:
+                userVote === true ? "rgba(16,185,129,0.08)" : "transparent",
+            }}
+          >
+            Yes
+          </button>
+          <button
+            onClick={() => handleVote(false)}
+            disabled={voting}
+            className="text-[10px] px-2.5 py-0.5 rounded-full border transition-all disabled:opacity-50"
+            style={{
+              borderColor: userVote === false ? "#ef4444" : "#e2e8f0",
+              color: userVote === false ? "#ef4444" : "#94a3b8",
+              fontWeight: userVote === false ? "bold" : "normal",
+              background:
+                userVote === false ? "rgba(239,68,68,0.08)" : "transparent",
+            }}
+          >
+            No
+          </button>
+          {liveCount > 0 && liveEstimation !== null && (
+            <span className="text-[9px] text-slate-400">
+              {liveCount} {liveCount === 1 ? "user" : "users"} say{" "}
+              <strong>{liveEstimation ? "Yes" : "No"}</strong>
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -59,6 +141,8 @@ export default function ResultsPage() {
     risk_level: 1,
     summaries: [],
     ai: [],
+    session_key: "",
+    policy_fingerprint: "",
   };
 
   const riskLabel = getRiskLevel(data.risk_level);
@@ -118,7 +202,15 @@ export default function ResultsPage() {
             </p>
             <div className="flex-1">
               {data.summaries.map((s, i) => (
-                <SummaryRow key={i} {...s} />
+                <SummaryRow
+                  key={i}
+                  flash={s.flash}
+                  value={s.value}
+                  userCount={s.user_count}
+                  userEstimation={s.user_estimation}
+                  sessionKey={data.session_key}
+                  policyFingerprint={data.policy_fingerprint}
+                />
               ))}
             </div>
 
