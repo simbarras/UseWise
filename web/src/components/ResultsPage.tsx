@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   getRiskLevel,
-  getRiskScore,
   submitFeedback,
+  submitRiskFeedback,
   type FeedbackResponse,
   type PPSummary,
 } from "../api";
@@ -20,6 +20,7 @@ function SummaryRow({
   value,
   userCount,
   userEstimation,
+  userPercentage,
   sessionKey,
   policyFingerprint,
 }: {
@@ -27,6 +28,7 @@ function SummaryRow({
   value: boolean | string;
   userCount: number;
   userEstimation: boolean | null;
+  userPercentage: number;
   sessionKey: string;
   policyFingerprint: string;
 }) {
@@ -44,7 +46,11 @@ function SummaryRow({
   const [userVote, setUserVote] = useState<boolean | null>(null);
   const [voting, setVoting] = useState(false);
   const [liveCount, setLiveCount] = useState<number>(userCount);
-  const [liveEstimation, setLiveEstimation] = useState<boolean | null>(userEstimation);
+  const [liveEstimation, setLiveEstimation] = useState<boolean | null>(
+    userEstimation,
+  );
+  const [livePercentage, setLivePercentage] = useState<number>(userPercentage);
+  const [expanded, setExpanded] = useState(false);
 
   const handleVote = async (vote: boolean) => {
     if (voting) return;
@@ -59,6 +65,7 @@ function SummaryRow({
       });
       setLiveCount(result.user_count);
       setLiveEstimation(result.user_estimation);
+      setLivePercentage(result.user_percentage);
     } catch {
       setUserVote(null);
     } finally {
@@ -66,12 +73,23 @@ function SummaryRow({
     }
   };
 
+  const hasDivergence =
+    !isTimeQuestion &&
+    liveCount > 0 &&
+    liveEstimation !== null &&
+    liveEstimation !== value;
+
   return (
     <div className="flex flex-col py-3 border-b border-slate-100 last:border-0 gap-1.5">
-      {/* Answer row */}
-      <div className="flex items-start gap-3">
+      {/* Primary row */}
+      <div
+        className={`flex items-center gap-3 ${!isTimeQuestion ? "cursor-pointer select-none" : ""}`}
+        onClick={() => {
+          if (!isTimeQuestion) setExpanded((e) => !e);
+        }}
+      >
         <span
-          className="shrink-0 mt-0.5 rounded-full flex items-center justify-center font-bold"
+          className="shrink-0 rounded-full flex items-center justify-center font-bold"
           style={{
             background: bg,
             color,
@@ -88,45 +106,64 @@ function SummaryRow({
         <span className="text-[11px] text-slate-500 leading-relaxed flex-1">
           {flash}
         </span>
+        {hasDivergence && (
+          <span
+            className="shrink-0 text-[11px] text-amber-500 cursor-help"
+            title="Response differ from the majority of user feedback"
+          >
+            ⚠
+          </span>
+        )}
+        {!isTimeQuestion && (
+          <span className="shrink-0 text-base text-slate-400 leading-none">
+            {expanded ? "▴" : "▾"}
+          </span>
+        )}
       </div>
 
-      {/* Feedback row — only for boolean (FLAG) questions */}
-      {!isTimeQuestion && (
-        <div className="flex items-center gap-2 pl-8 flex-wrap">
-          <button
-            onClick={() => handleVote(true)}
-            disabled={voting}
-            className="text-[10px] px-2.5 py-0.5 rounded-full border transition-all disabled:opacity-50"
-            style={{
-              borderColor: userVote === true ? "#10b981" : "#e2e8f0",
-              color: userVote === true ? "#10b981" : "#94a3b8",
-              fontWeight: userVote === true ? "bold" : "normal",
-              background:
-                userVote === true ? "rgba(16,185,129,0.08)" : "transparent",
-            }}
-          >
-            Yes
-          </button>
-          <button
-            onClick={() => handleVote(false)}
-            disabled={voting}
-            className="text-[10px] px-2.5 py-0.5 rounded-full border transition-all disabled:opacity-50"
-            style={{
-              borderColor: userVote === false ? "#ef4444" : "#e2e8f0",
-              color: userVote === false ? "#ef4444" : "#94a3b8",
-              fontWeight: userVote === false ? "bold" : "normal",
-              background:
-                userVote === false ? "rgba(239,68,68,0.08)" : "transparent",
-            }}
-          >
-            No
-          </button>
-          {liveCount > 0 && liveEstimation !== null && (
-            <span className="text-[9px] text-slate-400">
-              {liveCount} {liveCount === 1 ? "user" : "users"} say{" "}
-              <strong>{liveEstimation ? "Yes" : "No"}</strong>
+      {/* Expanded feedback section — only for FLAG questions */}
+      {!isTimeQuestion && expanded && (
+        <div className="flex flex-col gap-1 pl-8 text-[10px] text-slate-500">
+          {liveCount > 0 && liveEstimation !== null ? (
+            <span>
+              {livePercentage}% of the {liveCount}{" "}
+              {liveCount === 1 ? "user" : "users"} vote:{" "}
+              <strong>{liveEstimation ? "yes" : "no"}</strong>
             </span>
+          ) : (
+            <span className="italic text-slate-400">No community votes yet</span>
           )}
+          <div className="flex items-center gap-2">
+            <span>Add your vote:</span>
+            <button
+              onClick={() => handleVote(true)}
+              disabled={voting}
+              className="px-2.5 py-0.5 rounded-full border transition-all disabled:opacity-50"
+              style={{
+                borderColor: userVote === true ? "#10b981" : "#e2e8f0",
+                color: userVote === true ? "#10b981" : "#94a3b8",
+                fontWeight: userVote === true ? "bold" : "normal",
+                background:
+                  userVote === true ? "rgba(16,185,129,0.08)" : "transparent",
+              }}
+            >
+              yes
+            </button>
+            <button
+              onClick={() => handleVote(false)}
+              disabled={voting}
+              className="px-2.5 py-0.5 rounded-full border transition-all disabled:opacity-50"
+              style={{
+                borderColor: userVote === false ? "#ef4444" : "#e2e8f0",
+                color: userVote === false ? "#ef4444" : "#94a3b8",
+                fontWeight: userVote === false ? "bold" : "normal",
+                background:
+                  userVote === false ? "rgba(239,68,68,0.08)" : "transparent",
+              }}
+            >
+              no
+            </button>
+          </div>
         </div>
       )}
     </div>
@@ -146,8 +183,40 @@ export default function ResultsPage() {
   };
 
   const riskLabel = getRiskLevel(data.risk_level);
-  const riskScore = getRiskScore(data.risk_level);
   const risk = riskConfig[riskLabel];
+
+  // Risk feedback state
+  const [riskExpanded, setRiskExpanded] = useState(false);
+  const [riskSlider, setRiskSlider] = useState(3);
+  const [riskVoting, setRiskVoting] = useState(false);
+  const [liveRiskCount, setLiveRiskCount] = useState(data.user_risk_count);
+  const [liveRiskAverage, setLiveRiskAverage] = useState<number | null>(
+    data.user_risk_average,
+  );
+
+  // LLM risk is already on 1-5 scale
+  const llmRisk = data.risk_level;
+  // Combined display value (average of LLM 1-5 and user average 1-5)
+  const combinedRisk =
+    liveRiskAverage !== null ? (llmRisk + liveRiskAverage) / 2 : llmRisk;
+  // Convert a 1-5 value to a 0-100% bar position
+  const toBarPct = (v: number) => Math.round(((v - 1) / 4) * 100);
+
+  const handleRiskFeedback = async () => {
+    if (riskVoting) return;
+    setRiskVoting(true);
+    try {
+      const result = await submitRiskFeedback({
+        session_key: data.session_key,
+        policy_fingerprint: data.policy_fingerprint,
+        user_value: riskSlider,
+      });
+      setLiveRiskCount(result.user_count);
+      setLiveRiskAverage(result.user_average);
+    } finally {
+      setRiskVoting(false);
+    }
+  };
 
   const [messages, setMessages] = useState<
     { from: "user" | "ai"; text: string }[]
@@ -172,7 +241,7 @@ export default function ResultsPage() {
   const suggestedQuestions = data.ai.map((a) => a.question);
 
   return (
-    <div className="h-full w-full flex items-center justify-center bg-[var(--bg)] px-10 py-8">
+    <div className="h-full w-full flex items-start justify-center bg-[var(--bg)] px-10 py-8 overflow-y-auto">
       <div className="w-full max-w-5xl flex flex-col gap-5">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -194,7 +263,7 @@ export default function ResultsPage() {
         </div>
 
         {/* Two panels */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
           {/* LEFT: Flash Summary */}
           <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-7 flex flex-col">
             <p className="text-base font-bold text-slate-800 mb-2">
@@ -208,6 +277,7 @@ export default function ResultsPage() {
                   value={s.value}
                   userCount={s.user_count}
                   userEstimation={s.user_estimation}
+                  userPercentage={s.user_percentage}
                   sessionKey={data.session_key}
                   policyFingerprint={data.policy_fingerprint}
                 />
@@ -216,7 +286,11 @@ export default function ResultsPage() {
 
             {/* Risk bar */}
             <div className="mt-6">
-              <div className="flex items-center gap-2 mb-2">
+              {/* Header row — clickable to expand */}
+              <div
+                className="flex items-center gap-2 mb-2 cursor-pointer select-none"
+                onClick={() => setRiskExpanded((e) => !e)}
+              >
                 <span className="text-[11px] font-bold text-slate-700">
                   Risk Level:
                 </span>
@@ -227,22 +301,140 @@ export default function ResultsPage() {
                   {riskLabel}
                 </span>
                 <span className="text-[10px] text-slate-400 ml-1">
-                  ({data.risk_level}/10)
+                  ({combinedRisk.toFixed(1)}/5)
+                </span>
+                <span className="ml-auto text-base text-slate-400 leading-none">
+                  {riskExpanded ? "▴" : "▾"}
                 </span>
               </div>
+
+              {/* Bar with LLM + user markers */}
               <div
-                className="w-full h-2 rounded-full overflow-hidden"
+                className="relative w-full h-3 rounded-full"
                 style={{ background: risk.trackBg }}
               >
+                {/* Filled portion to combined value */}
                 <div
-                  className="h-full rounded-full transition-all duration-1000"
-                  style={{ width: `${riskScore}%`, background: risk.color }}
+                  className="absolute inset-y-0 left-0 rounded-full transition-all duration-700"
+                  style={{
+                    width: `${toBarPct(combinedRisk)}%`,
+                    background: risk.color,
+                  }}
                 />
+                {/* LLM marker (vertical tick) */}
+                <div
+                  className="absolute top-1/2 w-[3px] h-5 rounded-sm opacity-70"
+                  style={{
+                    left: `${toBarPct(llmRisk)}%`,
+                    transform: "translate(-50%, -50%)",
+                    background: risk.color,
+                  }}
+                  title={`LLM estimate: ${llmRisk.toFixed(1)}/5`}
+                />
+                {/* User marker (vertical tick, indigo) */}
+                {liveRiskAverage !== null && (
+                  <div
+                    className="absolute top-1/2 w-[3px] h-5 rounded-sm opacity-80"
+                    style={{
+                      left: `${toBarPct(liveRiskAverage)}%`,
+                      transform: "translate(-50%, -50%)",
+                      background: "#6366f1",
+                    }}
+                    title={`User average: ${liveRiskAverage.toFixed(1)}/5`}
+                  />
+                )}
               </div>
+
               <div className="flex justify-between mt-1">
-                <span className="text-[8px] text-slate-400">Safe</span>
-                <span className="text-[8px] text-slate-400">Dangerous</span>
+                <span className="text-[8px] text-slate-400">Safe (1)</span>
+                <span className="text-[8px] text-slate-400">Dangerous (5)</span>
               </div>
+
+              {/* Legend */}
+              <div className="flex items-center gap-3 mt-1">
+                <div className="flex items-center gap-1">
+                  <div
+                    className="w-2 h-3 rounded-sm opacity-70"
+                    style={{ background: risk.color }}
+                  />
+                  <span className="text-[8px] text-slate-400">LLM</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-3 rounded-sm bg-indigo-400 opacity-80" />
+                  <span className="text-[8px] text-slate-400">Users</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div
+                    className="w-4 h-2 rounded-full opacity-80"
+                    style={{ background: risk.color }}
+                  />
+                  <span className="text-[8px] text-slate-400">Combined</span>
+                </div>
+              </div>
+
+              {/* Expanded: slider */}
+              {riskExpanded && (
+                <div className="mt-3 flex flex-col gap-1.5 pl-1">
+                  <span className="text-[10px] text-slate-500">
+                    Your risk rating:{" "}
+                    <strong className="text-slate-700">{riskSlider}/5</strong>
+                    {liveRiskCount > 0 && (
+                      <span className="text-slate-400 font-normal ml-2">
+                        · {liveRiskCount}{" "}
+                        {liveRiskCount === 1 ? "user" : "users"} voted
+                      </span>
+                    )}
+                  </span>
+
+                  {/* Custom white-track slider */}
+                  <div className="relative h-5 flex items-center">
+                    {/* Track */}
+                    <div className="relative w-full h-2 rounded-full bg-white border border-slate-200">
+                      {/* Fill */}
+                      <div
+                        className="absolute inset-y-0 left-0 rounded-full transition-all"
+                        style={{
+                          width: `${((riskSlider - 1) / 4) * 100}%`,
+                          background: "var(--secondary)",
+                        }}
+                      />
+                      {/* Thumb */}
+                      <div
+                        className="absolute top-1/2 w-4 h-4 rounded-full border-2 border-white shadow-md -translate-y-1/2 -translate-x-1/2 transition-all pointer-events-none"
+                        style={{
+                          left: `${((riskSlider - 1) / 4) * 100}%`,
+                          background: "var(--secondary)",
+                        }}
+                      />
+                    </div>
+                    {/* Invisible native input for interaction */}
+                    <input
+                      type="range"
+                      min={1}
+                      max={5}
+                      step={1}
+                      value={riskSlider}
+                      onChange={(e) => setRiskSlider(Number(e.target.value))}
+                      className="absolute inset-0 w-full opacity-0 cursor-pointer"
+                      style={{ margin: 0 }}
+                    />
+                  </div>
+
+                  <div className="flex justify-between text-[8px] text-slate-400 px-0.5">
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <span key={n}>{n}</span>
+                    ))}
+                  </div>
+                  <button
+                    onClick={handleRiskFeedback}
+                    disabled={riskVoting}
+                    className="self-start mt-1 text-[10px] px-3 py-1 rounded-full text-white transition-all disabled:opacity-50 hover:brightness-110"
+                    style={{ background: "var(--secondary)" }}
+                  >
+                    {riskVoting ? "Submitting…" : "Submit"}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 

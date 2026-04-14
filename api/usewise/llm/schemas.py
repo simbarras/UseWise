@@ -57,7 +57,7 @@ TIME QUESTIONS:
 {time_block}
 
 3) Based on your analysis, provide an overall privacy risk score
-   from 1 (very low risk) to 10 (very high risk).
+   from 1 (very low risk) to 5 (very high risk).
 
 Return only structured data matching the expected schema.
 """
@@ -95,10 +95,10 @@ class FlashSummaryLLMOutput(BaseModel):
     score: int = Field(
         ...,
         ge=1,
-        le=10,
+        le=5,
         description=(
             "Overall privacy risk score from 1 (very low risk) "
-            "to 10 (very high risk), based on data sharing, "
+            "to 5 (very high risk), based on data sharing, "
             "tracking, retention length, and user rights."
         ),
     )

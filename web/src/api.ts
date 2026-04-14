@@ -5,6 +5,7 @@ export interface Summaries {
   value: boolean | string;
   user_count: number;
   user_estimation: boolean | null;
+  user_percentage: number;
 }
 
 export interface AiQuestion {
@@ -18,6 +19,8 @@ export interface PPSummary {
   ai: AiQuestion[];
   session_key: string;
   policy_fingerprint: string;
+  user_risk_count: number;
+  user_risk_average: number | null;
 }
 
 export interface FeedbackRequest {
@@ -27,19 +30,25 @@ export interface FeedbackRequest {
   user_value: number; // 0 = false, 1 = true
 }
 
+export interface FeedbackRiskRequest {
+  session_key: string;
+  policy_fingerprint: string;
+  user_value: number; // 1-5 scale
+}
+
+export interface FeedbackRiskResponse {
+  user_count: number;
+  user_average: number | null;
+}
+
 // ─── Derived type used by the frontend ───────────────────────────────────────
 
 export type RiskLevel = "Low" | "Medium" | "High";
 
 export function getRiskLevel(risk_level: number): RiskLevel {
-  if (risk_level <= 3) return "Low";
-  if (risk_level <= 6) return "Medium";
+  if (risk_level <= 2) return "Low";
+  if (risk_level <= 3) return "Medium";
   return "High";
-}
-
-export function getRiskScore(risk_level: number): number {
-  // Convert 1-10 scale to 0-100 for the progress bar
-  return Math.round((risk_level / 10) * 100);
 }
 
 // ─── Config ───────────────────────────────────────────────────────────────────
@@ -71,12 +80,32 @@ export async function analyzePolicy(content: string): Promise<PPSummary> {
 export interface FeedbackResponse {
   user_count: number;
   user_estimation: boolean | null;
+  user_percentage: number;
 }
 
 export async function submitFeedback(
   req: FeedbackRequest,
 ): Promise<FeedbackResponse> {
   const response = await fetch(`${API_BASE}/feedback/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error?.detail ?? `Server error: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+// ─── POST /feedback/risk/ ─────────────────────────────────────────────────────
+
+export async function submitRiskFeedback(
+  req: FeedbackRiskRequest,
+): Promise<FeedbackRiskResponse> {
+  const response = await fetch(`${API_BASE}/feedback/risk/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(req),
