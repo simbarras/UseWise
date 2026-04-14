@@ -30,11 +30,11 @@ const MOCK_RESULT: PPSummary = {
   user_risk_count: 0,
   user_risk_average: null,
   summaries: [
-    { flash: 'Data is not shared with third parties.', value: true,        user_count: 0, user_estimation: null, user_percentage: 0 },
-    { flash: 'Cookies and trackers are used.',         value: false,       user_count: 0, user_estimation: null, user_percentage: 0 },
-    { flash: 'Data is retained for 24 months.',        value: '24 months', user_count: 0, user_estimation: null, user_percentage: 0 },
-    { flash: 'Users can request data deletion.',       value: true,        user_count: 0, user_estimation: null, user_percentage: 0 },
-    { flash: 'Policy can change without notice.',      value: false,       user_count: 0, user_estimation: null, user_percentage: 0 },
+    { flash: 'Data is not shared with third parties.', value: true,        user_count: 0, user_estimation: null, user_percentage: 0, user_time_bucket: null, user_time_count: 0, user_time_percentage: 0, llm_time_bucket: null },
+    { flash: 'Cookies and trackers are used.',         value: false,       user_count: 0, user_estimation: null, user_percentage: 0, user_time_bucket: null, user_time_count: 0, user_time_percentage: 0, llm_time_bucket: null },
+    { flash: 'Data is retained for 24 months.',        value: '24 months', user_count: 0, user_estimation: null, user_percentage: 0, user_time_bucket: null, user_time_count: 0, user_time_percentage: 0, llm_time_bucket: 3 },
+    { flash: 'Users can request data deletion.',       value: true,        user_count: 0, user_estimation: null, user_percentage: 0, user_time_bucket: null, user_time_count: 0, user_time_percentage: 0, llm_time_bucket: null },
+    { flash: 'Policy can change without notice.',      value: false,       user_count: 0, user_estimation: null, user_percentage: 0, user_time_bucket: null, user_time_count: 0, user_time_percentage: 0, llm_time_bucket: null },
   ],
   ai: [
     { question: 'Who has my data?',               response: 'Your data is shared with internal teams and select infrastructure partners only.' },

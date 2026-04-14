@@ -1,3 +1,4 @@
+from collections import Counter
 from collections.abc import Generator
 from pathlib import Path
 
@@ -53,6 +54,33 @@ def get_user_response_stats_bool(
     majority = mean >= 0.5  # noqa: PLR2004
     percentage = round(mean * 100) if majority else round((1 - mean) * 100)
     return majority, total, percentage
+
+
+def get_user_response_stats_time(
+    policy: str, question: str, db: Session
+) -> tuple[int | None, int, int]:
+    """Return (majority_bucket_index, total_count, majority_percentage) for a time question.
+
+    Returns (None, 0, 0) when no feedback exists yet.
+    majority_bucket_index is the most-voted bucket (0-6).
+    majority_percentage is the share of votes for that bucket.
+    """
+    result = (
+        db.query(Feedback.user_value)
+        .filter(
+            Feedback.policy_fingerprint == policy,
+            Feedback.question == question,
+        )
+        .all()
+    )
+    values = [row[0] for row in result]
+    total = len(values)
+    if total == 0:
+        return None, 0, 0
+    counter = Counter(values)
+    majority_bucket, majority_count = counter.most_common(1)[0]
+    percentage = round(majority_count / total * 100)
+    return majority_bucket, total, percentage
 
 
 def get_user_risk_stats(policy: str, db: Session) -> tuple[float | None, int]:

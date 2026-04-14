@@ -1,4 +1,5 @@
 import logging
+import re
 import uuid
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
@@ -14,13 +15,14 @@ from usewise.db.database import (
     RISK_LEVEL_QUESTION,
     get_db,
     get_user_response_stats_bool,
+    get_user_response_stats_time,
     get_user_risk_stats,
     init_db,
 )
 from usewise.db.models import Feedback
 from usewise.llm import config
 from usewise.llm.privacy_policy_explainer import PrivacyPolicyExplainer
-from usewise.llm.schemas import FlashSummaryReturnType
+from usewise.llm.schemas import TIME_BUCKETS, FlashSummaryReturnType
 from usewise.restApi.utils import resolve_content
 
 logger = logging.getLogger(__name__)
@@ -63,9 +65,15 @@ class AiQuestion(BaseModel):
 class Summaries(BaseModel):
     flash: str
     value: Any
+    # FLAG question fields
     user_count: int
     user_estimation: bool | None
     user_percentage: int
+    # TIME question fields
+    user_time_bucket: int | None = None
+    user_time_count: int = 0
+    user_time_percentage: int = 0
+    llm_time_bucket: int | None = None
 
 
 class PPSummary(BaseModel):
@@ -90,6 +98,59 @@ class FeedbackRiskRequest(BaseModel):
     session_key: str
     policy_fingerprint: str
     user_value: int  # 1-5 scale
+
+
+class FeedbackTimeRequest(BaseModel):
+    session_key: str
+    policy_fingerprint: str
+    question: str
+    user_value: int  # 0-6 bucket index
+
+
+# ─── Time bucket helpers ──────────────────────────────────────────────────────
+
+_TIME_BUCKETS_LOWER = [b.lower() for b in TIME_BUCKETS]
+
+
+def _months_to_bucket(months: float) -> int:
+    if months < 1:
+        return 0
+    if months <= 6:  # noqa: PLR2004
+        return 1
+    if months <= 12:  # noqa: PLR2004
+        return 2
+    if months <= 36:  # noqa: PLR2004
+        return 3
+    return 4
+
+
+def _map_llm_time_to_bucket(value: str) -> int | None:
+    """Map an LLM-returned time string to its TIME_BUCKETS index.
+
+    Does a case-insensitive exact match first (LLM should follow the prompt),
+    then falls back to keyword/numeric parsing for robustness.
+    """
+    v = value.strip().lower()
+
+    try:
+        return _TIME_BUCKETS_LOWER.index(v)
+    except ValueError:
+        pass
+
+    if any(k in v for k in ("indefinite", "forever", "no limit", "unlimited")):
+        return 5
+    if any(k in v for k in ("account", "deletion", "when deleted")):
+        return 6
+
+    patterns = [
+        (re.search(r"(\d+(?:\.\d+)?)\s*year", v), lambda m: float(m.group(1)) * 12),
+        (re.search(r"(\d+)\s*month", v), lambda m: float(m.group(1))),
+        (re.search(r"(\d+)\s*day", v), lambda m: float(m.group(1)) / 30),
+    ]
+    for match, to_months in patterns:
+        if match:
+            return _months_to_bucket(to_months(match))
+    return None
 
 
 # ─── Static question lists ────────────────────────────────────────────────────
@@ -123,21 +184,38 @@ def _get_flash_summary(
     ppe_summary = ppe.get_flash_summary(questions=flash_summary_questions)
     return_summary = []
     for i, answer in enumerate(ppe_summary.answers):
-        question = flash_summary_questions[i][0]
-        prediction, user_count, user_percentage = get_user_response_stats_bool(
-            policy=policy,
-            question=question,
-            db=db,
-        )
-        return_summary.append(
-            Summaries(
-                flash=question,
-                value=answer.value,
-                user_count=user_count,
-                user_estimation=prediction,
-                user_percentage=user_percentage,
+        question, q_type = flash_summary_questions[i]
+        if q_type is FlashSummaryReturnType.TIME:
+            user_time_bucket, user_time_count, user_time_percentage = (
+                get_user_response_stats_time(policy=policy, question=question, db=db)
             )
-        )
+            llm_time_bucket = _map_llm_time_to_bucket(str(answer.value))
+            return_summary.append(
+                Summaries(
+                    flash=question,
+                    value=answer.value,
+                    user_count=0,
+                    user_estimation=None,
+                    user_percentage=0,
+                    user_time_bucket=user_time_bucket,
+                    user_time_count=user_time_count,
+                    user_time_percentage=user_time_percentage,
+                    llm_time_bucket=llm_time_bucket,
+                )
+            )
+        else:
+            prediction, user_count, user_percentage = get_user_response_stats_bool(
+                policy=policy, question=question, db=db
+            )
+            return_summary.append(
+                Summaries(
+                    flash=question,
+                    value=answer.value,
+                    user_count=user_count,
+                    user_estimation=prediction,
+                    user_percentage=user_percentage,
+                )
+            )
     return return_summary, ppe_summary.score
 
 
@@ -240,6 +318,40 @@ async def submit_feedback(req: FeedbackRequest, db: DbSession) -> FeedbackRespon
     )
     return FeedbackResponse(
         user_count=total, user_estimation=estimation, user_percentage=percentage
+    )
+
+
+class FeedbackTimeResponse(BaseModel):
+    user_count: int
+    user_time_bucket: int | None
+    user_time_percentage: int
+
+
+@app.post("/feedback/time/")
+async def submit_time_feedback(
+    req: FeedbackTimeRequest, db: DbSession
+) -> FeedbackTimeResponse:
+    stmt = (
+        sqlite_insert(Feedback)
+        .values(
+            session_key=req.session_key,
+            policy_fingerprint=req.policy_fingerprint,
+            question=req.question,
+            user_value=req.user_value,
+        )
+        .on_conflict_do_update(
+            index_elements=["session_key", "question"],
+            set_={"user_value": req.user_value},
+        )
+    )
+    db.execute(stmt)
+    db.commit()
+
+    bucket, total, percentage = get_user_response_stats_time(
+        policy=req.policy_fingerprint, question=req.question, db=db
+    )
+    return FeedbackTimeResponse(
+        user_count=total, user_time_bucket=bucket, user_time_percentage=percentage
     )
 
 

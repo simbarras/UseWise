@@ -4,6 +4,8 @@ import {
   getRiskLevel,
   submitFeedback,
   submitRiskFeedback,
+  submitTimeFeedback,
+  TIME_BUCKETS,
   type FeedbackResponse,
   type PPSummary,
 } from "../api";
@@ -21,6 +23,10 @@ function SummaryRow({
   userCount,
   userEstimation,
   userPercentage,
+  userTimeBucket,
+  userTimeCount,
+  userTimePercentage,
+  llmTimeBucket,
   sessionKey,
   policyFingerprint,
 }: {
@@ -29,6 +35,10 @@ function SummaryRow({
   userCount: number;
   userEstimation: boolean | null;
   userPercentage: number;
+  userTimeBucket: number | null;
+  userTimeCount: number;
+  userTimePercentage: number;
+  llmTimeBucket: number | null;
   sessionKey: string;
   policyFingerprint: string;
 }) {
@@ -43,6 +53,7 @@ function SummaryRow({
   const color = isTimeQuestion ? "#6366f1" : isTrue ? "#10b981" : "#ef4444";
   const symbol = isTimeQuestion ? "…" : isTrue ? "✓" : "✕";
 
+  // FLAG state
   const [userVote, setUserVote] = useState<boolean | null>(null);
   const [voting, setVoting] = useState(false);
   const [liveCount, setLiveCount] = useState<number>(userCount);
@@ -50,6 +61,14 @@ function SummaryRow({
     userEstimation,
   );
   const [livePercentage, setLivePercentage] = useState<number>(userPercentage);
+
+  // TIME state
+  const [selectedBucket, setSelectedBucket] = useState<number | null>(null);
+  const [timeVoting, setTimeVoting] = useState(false);
+  const [liveTimeBucket, setLiveTimeBucket] = useState<number | null>(userTimeBucket);
+  const [liveTimeCount, setLiveTimeCount] = useState<number>(userTimeCount);
+  const [liveTimePercentage, setLiveTimePercentage] = useState<number>(userTimePercentage);
+
   const [expanded, setExpanded] = useState(false);
 
   const handleVote = async (vote: boolean) => {
@@ -73,20 +92,46 @@ function SummaryRow({
     }
   };
 
-  const hasDivergence =
+  const handleTimeBucket = async (bucketIndex: number) => {
+    if (timeVoting) return;
+    setTimeVoting(true);
+    setSelectedBucket(bucketIndex);
+    try {
+      const result = await submitTimeFeedback({
+        session_key: sessionKey,
+        policy_fingerprint: policyFingerprint,
+        question: flash,
+        user_value: bucketIndex,
+      });
+      setLiveTimeBucket(result.user_time_bucket);
+      setLiveTimeCount(result.user_count);
+      setLiveTimePercentage(result.user_time_percentage);
+    } catch {
+      setSelectedBucket(null);
+    } finally {
+      setTimeVoting(false);
+    }
+  };
+
+  const hasFlagDivergence =
     !isTimeQuestion &&
     liveCount > 0 &&
     liveEstimation !== null &&
     liveEstimation !== value;
 
+  const hasTimeDivergence =
+    isTimeQuestion &&
+    liveTimeCount > 0 &&
+    liveTimeBucket !== null &&
+    llmTimeBucket !== null &&
+    liveTimeBucket !== llmTimeBucket;
+
   return (
     <div className="flex flex-col py-3 border-b border-slate-100 last:border-0 gap-1.5">
       {/* Primary row */}
       <div
-        className={`flex items-center gap-3 ${!isTimeQuestion ? "cursor-pointer select-none" : ""}`}
-        onClick={() => {
-          if (!isTimeQuestion) setExpanded((e) => !e);
-        }}
+        className="flex items-center gap-3 cursor-pointer select-none"
+        onClick={() => setExpanded((e) => !e)}
       >
         <span
           className="shrink-0 rounded-full flex items-center justify-center font-bold"
@@ -101,27 +146,29 @@ function SummaryRow({
             whiteSpace: "nowrap",
           }}
         >
-          {isTimeQuestion ? value : symbol}
+          {isTimeQuestion
+            ? llmTimeBucket !== null
+              ? TIME_BUCKETS[llmTimeBucket]
+              : (value as string)
+            : symbol}
         </span>
         <span className="text-[11px] text-slate-500 leading-relaxed flex-1">
           {flash}
         </span>
-        {hasDivergence && (
+        {(hasFlagDivergence || hasTimeDivergence) && (
           <span
             className="shrink-0 text-[11px] text-amber-500 cursor-help"
-            title="Response differ from the majority of user feedback"
+            title="Response differs from the majority of user feedback"
           >
             ⚠
           </span>
         )}
-        {!isTimeQuestion && (
-          <span className="shrink-0 text-base text-slate-400 leading-none">
-            {expanded ? "▴" : "▾"}
-          </span>
-        )}
+        <span className="shrink-0 text-base text-slate-400 leading-none">
+          {expanded ? "▴" : "▾"}
+        </span>
       </div>
 
-      {/* Expanded feedback section — only for FLAG questions */}
+      {/* Expanded: FLAG question */}
       {!isTimeQuestion && expanded && (
         <div className="flex flex-col gap-1 pl-8 text-[10px] text-slate-500">
           {liveCount > 0 && liveEstimation !== null ? (
@@ -131,7 +178,9 @@ function SummaryRow({
               <strong>{liveEstimation ? "yes" : "no"}</strong>
             </span>
           ) : (
-            <span className="italic text-slate-400">No community votes yet</span>
+            <span className="italic text-slate-400">
+              No community votes yet
+            </span>
           )}
           <div className="flex items-center gap-2">
             <span>Add your vote:</span>
@@ -166,6 +215,49 @@ function SummaryRow({
           </div>
         </div>
       )}
+
+      {/* Expanded: TIME question */}
+      {isTimeQuestion && expanded && (
+        <div className="flex flex-col gap-2 pl-8 text-[10px] text-slate-500">
+          {liveTimeCount > 0 && liveTimeBucket !== null ? (
+            <span>
+              {liveTimePercentage}% of the {liveTimeCount}{" "}
+              {liveTimeCount === 1 ? "user" : "users"} vote:{" "}
+              <strong className="text-indigo-600">
+                {TIME_BUCKETS[liveTimeBucket]}
+              </strong>
+            </span>
+          ) : (
+            <span className="italic text-slate-400">
+              No community votes yet
+            </span>
+          )}
+          <span className="text-slate-400">
+            How long do you think data is kept?
+          </span>
+          <div className="flex flex-wrap gap-1.5">
+            {TIME_BUCKETS.map((label, i) => {
+              const isSelected = selectedBucket === i;
+              return (
+                <button
+                  key={i}
+                  onClick={() => handleTimeBucket(i)}
+                  disabled={timeVoting}
+                  className="px-2 py-0.5 rounded-full border text-[10px] transition-all disabled:opacity-50"
+                  style={{
+                    borderColor: isSelected ? "#6366f1" : "#e2e8f0",
+                    color: isSelected ? "#6366f1" : "#94a3b8",
+                    fontWeight: isSelected ? "bold" : "normal",
+                    background: isSelected ? "rgba(99,102,241,0.1)" : "transparent",
+                  }}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -182,9 +274,6 @@ export default function ResultsPage() {
     policy_fingerprint: "",
   };
 
-  const riskLabel = getRiskLevel(data.risk_level);
-  const risk = riskConfig[riskLabel];
-
   // Risk feedback state
   const [riskExpanded, setRiskExpanded] = useState(false);
   const [riskSlider, setRiskSlider] = useState(3);
@@ -199,6 +288,8 @@ export default function ResultsPage() {
   // Combined display value (average of LLM 1-5 and user average 1-5)
   const combinedRisk =
     liveRiskAverage !== null ? (llmRisk + liveRiskAverage) / 2 : llmRisk;
+  const riskLabel = getRiskLevel(combinedRisk);
+  const risk = riskConfig[getRiskLevel(combinedRisk)];
   // Convert a 1-5 value to a 0-100% bar position
   const toBarPct = (v: number) => Math.round(((v - 1) / 4) * 100);
 
@@ -278,6 +369,10 @@ export default function ResultsPage() {
                   userCount={s.user_count}
                   userEstimation={s.user_estimation}
                   userPercentage={s.user_percentage}
+                  userTimeBucket={s.user_time_bucket}
+                  userTimeCount={s.user_time_count}
+                  userTimePercentage={s.user_time_percentage}
+                  llmTimeBucket={s.llm_time_bucket}
                   sessionKey={data.session_key}
                   policyFingerprint={data.policy_fingerprint}
                 />

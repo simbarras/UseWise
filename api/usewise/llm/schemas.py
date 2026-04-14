@@ -20,6 +20,17 @@ def get_system_message(
         content += f"\n\n{prior_feedback_context}"
     return SystemMessage(content=content)
 
+TIME_BUCKETS = [
+    "< 1 month",
+    "1-6 months",
+    "6-12 months",
+    "1-3 years",
+    "3+ years",
+    "Indefinitely",
+    "When account deleted",
+]
+
+
 def get_flash_summary_message(
     yes_no_questions: list[str],
     time_based_questions: list[str],
@@ -31,6 +42,8 @@ def get_flash_summary_message(
     time_block = "\n".join(
         f"{i+1}. {q}" for i, q in enumerate(time_based_questions)
     )
+
+    allowed_times = ", ".join(f'"{b}"' for b in TIME_BUCKETS)
 
     return f"""
 Analyze the privacy policy provided in the system message.
@@ -47,10 +60,8 @@ YES/NO STATEMENTS:
 {yes_no_block}
 
 2) For each of the following time-related questions:
-   - Extract the duration mentioned in the policy.
-   - Return a short human-readable phrase
-     (e.g., "1 year", "6 months", "30 days",
-     "Until account deletion", "Indefinitely").
+   - Pick exactly one value from this list: {allowed_times}
+   - Choose the closest match to what the policy states.
    - Keep the same order.
 
 TIME QUESTIONS:
