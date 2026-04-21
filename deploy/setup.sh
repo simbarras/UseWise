@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Bootstrap a fresh Ubuntu 24.04 droplet for UseWise (Docker-based).
-# Usage: bash setup.sh [DOMAIN]   (default: usewise.live)
+# Usage: bash setup.sh [DOMAIN] [BRANCH]   (default: usewise.live, main)
 # Run as root.
 
 set -euo pipefail
 
 DOMAIN="${1:-usewise.live}"
 REPO="https://github.com/simbarras/usewise.git"
-BRANCH="main"
+BRANCH="${2:-main}"
 APP_DIR="/opt/usewise"
 DEPLOY_DIR="$APP_DIR/deploy"
 
