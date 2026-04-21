@@ -5,29 +5,46 @@
 set -euo pipefail
 
 DOMAIN="${1:-usewise.live}"
+BRANCH="${2:-main}"
 REPO="https://github.com/simbarras/usewise.git"
 APP_DIR="/opt/usewise"
+VENV_DIR="/opt/usewise-venv"
 
 echo "=== System packages ==="
 apt-get update -y
 apt-get install -y \
     git nginx certbot python3-certbot-nginx \
     python3.12 python3.12-venv python3-pip \
-    nodejs npm
+    curl
+
+echo "=== Node.js 20 (via NodeSource) ==="
+curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+apt-get install -y nodejs
 
 echo "=== Dedicated system user ==="
-useradd --system --shell /usr/sbin/nologin --create-home --home-dir "$APP_DIR" usewise
+useradd --system --shell /usr/sbin/nologin usewise \
+    || echo "User already exists, skipping"
 
 echo "=== Clone repo ==="
-git clone "$REPO" "$APP_DIR"
-chown -R usewise:usewise "$APP_DIR"
+if [ -d "$APP_DIR" ]; then
+    echo "Repo already cloned, only pulling latest changes"
+    sudo -u usewise git -C "$APP_DIR" fetch origin
+    sudo -u usewise git -C "$APP_DIR" checkout "$BRANCH"
+    sudo -u usewise git -C "$APP_DIR" pull origin "$BRANCH"
+else
+    git clone -b "$BRANCH" "$REPO" "$APP_DIR"
+    chown -R usewise:usewise "$APP_DIR"
+fi
 
 echo "=== Backend: Python venv + install ==="
+mkdir -p "$VENV_DIR"
+chown usewise:usewise "$VENV_DIR"
 sudo -u usewise bash -c "
+    set -e
     cd $APP_DIR/api
-    python3.12 -m venv .venv
-    .venv/bin/pip install --upgrade pip
-    .venv/bin/pip install -e .
+    [ -f $VENV_DIR/bin/pip ] || python3.12 -m venv $VENV_DIR
+    $VENV_DIR/bin/pip install --upgrade pip
+    $VENV_DIR/bin/pip install -e .
 "
 
 echo ""
@@ -44,6 +61,7 @@ systemctl enable --now usewise-api
 echo "=== Frontend: build ==="
 # VITE_API_URL points to the /api prefix Nginx exposes
 sudo -u usewise bash -c "
+    set -e
     cd $APP_DIR/web
     VITE_API_URL=https://$DOMAIN/api npm ci
     VITE_API_URL=https://$DOMAIN/api npm run build
