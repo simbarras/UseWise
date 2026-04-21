@@ -1,0 +1,17 @@
+services:
+  api:
+    image: ghcr.io/simbarras/usewise-api:latest
+    env_file: .env                  # must contain GROQ_API_KEY
+    environment:
+      DB_PATH: /data/usewise_feedback.db
+    volumes:
+      - ./data:/data                # SQLite DB persists here
+    restart: unless-stopped
+
+  web:
+    image: ghcr.io/simbarras/usewise-web:latest
+    ports:
+      - "127.0.0.1:8080:80"        # host nginx proxies HTTPS → here
+    depends_on:
+      - api
+    restart: unless-stopped

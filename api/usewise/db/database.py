@@ -1,3 +1,4 @@
+import os
 from collections import Counter
 from collections.abc import Generator
 from pathlib import Path
@@ -9,7 +10,12 @@ from usewise.db.models import Base, Feedback
 
 RISK_LEVEL_QUESTION = "risk_level"
 
-_DB_PATH = Path(__file__).parent.parent.parent / "usewise_feedback.db"
+_DB_PATH = Path(
+    os.environ.get(
+        "DB_PATH",
+        str(Path(__file__).parent.parent.parent / "usewise_feedback.db"),
+    )
+)
 _engine = create_engine(
     f"sqlite:///{_DB_PATH}",
     connect_args={"check_same_thread": False},
