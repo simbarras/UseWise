@@ -1,0 +1,26 @@
+[Unit]
+Description=UseWise FastAPI backend
+After=network.target
+
+[Service]
+Type=simple
+User=usewise
+WorkingDirectory=/opt/usewise/api
+EnvironmentFile=/opt/usewise/api/.env
+
+# Bind to loopback only — Nginx proxies inbound traffic
+ExecStart=/opt/usewise/api/.venv/bin/uvicorn usewise.restApi.router:app \
+    --host 127.0.0.1 \
+    --port 8000 \
+    --workers 2
+
+Restart=on-failure
+RestartSec=5
+
+# Hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/opt/usewise/api
+
+[Install]
+WantedBy=multi-user.target
