@@ -47,7 +47,7 @@ _CORS_ORIGINS = [
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_CORS_ORIGINS,
-    allow_methods=["GET", "POST"],
+    allow_methods=["GET", "POST", "DELETE"],
     allow_headers=["Content-Type"],
 )
 
@@ -356,6 +356,65 @@ async def submit_time_feedback(
     return FeedbackTimeResponse(
         user_count=total, user_time_bucket=bucket, user_time_percentage=percentage
     )
+
+
+class FeedbackDeleteRequest(BaseModel):
+    session_key: str
+    policy_fingerprint: str
+    question: str
+
+
+@app.delete("/feedback/")
+async def delete_feedback(req: FeedbackDeleteRequest, db: DbSession) -> FeedbackResponse:
+    db.query(Feedback).filter(
+        Feedback.session_key == req.session_key,
+        Feedback.question == req.question,
+    ).delete()
+    db.commit()
+
+    estimation, total, percentage = get_user_response_stats_bool(
+        policy=req.policy_fingerprint, question=req.question, db=db
+    )
+    return FeedbackResponse(
+        user_count=total, user_estimation=estimation, user_percentage=percentage
+    )
+
+
+@app.delete("/feedback/time/")
+async def delete_time_feedback(
+    req: FeedbackDeleteRequest, db: DbSession
+) -> FeedbackTimeResponse:
+    db.query(Feedback).filter(
+        Feedback.session_key == req.session_key,
+        Feedback.question == req.question,
+    ).delete()
+    db.commit()
+
+    bucket, total, percentage = get_user_response_stats_time(
+        policy=req.policy_fingerprint, question=req.question, db=db
+    )
+    return FeedbackTimeResponse(
+        user_count=total, user_time_bucket=bucket, user_time_percentage=percentage
+    )
+
+
+class FeedbackRiskDeleteRequest(BaseModel):
+    session_key: str
+    policy_fingerprint: str
+
+
+@app.delete("/feedback/risk/")
+async def delete_risk_feedback(
+    req: FeedbackRiskDeleteRequest, db: DbSession
+) -> FeedbackRiskResponse:
+    db.query(Feedback).filter(
+        Feedback.session_key == req.session_key,
+        Feedback.question == RISK_LEVEL_QUESTION,
+    ).delete()
+    db.commit()
+
+    average, total = get_user_risk_stats(policy=req.policy_fingerprint, db=db)
+    return FeedbackRiskResponse(user_count=total, user_average=average)
 
 
 @app.get("/health/")

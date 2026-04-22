@@ -67,7 +67,7 @@ function LoadingWrapper() {
           result = MOCK_RESULT;
         }
 
-        navigate('/results', { state: { result }, replace: true });
+        navigate('/results', { state: { result, policyText: content ?? null }, replace: true });
       } catch (err: any) {
         setError(err.message ?? 'Unknown error');
       }

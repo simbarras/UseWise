@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   getRiskLevel,
   submitFeedback,
+  deleteFeedback,
   submitRiskFeedback,
+  deleteRiskFeedback,
   submitTimeFeedback,
+  deleteTimeFeedback,
   TIME_BUCKETS,
   type FeedbackResponse,
   type PPSummary,
 } from "../api";
-import { exportToPdf } from "../exportPdf";
 
 const riskConfig = {
   Low: { color: "#10b981", trackBg: "rgba(16,185,129,0.12)" },
@@ -65,28 +67,46 @@ function SummaryRow({
   // TIME state
   const [selectedBucket, setSelectedBucket] = useState<number | null>(null);
   const [timeVoting, setTimeVoting] = useState(false);
-  const [liveTimeBucket, setLiveTimeBucket] = useState<number | null>(userTimeBucket);
+  const [liveTimeBucket, setLiveTimeBucket] = useState<number | null>(
+    userTimeBucket,
+  );
   const [liveTimeCount, setLiveTimeCount] = useState<number>(userTimeCount);
-  const [liveTimePercentage, setLiveTimePercentage] = useState<number>(userTimePercentage);
+  const [liveTimePercentage, setLiveTimePercentage] =
+    useState<number>(userTimePercentage);
 
   const [expanded, setExpanded] = useState(false);
+  const [showWarningTooltip, setShowWarningTooltip] = useState(false);
+
+  useEffect(() => {
+    if (!showWarningTooltip) return;
+    const close = () => setShowWarningTooltip(false);
+    document.addEventListener("click", close);
+    return () => document.removeEventListener("click", close);
+  }, [showWarningTooltip]);
 
   const handleVote = async (vote: boolean) => {
     if (voting) return;
     setVoting(true);
-    setUserVote(vote);
+    const isDeselect = userVote === vote;
+    setUserVote(isDeselect ? null : vote);
     try {
-      const result: FeedbackResponse = await submitFeedback({
-        session_key: sessionKey,
-        policy_fingerprint: policyFingerprint,
-        question: flash,
-        user_value: vote ? 1 : 0,
-      });
+      const result: FeedbackResponse = isDeselect
+        ? await deleteFeedback({
+            session_key: sessionKey,
+            policy_fingerprint: policyFingerprint,
+            question: flash,
+          })
+        : await submitFeedback({
+            session_key: sessionKey,
+            policy_fingerprint: policyFingerprint,
+            question: flash,
+            user_value: vote ? 1 : 0,
+          });
       setLiveCount(result.user_count);
       setLiveEstimation(result.user_estimation);
       setLivePercentage(result.user_percentage);
     } catch {
-      setUserVote(null);
+      setUserVote(isDeselect ? vote : null);
     } finally {
       setVoting(false);
     }
@@ -95,19 +115,26 @@ function SummaryRow({
   const handleTimeBucket = async (bucketIndex: number) => {
     if (timeVoting) return;
     setTimeVoting(true);
-    setSelectedBucket(bucketIndex);
+    const isDeselect = selectedBucket === bucketIndex;
+    setSelectedBucket(isDeselect ? null : bucketIndex);
     try {
-      const result = await submitTimeFeedback({
-        session_key: sessionKey,
-        policy_fingerprint: policyFingerprint,
-        question: flash,
-        user_value: bucketIndex,
-      });
+      const result = isDeselect
+        ? await deleteTimeFeedback({
+            session_key: sessionKey,
+            policy_fingerprint: policyFingerprint,
+            question: flash,
+          })
+        : await submitTimeFeedback({
+            session_key: sessionKey,
+            policy_fingerprint: policyFingerprint,
+            question: flash,
+            user_value: bucketIndex,
+          });
       setLiveTimeBucket(result.user_time_bucket);
       setLiveTimeCount(result.user_count);
       setLiveTimePercentage(result.user_time_percentage);
     } catch {
-      setSelectedBucket(null);
+      setSelectedBucket(isDeselect ? bucketIndex : null);
     } finally {
       setTimeVoting(false);
     }
@@ -156,11 +183,30 @@ function SummaryRow({
           {flash}
         </span>
         {(hasFlagDivergence || hasTimeDivergence) && (
-          <span
-            className="shrink-0 text-[11px] text-amber-500 cursor-help"
-            title="Response differs from the majority of user feedback"
-          >
-            ⚠
+          <span className="relative shrink-0">
+            <span
+              className="text-[11px] text-amber-500 cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowWarningTooltip((v) => !v);
+              }}
+            >
+              ⚠
+            </span>
+            {showWarningTooltip && (
+              <div
+                className="absolute right-0 top-5 z-20 w-56 rounded-xl bg-white text-slate-700 text-[10px] leading-relaxed px-3 py-2.5 shadow-lg border border-slate-200"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <p className="font-semibold mb-1 text-[11px] text-slate-800">
+                  Community divergence
+                </p>
+                <p>
+                  The AI's answer differs from what the majority of users think
+                  about this point.
+                </p>
+              </div>
+            )}
           </span>
         )}
         <span className="shrink-0 text-base text-slate-400 leading-none">
@@ -248,7 +294,9 @@ function SummaryRow({
                     borderColor: isSelected ? "#6366f1" : "#e2e8f0",
                     color: isSelected ? "#6366f1" : "#94a3b8",
                     fontWeight: isSelected ? "bold" : "normal",
-                    background: isSelected ? "rgba(99,102,241,0.1)" : "transparent",
+                    background: isSelected
+                      ? "rgba(99,102,241,0.1)"
+                      : "transparent",
                   }}
                 >
                   {label}
@@ -266,6 +314,8 @@ export default function ResultsPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
 
+  const policyText: string | null = state?.policyText ?? null;
+
   const data: PPSummary = state?.result ?? {
     risk_level: 1,
     summaries: [],
@@ -274,9 +324,19 @@ export default function ResultsPage() {
     policy_fingerprint: "",
   };
 
+  const [showPolicy, setShowPolicy] = useState(false);
+  const [showRiskTooltip, setShowRiskTooltip] = useState(false);
+
+  useEffect(() => {
+    if (!showRiskTooltip) return;
+    const close = () => setShowRiskTooltip(false);
+    document.addEventListener("click", close);
+    return () => document.removeEventListener("click", close);
+  }, [showRiskTooltip]);
+
   // Risk feedback state
   const [riskExpanded, setRiskExpanded] = useState(false);
-  const [riskSlider, setRiskSlider] = useState(3);
+  const [riskSlider, setRiskSlider] = useState(0); // 0 = no vote
   const [riskVoting, setRiskVoting] = useState(false);
   const [liveRiskCount, setLiveRiskCount] = useState(data.user_risk_count);
   const [liveRiskAverage, setLiveRiskAverage] = useState<number | null>(
@@ -293,15 +353,21 @@ export default function ResultsPage() {
   // Convert a 1-5 value to a 0-100% bar position
   const toBarPct = (v: number) => Math.round(((v - 1) / 4) * 100);
 
-  const handleRiskFeedback = async () => {
+  const handleRiskFeedback = async (value: number) => {
     if (riskVoting) return;
     setRiskVoting(true);
     try {
-      const result = await submitRiskFeedback({
-        session_key: data.session_key,
-        policy_fingerprint: data.policy_fingerprint,
-        user_value: riskSlider,
-      });
+      const result =
+        value === 0
+          ? await deleteRiskFeedback({
+              session_key: data.session_key,
+              policy_fingerprint: data.policy_fingerprint,
+            })
+          : await submitRiskFeedback({
+              session_key: data.session_key,
+              policy_fingerprint: data.policy_fingerprint,
+              user_value: value,
+            });
       setLiveRiskCount(result.user_count);
       setLiveRiskAverage(result.user_average);
     } finally {
@@ -333,6 +399,42 @@ export default function ResultsPage() {
 
   return (
     <div className="h-full w-full flex items-start justify-center bg-[var(--bg)] px-10 py-8 overflow-y-auto">
+      {/* Policy modal */}
+      {showPolicy && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          onClick={() => setShowPolicy(false)}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[80vh] flex flex-col mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+              <p className="text-sm font-bold text-slate-800">
+                Original Policy
+              </p>
+              <button
+                onClick={() => setShowPolicy(false)}
+                className="text-slate-400 hover:text-slate-600 transition-colors text-lg leading-none"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="overflow-y-auto px-6 py-4">
+              {policyText ? (
+                <pre className="text-[10px] text-slate-600 leading-relaxed whitespace-pre-wrap font-sans">
+                  {policyText}
+                </pre>
+              ) : (
+                <p className="text-[11px] text-slate-400 italic text-center py-8">
+                  No policy text available.
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="w-full max-w-5xl flex flex-col gap-5">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -345,12 +447,14 @@ export default function ResultsPage() {
             </button>
             <h2 className="text-xl font-serif text-[var(--text)]">Results</h2>
           </div>
-          <button
-            onClick={() => exportToPdf(data, messages)}
-            className="border border-[var(--secondary)]/50 text-[var(--secondary)] text-[9px] font-bold uppercase tracking-[1px] px-4 py-2 rounded hover:bg-[var(--secondary)] hover:text-white transition-all"
-          >
-            Export PDF
-          </button>
+          {policyText && (
+            <button
+              onClick={() => setShowPolicy(true)}
+              className="border border-[var(--secondary)]/50 text-[var(--secondary)] text-[9px] font-bold uppercase tracking-[1px] px-4 py-2 rounded hover:bg-[var(--secondary)] hover:text-white transition-all"
+            >
+              View Policy
+            </button>
+          )}
         </div>
 
         {/* Two panels */}
@@ -383,7 +487,7 @@ export default function ResultsPage() {
             <div className="mt-6">
               {/* Header row — clickable to expand */}
               <div
-                className="flex items-center gap-2 mb-2 cursor-pointer select-none"
+                className="flex items-center gap-2 mb-1 cursor-pointer select-none"
                 onClick={() => setRiskExpanded((e) => !e)}
               >
                 <span className="text-[11px] font-bold text-slate-700">
@@ -397,6 +501,42 @@ export default function ResultsPage() {
                 </span>
                 <span className="text-[10px] text-slate-400 ml-1">
                   ({combinedRisk.toFixed(1)}/5)
+                </span>
+                <span className="relative shrink-0 flex items-center">
+                  <span
+                    className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full border border-slate-300 text-[8px] text-slate-400 cursor-pointer hover:border-slate-500 hover:text-slate-600 transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowRiskTooltip((v) => !v);
+                    }}
+                  >
+                    ?
+                  </span>
+                  {showRiskTooltip && (
+                    <div
+                      className="absolute left-1/2 -translate-x-1/2 top-5 z-20 w-56 rounded-xl bg-white text-slate-700 text-[10px] leading-relaxed px-3 py-2.5 shadow-lg border border-slate-200"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <p className="font-semibold mb-1 text-[11px] text-slate-800">
+                        How is the score calculated?
+                      </p>
+                      <p>
+                        Like a review score, but focused on your data privacy:
+                      </p>
+                      <ul className="mt-1 space-y-0.5 list-none">
+                        <li>
+                          <strong className="text-green-600">1</strong> — No
+                          data collected, or collection is minimal, transparent,
+                          and ethically justified.
+                        </li>
+                        <li>
+                          <strong className="text-red-500">5</strong> —
+                          Extensive or opaque data collection with questionable
+                          purpose.
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                 </span>
                 <span className="ml-auto text-base text-slate-400 leading-none">
                   {riskExpanded ? "▴" : "▾"}
@@ -441,7 +581,7 @@ export default function ResultsPage() {
               </div>
 
               <div className="flex justify-between mt-1">
-                <span className="text-[8px] text-slate-400">Safe (1)</span>
+                <span className="text-[8px] text-slate-400">(1) Safe</span>
                 <span className="text-[8px] text-slate-400">Dangerous (5)</span>
               </div>
 
@@ -472,11 +612,20 @@ export default function ResultsPage() {
                 <div className="mt-3 flex flex-col gap-1.5 pl-1">
                   <span className="text-[10px] text-slate-500">
                     Your risk rating:{" "}
-                    <strong className="text-slate-700">{riskSlider}/5</strong>
+                    {riskSlider === 0 ? (
+                      <strong className="text-slate-400">No vote</strong>
+                    ) : (
+                      <strong className="text-slate-700">{riskSlider}/5</strong>
+                    )}
                     {liveRiskCount > 0 && (
                       <span className="text-slate-400 font-normal ml-2">
                         · {liveRiskCount}{" "}
                         {liveRiskCount === 1 ? "user" : "users"} voted
+                      </span>
+                    )}
+                    {riskVoting && (
+                      <span className="text-slate-400 font-normal ml-2 italic">
+                        saving…
                       </span>
                     )}
                   </span>
@@ -485,49 +634,54 @@ export default function ResultsPage() {
                   <div className="relative h-5 flex items-center">
                     {/* Track */}
                     <div className="relative w-full h-2 rounded-full bg-white border border-slate-200">
-                      {/* Fill */}
-                      <div
-                        className="absolute inset-y-0 left-0 rounded-full transition-all"
-                        style={{
-                          width: `${((riskSlider - 1) / 4) * 100}%`,
-                          background: "var(--secondary)",
-                        }}
-                      />
+                      {/* Fill — only shown when value > 0 */}
+                      {riskSlider > 0 && (
+                        <div
+                          className="absolute inset-y-0 left-0 rounded-full transition-all"
+                          style={{
+                            width: `${(riskSlider / 5) * 100}%`,
+                            background: "var(--secondary)",
+                          }}
+                        />
+                      )}
                       {/* Thumb */}
                       <div
                         className="absolute top-1/2 w-4 h-4 rounded-full border-2 border-white shadow-md -translate-y-1/2 -translate-x-1/2 transition-all pointer-events-none"
                         style={{
-                          left: `${((riskSlider - 1) / 4) * 100}%`,
-                          background: "var(--secondary)",
+                          left: `${(riskSlider / 5) * 100}%`,
+                          background:
+                            riskSlider === 0 ? "#cbd5e1" : "var(--secondary)",
                         }}
                       />
                     </div>
                     {/* Invisible native input for interaction */}
                     <input
                       type="range"
-                      min={1}
+                      min={0}
                       max={5}
                       step={1}
                       value={riskSlider}
                       onChange={(e) => setRiskSlider(Number(e.target.value))}
+                      onMouseUp={(e) =>
+                        handleRiskFeedback(
+                          Number((e.target as HTMLInputElement).value),
+                        )
+                      }
+                      onTouchEnd={(e) =>
+                        handleRiskFeedback(
+                          Number((e.target as HTMLInputElement).value),
+                        )
+                      }
                       className="absolute inset-0 w-full opacity-0 cursor-pointer"
                       style={{ margin: 0 }}
                     />
                   </div>
 
                   <div className="flex justify-between text-[8px] text-slate-400 px-0.5">
-                    {[1, 2, 3, 4, 5].map((n) => (
+                    {["–", 1, 2, 3, 4, 5].map((n) => (
                       <span key={n}>{n}</span>
                     ))}
                   </div>
-                  <button
-                    onClick={handleRiskFeedback}
-                    disabled={riskVoting}
-                    className="self-start mt-1 text-[10px] px-3 py-1 rounded-full text-white transition-all disabled:opacity-50 hover:brightness-110"
-                    style={{ background: "var(--secondary)" }}
-                  >
-                    {riskVoting ? "Submitting…" : "Submit"}
-                  </button>
                 </div>
               )}
             </div>
