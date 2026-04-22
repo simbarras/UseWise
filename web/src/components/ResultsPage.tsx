@@ -3,8 +3,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import {
   getRiskLevel,
   submitFeedback,
+  deleteFeedback,
   submitRiskFeedback,
+  deleteRiskFeedback,
   submitTimeFeedback,
+  deleteTimeFeedback,
   TIME_BUCKETS,
   type FeedbackResponse,
   type PPSummary,
@@ -74,19 +77,26 @@ function SummaryRow({
   const handleVote = async (vote: boolean) => {
     if (voting) return;
     setVoting(true);
-    setUserVote(vote);
+    const isDeselect = userVote === vote;
+    setUserVote(isDeselect ? null : vote);
     try {
-      const result: FeedbackResponse = await submitFeedback({
-        session_key: sessionKey,
-        policy_fingerprint: policyFingerprint,
-        question: flash,
-        user_value: vote ? 1 : 0,
-      });
+      const result: FeedbackResponse = isDeselect
+        ? await deleteFeedback({
+            session_key: sessionKey,
+            policy_fingerprint: policyFingerprint,
+            question: flash,
+          })
+        : await submitFeedback({
+            session_key: sessionKey,
+            policy_fingerprint: policyFingerprint,
+            question: flash,
+            user_value: vote ? 1 : 0,
+          });
       setLiveCount(result.user_count);
       setLiveEstimation(result.user_estimation);
       setLivePercentage(result.user_percentage);
     } catch {
-      setUserVote(null);
+      setUserVote(isDeselect ? vote : null);
     } finally {
       setVoting(false);
     }
@@ -95,19 +105,26 @@ function SummaryRow({
   const handleTimeBucket = async (bucketIndex: number) => {
     if (timeVoting) return;
     setTimeVoting(true);
-    setSelectedBucket(bucketIndex);
+    const isDeselect = selectedBucket === bucketIndex;
+    setSelectedBucket(isDeselect ? null : bucketIndex);
     try {
-      const result = await submitTimeFeedback({
-        session_key: sessionKey,
-        policy_fingerprint: policyFingerprint,
-        question: flash,
-        user_value: bucketIndex,
-      });
+      const result = isDeselect
+        ? await deleteTimeFeedback({
+            session_key: sessionKey,
+            policy_fingerprint: policyFingerprint,
+            question: flash,
+          })
+        : await submitTimeFeedback({
+            session_key: sessionKey,
+            policy_fingerprint: policyFingerprint,
+            question: flash,
+            user_value: bucketIndex,
+          });
       setLiveTimeBucket(result.user_time_bucket);
       setLiveTimeCount(result.user_count);
       setLiveTimePercentage(result.user_time_percentage);
     } catch {
-      setSelectedBucket(null);
+      setSelectedBucket(isDeselect ? bucketIndex : null);
     } finally {
       setTimeVoting(false);
     }
@@ -276,7 +293,7 @@ export default function ResultsPage() {
 
   // Risk feedback state
   const [riskExpanded, setRiskExpanded] = useState(false);
-  const [riskSlider, setRiskSlider] = useState(3);
+  const [riskSlider, setRiskSlider] = useState(0); // 0 = no vote
   const [riskVoting, setRiskVoting] = useState(false);
   const [liveRiskCount, setLiveRiskCount] = useState(data.user_risk_count);
   const [liveRiskAverage, setLiveRiskAverage] = useState<number | null>(
@@ -293,15 +310,21 @@ export default function ResultsPage() {
   // Convert a 1-5 value to a 0-100% bar position
   const toBarPct = (v: number) => Math.round(((v - 1) / 4) * 100);
 
-  const handleRiskFeedback = async () => {
+  const handleRiskFeedback = async (value: number) => {
     if (riskVoting) return;
     setRiskVoting(true);
     try {
-      const result = await submitRiskFeedback({
-        session_key: data.session_key,
-        policy_fingerprint: data.policy_fingerprint,
-        user_value: riskSlider,
-      });
+      const result =
+        value === 0
+          ? await deleteRiskFeedback({
+              session_key: data.session_key,
+              policy_fingerprint: data.policy_fingerprint,
+            })
+          : await submitRiskFeedback({
+              session_key: data.session_key,
+              policy_fingerprint: data.policy_fingerprint,
+              user_value: value,
+            });
       setLiveRiskCount(result.user_count);
       setLiveRiskAverage(result.user_average);
     } finally {
@@ -472,11 +495,20 @@ export default function ResultsPage() {
                 <div className="mt-3 flex flex-col gap-1.5 pl-1">
                   <span className="text-[10px] text-slate-500">
                     Your risk rating:{" "}
-                    <strong className="text-slate-700">{riskSlider}/5</strong>
+                    {riskSlider === 0 ? (
+                      <strong className="text-slate-400">No vote</strong>
+                    ) : (
+                      <strong className="text-slate-700">{riskSlider}/5</strong>
+                    )}
                     {liveRiskCount > 0 && (
                       <span className="text-slate-400 font-normal ml-2">
                         · {liveRiskCount}{" "}
                         {liveRiskCount === 1 ? "user" : "users"} voted
+                      </span>
+                    )}
+                    {riskVoting && (
+                      <span className="text-slate-400 font-normal ml-2 italic">
+                        saving…
                       </span>
                     )}
                   </span>
@@ -485,49 +517,56 @@ export default function ResultsPage() {
                   <div className="relative h-5 flex items-center">
                     {/* Track */}
                     <div className="relative w-full h-2 rounded-full bg-white border border-slate-200">
-                      {/* Fill */}
-                      <div
-                        className="absolute inset-y-0 left-0 rounded-full transition-all"
-                        style={{
-                          width: `${((riskSlider - 1) / 4) * 100}%`,
-                          background: "var(--secondary)",
-                        }}
-                      />
+                      {/* Fill — only shown when value > 0 */}
+                      {riskSlider > 0 && (
+                        <div
+                          className="absolute inset-y-0 left-0 rounded-full transition-all"
+                          style={{
+                            width: `${(riskSlider / 5) * 100}%`,
+                            background: "var(--secondary)",
+                          }}
+                        />
+                      )}
                       {/* Thumb */}
                       <div
                         className="absolute top-1/2 w-4 h-4 rounded-full border-2 border-white shadow-md -translate-y-1/2 -translate-x-1/2 transition-all pointer-events-none"
                         style={{
-                          left: `${((riskSlider - 1) / 4) * 100}%`,
-                          background: "var(--secondary)",
+                          left: `${(riskSlider / 5) * 100}%`,
+                          background:
+                            riskSlider === 0
+                              ? "#cbd5e1"
+                              : "var(--secondary)",
                         }}
                       />
                     </div>
                     {/* Invisible native input for interaction */}
                     <input
                       type="range"
-                      min={1}
+                      min={0}
                       max={5}
                       step={1}
                       value={riskSlider}
                       onChange={(e) => setRiskSlider(Number(e.target.value))}
+                      onMouseUp={(e) =>
+                        handleRiskFeedback(
+                          Number((e.target as HTMLInputElement).value),
+                        )
+                      }
+                      onTouchEnd={(e) =>
+                        handleRiskFeedback(
+                          Number((e.target as HTMLInputElement).value),
+                        )
+                      }
                       className="absolute inset-0 w-full opacity-0 cursor-pointer"
                       style={{ margin: 0 }}
                     />
                   </div>
 
                   <div className="flex justify-between text-[8px] text-slate-400 px-0.5">
-                    {[1, 2, 3, 4, 5].map((n) => (
+                    {["–", 1, 2, 3, 4, 5].map((n) => (
                       <span key={n}>{n}</span>
                     ))}
                   </div>
-                  <button
-                    onClick={handleRiskFeedback}
-                    disabled={riskVoting}
-                    className="self-start mt-1 text-[10px] px-3 py-1 rounded-full text-white transition-all disabled:opacity-50 hover:brightness-110"
-                    style={{ background: "var(--secondary)" }}
-                  >
-                    {riskVoting ? "Submitting…" : "Submit"}
-                  </button>
                 </div>
               )}
             </div>

@@ -131,6 +131,50 @@ export async function submitFeedback(
   return response.json();
 }
 
+// ─── DELETE /feedback/ ───────────────────────────────────────────────────────
+
+export interface FeedbackDeleteRequest {
+  session_key: string;
+  policy_fingerprint: string;
+  question: string;
+}
+
+export async function deleteFeedback(
+  req: FeedbackDeleteRequest,
+): Promise<FeedbackResponse> {
+  const response = await fetch(`${API_BASE}/feedback/`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error?.detail ?? `Server error: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+// ─── DELETE /feedback/time/ ───────────────────────────────────────────────────
+
+export async function deleteTimeFeedback(
+  req: FeedbackDeleteRequest,
+): Promise<FeedbackTimeResponse> {
+  const response = await fetch(`${API_BASE}/feedback/time/`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error?.detail ?? `Server error: ${response.status}`);
+  }
+
+  return response.json();
+}
+
 // ─── POST /feedback/time/ ─────────────────────────────────────────────────────
 
 export async function submitTimeFeedback(
@@ -138,6 +182,30 @@ export async function submitTimeFeedback(
 ): Promise<FeedbackTimeResponse> {
   const response = await fetch(`${API_BASE}/feedback/time/`, {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error?.detail ?? `Server error: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+// ─── DELETE /feedback/risk/ ───────────────────────────────────────────────────
+
+export interface FeedbackRiskDeleteRequest {
+  session_key: string;
+  policy_fingerprint: string;
+}
+
+export async function deleteRiskFeedback(
+  req: FeedbackRiskDeleteRequest,
+): Promise<FeedbackRiskResponse> {
+  const response = await fetch(`${API_BASE}/feedback/risk/`, {
+    method: "DELETE",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(req),
   });
