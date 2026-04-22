@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   getRiskLevel,
@@ -67,11 +67,22 @@ function SummaryRow({
   // TIME state
   const [selectedBucket, setSelectedBucket] = useState<number | null>(null);
   const [timeVoting, setTimeVoting] = useState(false);
-  const [liveTimeBucket, setLiveTimeBucket] = useState<number | null>(userTimeBucket);
+  const [liveTimeBucket, setLiveTimeBucket] = useState<number | null>(
+    userTimeBucket,
+  );
   const [liveTimeCount, setLiveTimeCount] = useState<number>(userTimeCount);
-  const [liveTimePercentage, setLiveTimePercentage] = useState<number>(userTimePercentage);
+  const [liveTimePercentage, setLiveTimePercentage] =
+    useState<number>(userTimePercentage);
 
   const [expanded, setExpanded] = useState(false);
+  const [showWarningTooltip, setShowWarningTooltip] = useState(false);
+
+  useEffect(() => {
+    if (!showWarningTooltip) return;
+    const close = () => setShowWarningTooltip(false);
+    document.addEventListener("click", close);
+    return () => document.removeEventListener("click", close);
+  }, [showWarningTooltip]);
 
   const handleVote = async (vote: boolean) => {
     if (voting) return;
@@ -172,11 +183,30 @@ function SummaryRow({
           {flash}
         </span>
         {(hasFlagDivergence || hasTimeDivergence) && (
-          <span
-            className="shrink-0 text-[11px] text-amber-500 cursor-help"
-            title="Response differs from the majority of user feedback"
-          >
-            ⚠
+          <span className="relative shrink-0">
+            <span
+              className="text-[11px] text-amber-500 cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowWarningTooltip((v) => !v);
+              }}
+            >
+              ⚠
+            </span>
+            {showWarningTooltip && (
+              <div
+                className="absolute right-0 top-5 z-20 w-56 rounded-xl bg-white text-slate-700 text-[10px] leading-relaxed px-3 py-2.5 shadow-lg border border-slate-200"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <p className="font-semibold mb-1 text-[11px] text-slate-800">
+                  Community divergence
+                </p>
+                <p>
+                  The AI's answer differs from what the majority of users think
+                  about this point.
+                </p>
+              </div>
+            )}
           </span>
         )}
         <span className="shrink-0 text-base text-slate-400 leading-none">
@@ -264,7 +294,9 @@ function SummaryRow({
                     borderColor: isSelected ? "#6366f1" : "#e2e8f0",
                     color: isSelected ? "#6366f1" : "#94a3b8",
                     fontWeight: isSelected ? "bold" : "normal",
-                    background: isSelected ? "rgba(99,102,241,0.1)" : "transparent",
+                    background: isSelected
+                      ? "rgba(99,102,241,0.1)"
+                      : "transparent",
                   }}
                 >
                   {label}
@@ -293,6 +325,14 @@ export default function ResultsPage() {
   };
 
   const [showPolicy, setShowPolicy] = useState(false);
+  const [showRiskTooltip, setShowRiskTooltip] = useState(false);
+
+  useEffect(() => {
+    if (!showRiskTooltip) return;
+    const close = () => setShowRiskTooltip(false);
+    document.addEventListener("click", close);
+    return () => document.removeEventListener("click", close);
+  }, [showRiskTooltip]);
 
   // Risk feedback state
   const [riskExpanded, setRiskExpanded] = useState(false);
@@ -370,7 +410,9 @@ export default function ResultsPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
-              <p className="text-sm font-bold text-slate-800">Original Policy</p>
+              <p className="text-sm font-bold text-slate-800">
+                Original Policy
+              </p>
               <button
                 onClick={() => setShowPolicy(false)}
                 className="text-slate-400 hover:text-slate-600 transition-colors text-lg leading-none"
@@ -445,7 +487,7 @@ export default function ResultsPage() {
             <div className="mt-6">
               {/* Header row — clickable to expand */}
               <div
-                className="flex items-center gap-2 mb-2 cursor-pointer select-none"
+                className="flex items-center gap-2 mb-1 cursor-pointer select-none"
                 onClick={() => setRiskExpanded((e) => !e)}
               >
                 <span className="text-[11px] font-bold text-slate-700">
@@ -459,6 +501,42 @@ export default function ResultsPage() {
                 </span>
                 <span className="text-[10px] text-slate-400 ml-1">
                   ({combinedRisk.toFixed(1)}/5)
+                </span>
+                <span className="relative shrink-0 flex items-center">
+                  <span
+                    className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full border border-slate-300 text-[8px] text-slate-400 cursor-pointer hover:border-slate-500 hover:text-slate-600 transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowRiskTooltip((v) => !v);
+                    }}
+                  >
+                    ?
+                  </span>
+                  {showRiskTooltip && (
+                    <div
+                      className="absolute left-1/2 -translate-x-1/2 top-5 z-20 w-56 rounded-xl bg-white text-slate-700 text-[10px] leading-relaxed px-3 py-2.5 shadow-lg border border-slate-200"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <p className="font-semibold mb-1 text-[11px] text-slate-800">
+                        How is the score calculated?
+                      </p>
+                      <p>
+                        Like a review score, but focused on your data privacy:
+                      </p>
+                      <ul className="mt-1 space-y-0.5 list-none">
+                        <li>
+                          <strong className="text-green-600">1</strong> — No
+                          data collected, or collection is minimal, transparent,
+                          and ethically justified.
+                        </li>
+                        <li>
+                          <strong className="text-red-500">5</strong> —
+                          Extensive or opaque data collection with questionable
+                          purpose.
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                 </span>
                 <span className="ml-auto text-base text-slate-400 leading-none">
                   {riskExpanded ? "▴" : "▾"}
@@ -503,7 +581,7 @@ export default function ResultsPage() {
               </div>
 
               <div className="flex justify-between mt-1">
-                <span className="text-[8px] text-slate-400">Safe (1)</span>
+                <span className="text-[8px] text-slate-400">(1) Safe</span>
                 <span className="text-[8px] text-slate-400">Dangerous (5)</span>
               </div>
 
@@ -572,9 +650,7 @@ export default function ResultsPage() {
                         style={{
                           left: `${(riskSlider / 5) * 100}%`,
                           background:
-                            riskSlider === 0
-                              ? "#cbd5e1"
-                              : "var(--secondary)",
+                            riskSlider === 0 ? "#cbd5e1" : "var(--secondary)",
                         }}
                       />
                     </div>
