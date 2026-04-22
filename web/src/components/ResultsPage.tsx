@@ -12,7 +12,6 @@ import {
   type FeedbackResponse,
   type PPSummary,
 } from "../api";
-import { exportToPdf } from "../exportPdf";
 
 const riskConfig = {
   Low: { color: "#10b981", trackBg: "rgba(16,185,129,0.12)" },
@@ -283,6 +282,8 @@ export default function ResultsPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
 
+  const policyText: string | null = state?.policyText ?? null;
+
   const data: PPSummary = state?.result ?? {
     risk_level: 1,
     summaries: [],
@@ -290,6 +291,8 @@ export default function ResultsPage() {
     session_key: "",
     policy_fingerprint: "",
   };
+
+  const [showPolicy, setShowPolicy] = useState(false);
 
   // Risk feedback state
   const [riskExpanded, setRiskExpanded] = useState(false);
@@ -356,6 +359,40 @@ export default function ResultsPage() {
 
   return (
     <div className="h-full w-full flex items-start justify-center bg-[var(--bg)] px-10 py-8 overflow-y-auto">
+      {/* Policy modal */}
+      {showPolicy && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          onClick={() => setShowPolicy(false)}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[80vh] flex flex-col mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+              <p className="text-sm font-bold text-slate-800">Original Policy</p>
+              <button
+                onClick={() => setShowPolicy(false)}
+                className="text-slate-400 hover:text-slate-600 transition-colors text-lg leading-none"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="overflow-y-auto px-6 py-4">
+              {policyText ? (
+                <pre className="text-[10px] text-slate-600 leading-relaxed whitespace-pre-wrap font-sans">
+                  {policyText}
+                </pre>
+              ) : (
+                <p className="text-[11px] text-slate-400 italic text-center py-8">
+                  No policy text available.
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="w-full max-w-5xl flex flex-col gap-5">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -368,12 +405,14 @@ export default function ResultsPage() {
             </button>
             <h2 className="text-xl font-serif text-[var(--text)]">Results</h2>
           </div>
-          <button
-            onClick={() => exportToPdf(data, messages)}
-            className="border border-[var(--secondary)]/50 text-[var(--secondary)] text-[9px] font-bold uppercase tracking-[1px] px-4 py-2 rounded hover:bg-[var(--secondary)] hover:text-white transition-all"
-          >
-            Export PDF
-          </button>
+          {policyText && (
+            <button
+              onClick={() => setShowPolicy(true)}
+              className="border border-[var(--secondary)]/50 text-[var(--secondary)] text-[9px] font-bold uppercase tracking-[1px] px-4 py-2 rounded hover:bg-[var(--secondary)] hover:text-white transition-all"
+            >
+              View Policy
+            </button>
+          )}
         </div>
 
         {/* Two panels */}
