@@ -7,30 +7,42 @@ from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
 
 
-def get_system_message(privacy_policy: str) -> SystemMessage:
-    return SystemMessage(
-        content=(
-            "You are a helpful assistant that answers questions"
-            " on the following privacy policy:\n\n"
-            f"{privacy_policy}"
-        )
+def get_system_message(
+    privacy_policy: str,
+    prior_feedback_context: str | None = None,
+) -> SystemMessage:
+    content = (
+        "You are a helpful assistant that answers questions"
+        " on the following privacy policy:\n\n"
+        f"{privacy_policy}"
     )
+    if prior_feedback_context:
+        content += f"\n\n{prior_feedback_context}"
+    return SystemMessage(content=content)
+
+
+TIME_BUCKETS = [
+    "< 1 month",
+    "1-6 months",
+    "6-12 months",
+    "1-3 years",
+    "3+ years",
+    "Indefinitely",
+    "When account deleted",
+]
+
 
 def get_combined_summary_message(
     yes_no_questions: list[str],
     time_based_questions: list[str],
     follow_up_questions: list[str],
 ) -> str:
-    yes_no_block = "\n".join(
-        f"{i+1}. {q}" for i, q in enumerate(yes_no_questions)
-    )
+    yes_no_block = "\n".join(f"{i + 1}. {q}" for i, q in enumerate(yes_no_questions))
 
-    time_block = "\n".join(
-        f"{i+1}. {q}" for i, q in enumerate(time_based_questions)
-    )
+    time_block = "\n".join(f"{i + 1}. {q}" for i, q in enumerate(time_based_questions))
 
     follow_up_block = "\n".join(
-        f"{i+1}. {q}" for i, q in enumerate(follow_up_questions)
+        f"{i + 1}. {q}" for i, q in enumerate(follow_up_questions)
     )
 
     return f"""
@@ -49,10 +61,8 @@ YES/NO STATEMENTS:
 {yes_no_block}
 
 2) For each of the following time-related questions:
-   - Extract the duration mentioned in the policy.
-   - Return a short human-readable phrase
-     (e.g., "1 year", "6 months", "30 days",
-     "Until account deletion", "Indefinitely").
+   - Pick exactly one value from this list: {allowed_times}
+   - Choose the closest match to what the policy states.
    - Keep the same order.
 
 TIME QUESTIONS:
@@ -76,6 +86,7 @@ class FlashSummaryReturnType(StrEnum):
     FLAG = "flag"
     TIME = "time"
 
+
 class FlashSummaryLLMOutput(BaseModel):
     flags: Annotated[
         list[bool],
@@ -98,23 +109,25 @@ class FlashSummaryLLMOutput(BaseModel):
                 "(e.g. '1 year', '6 months', '3 days', "
                 "'Until account deletion', 'Indefinitely')."
             ),
-        )
+        ),
     ]
 
     score: int = Field(
         ...,
         ge=1,
-        le=10,
+        le=5,
         description=(
             "Overall privacy risk score from 1 (very low risk) "
-            "to 10 (very high risk), based on data sharing, "
+            "to 5 (very high risk), based on data sharing, "
             "tracking, retention length, and user rights."
         ),
     )
 
+
 class FlashSummaryAnswer(BaseModel):
     value: bool | str | None
     type: FlashSummaryReturnType
+
 
 class FlashSummary(BaseModel):
     answers: list[FlashSummaryAnswer]
@@ -144,7 +157,7 @@ class CombinedSummaryLLMOutput(BaseModel):
                 "(e.g. '1 year', '6 months', '3 days', "
                 "'Until account deletion', 'Indefinitely')."
             ),
-        )
+        ),
     ]
 
     score: int = Field(
@@ -174,6 +187,7 @@ json_prompt_raw_template = """Return a JSON object that matches this structure:
 
 Question: {question}
         """
+
 
 def get_json_prompt_template(
     parser: PydanticOutputParser,

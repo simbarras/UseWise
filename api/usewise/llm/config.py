@@ -10,7 +10,7 @@ models = [
 model_name = models[0]
 fallback_model_name = models[1]
 
-llm_url = "https://api.groq.com/openai/v1"#"https://openrouter.ai/api/v1"
+llm_url = "https://api.groq.com/openai/v1"  # "https://openrouter.ai/api/v1"
 
 
 load_dotenv()

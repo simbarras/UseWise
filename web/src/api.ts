@@ -1,8 +1,29 @@
+// ─── Time buckets (must mirror TIME_BUCKETS in router.py) ────────────────────
+
+export const TIME_BUCKETS = [
+  "< 1 month",
+  "1–6 months",
+  "6–12 months",
+  "1–3 years",
+  "3+ years",
+  "Indefinitely",
+  "When account deleted",
+] as const;
+
 // ─── Types matching router.py exactly ────────────────────────────────────────
 
 export interface Summaries {
   flash: string;
   value: boolean | string;
+  // FLAG question fields
+  user_count: number;
+  user_estimation: boolean | null;
+  user_percentage: number;
+  // TIME question fields
+  user_time_bucket: number | null;
+  user_time_count: number;
+  user_time_percentage: number;
+  llm_time_bucket: number | null;
 }
 
 export interface AiQuestion {
@@ -11,9 +32,44 @@ export interface AiQuestion {
 }
 
 export interface PPSummary {
-  risk_level: number; // 1-5 scale from backend
+  risk_level: number;
   summaries: Summaries[];
   ai: AiQuestion[];
+  session_key: string;
+  policy_fingerprint: string;
+  user_risk_count: number;
+  user_risk_average: number | null;
+}
+
+export interface FeedbackRequest {
+  session_key: string;
+  policy_fingerprint: string;
+  question: string;
+  user_value: number; // 0 = false, 1 = true
+}
+
+export interface FeedbackRiskRequest {
+  session_key: string;
+  policy_fingerprint: string;
+  user_value: number; // 1-5 scale
+}
+
+export interface FeedbackRiskResponse {
+  user_count: number;
+  user_average: number | null;
+}
+
+export interface FeedbackTimeRequest {
+  session_key: string;
+  policy_fingerprint: string;
+  question: string;
+  user_value: number; // 0-6 bucket index
+}
+
+export interface FeedbackTimeResponse {
+  user_count: number;
+  user_time_bucket: number | null;
+  user_time_percentage: number;
 }
 
 // ─── Derived type used by the frontend ───────────────────────────────────────
@@ -21,14 +77,9 @@ export interface PPSummary {
 export type RiskLevel = "Low" | "Medium" | "High";
 
 export function getRiskLevel(risk_level: number): RiskLevel {
-  if (risk_level <= 3) return "Low";
-  if (risk_level <= 6) return "Medium";
+  if (risk_level <= 2) return "Low";
+  if (risk_level <= 3) return "Medium";
   return "High";
-}
-
-export function getRiskScore(risk_level: number): number {
-  // Convert 1-10 scale to 0-100 for the progress bar
-  return Math.round((risk_level / 10) * 100);
 }
 
 // ─── Config ───────────────────────────────────────────────────────────────────
@@ -46,6 +97,137 @@ export async function analyzePolicy(content: string): Promise<PPSummary> {
   });
 
   console.log("API response:", response);
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error?.detail ?? `Server error: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+// ─── POST /feedback/ ─────────────────────────────────────────────────────────
+
+export interface FeedbackResponse {
+  user_count: number;
+  user_estimation: boolean | null;
+  user_percentage: number;
+}
+
+export async function submitFeedback(
+  req: FeedbackRequest,
+): Promise<FeedbackResponse> {
+  const response = await fetch(`${API_BASE}/feedback/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error?.detail ?? `Server error: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+// ─── DELETE /feedback/ ───────────────────────────────────────────────────────
+
+export interface FeedbackDeleteRequest {
+  session_key: string;
+  policy_fingerprint: string;
+  question: string;
+}
+
+export async function deleteFeedback(
+  req: FeedbackDeleteRequest,
+): Promise<FeedbackResponse> {
+  const response = await fetch(`${API_BASE}/feedback/`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error?.detail ?? `Server error: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+// ─── DELETE /feedback/time/ ───────────────────────────────────────────────────
+
+export async function deleteTimeFeedback(
+  req: FeedbackDeleteRequest,
+): Promise<FeedbackTimeResponse> {
+  const response = await fetch(`${API_BASE}/feedback/time/`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error?.detail ?? `Server error: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+// ─── POST /feedback/time/ ─────────────────────────────────────────────────────
+
+export async function submitTimeFeedback(
+  req: FeedbackTimeRequest,
+): Promise<FeedbackTimeResponse> {
+  const response = await fetch(`${API_BASE}/feedback/time/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error?.detail ?? `Server error: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+// ─── DELETE /feedback/risk/ ───────────────────────────────────────────────────
+
+export interface FeedbackRiskDeleteRequest {
+  session_key: string;
+  policy_fingerprint: string;
+}
+
+export async function deleteRiskFeedback(
+  req: FeedbackRiskDeleteRequest,
+): Promise<FeedbackRiskResponse> {
+  const response = await fetch(`${API_BASE}/feedback/risk/`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error?.detail ?? `Server error: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+// ─── POST /feedback/risk/ ─────────────────────────────────────────────────────
+
+export async function submitRiskFeedback(
+  req: FeedbackRiskRequest,
+): Promise<FeedbackRiskResponse> {
+  const response = await fetch(`${API_BASE}/feedback/risk/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+  });
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));

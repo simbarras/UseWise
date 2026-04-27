@@ -1,5 +1,5 @@
 import jsPDF from 'jspdf';
-import { type PPSummary, getRiskLevel, getRiskScore } from './api';
+import { type PPSummary, getRiskLevel } from './api';
 
 const PRIMARY   = [30, 41, 59]   as const;  // slate-800
 const SECONDARY = [56, 189, 248] as const;  // cyan
@@ -68,7 +68,7 @@ export function exportToPdf(
 
   // RISK LEVEL
   const riskLabel = getRiskLevel(data.risk_level);
-  const riskScore = getRiskScore(data.risk_level);
+  const riskScore = Math.round(((data.risk_level - 1) / 4) * 100);
   const riskColor = riskLabel === 'Low' ? GREEN : riskLabel === 'Medium' ? [245, 158, 11] as const : RED;
 
   doc.setFont('helvetica', 'bold');
@@ -111,8 +111,8 @@ export function exportToPdf(
 
   data.summaries.forEach((s) => {
     checkY(8);
-    const col = s.present ? GREEN : RED;
-    const sym = s.present ? '\u2713' : '\u2717';
+    const col = s.value ? GREEN : RED;
+    const sym = s.value ? '\u2713' : '\u2717';
 
     setFill(col);
     doc.circle(PAD + 2.5, y - 1.5, 2.5, 'F');

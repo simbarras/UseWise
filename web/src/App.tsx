@@ -25,12 +25,16 @@ function Layout({ children }: { children: React.ReactNode }) {
 // ─── Mock fallback ────────────────────────────────────────────────────────────
 const MOCK_RESULT: PPSummary = {
   risk_level: 2,
+  session_key: 'mock-session',
+  policy_fingerprint: 'mock-fingerprint',
+  user_risk_count: 0,
+  user_risk_average: null,
   summaries: [
-    { flash: 'Data is not shared with third parties.', value: true  },
-    { flash: 'Cookies and trackers are used.',         value: false },
-    { flash: 'Data is retained for 24 months.',        value: '24 months' },
-    { flash: 'Users can request data deletion.',       value: true  },
-    { flash: 'Policy can change without notice.',      value: false },
+    { flash: 'Data is not shared with third parties.', value: true,        user_count: 0, user_estimation: null, user_percentage: 0, user_time_bucket: null, user_time_count: 0, user_time_percentage: 0, llm_time_bucket: null },
+    { flash: 'Cookies and trackers are used.',         value: false,       user_count: 0, user_estimation: null, user_percentage: 0, user_time_bucket: null, user_time_count: 0, user_time_percentage: 0, llm_time_bucket: null },
+    { flash: 'Data is retained for 24 months.',        value: '24 months', user_count: 0, user_estimation: null, user_percentage: 0, user_time_bucket: null, user_time_count: 0, user_time_percentage: 0, llm_time_bucket: 3 },
+    { flash: 'Users can request data deletion.',       value: true,        user_count: 0, user_estimation: null, user_percentage: 0, user_time_bucket: null, user_time_count: 0, user_time_percentage: 0, llm_time_bucket: null },
+    { flash: 'Policy can change without notice.',      value: false,       user_count: 0, user_estimation: null, user_percentage: 0, user_time_bucket: null, user_time_count: 0, user_time_percentage: 0, llm_time_bucket: null },
   ],
   ai: [
     { question: 'Who has my data?',               response: 'Your data is shared with internal teams and select infrastructure partners only.' },
@@ -63,7 +67,7 @@ function LoadingWrapper() {
           result = MOCK_RESULT;
         }
 
-        navigate('/results', { state: { result }, replace: true });
+        navigate('/results', { state: { result, policyText: content ?? null }, replace: true });
       } catch (err: any) {
         setError(err.message ?? 'Unknown error');
       }
