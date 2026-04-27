@@ -67,6 +67,18 @@ follow_up_questions = [
 ]
 
 
+### START: Convert None to False (UI compatibility)
+### TODO: Remove this entire block once the UI supports null/undefined states
+def convert_none_to_false(flags: list[bool | None]) -> list[bool]:
+    """Convert None values to False for UI compatibility.
+
+    TODO: Remove this conversion once the UI supports null/undefined states.
+    This is a temporary measure to handle LLM uncertainty (None) as False.
+    """
+    return [flag if flag is not None else False for flag in flags]
+### END: Convert None to False
+
+
 @app.post("/summary/")
 async def get_summary(pp: PrivacyPolicy) -> PPSummary:
     model = pp.model or config.model_name
@@ -78,26 +90,33 @@ async def get_summary(pp: PrivacyPolicy) -> PPSummary:
 
     ppe = PrivacyPolicyExplainer(privacy_policy=content, model_name=model)
 
-    ppe_summary = ppe.get_flash_summary(questions=flash_summary_questions)
+    ppe_summary, follow_up_answers = ppe.get_combined_summary(
+        questions=flash_summary_questions,
+        follow_up_questions=follow_up_questions,
+    )
 
     return_summary = []
     for i in range(len(ppe_summary.answers)):
         answer = ppe_summary.answers[i]
         question = flash_summary_questions[i][0]
+        value = answer.value
+        ### START: Convert None to False (UI compatibility)
+        if isinstance(value, (bool, type(None))):
+            value = convert_none_to_false([value])[0]
+        ### END: Convert None to False
         return_summary.append(
             Summaries(
                 flash=question,
-                value=answer.value,
+                value=value,
             )
         )
 
     follow_up_responses = []
-    for question in follow_up_questions:
-        response = ppe.get_questions_answers([question])[0]
+    for i, question in enumerate(follow_up_questions):
         follow_up_responses.append(
             AiQuestion(
                 question=question,
-                response=response,
+                response=follow_up_answers[i],
             )
         )
 
