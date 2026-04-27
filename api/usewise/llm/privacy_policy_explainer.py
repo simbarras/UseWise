@@ -1,14 +1,20 @@
+import logging
+
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.output_parsers import PydanticOutputParser
 from langchain_openai import ChatOpenAI
+from openai import RateLimitError
 
-from usewise.llm.config import get_groq_api_key, llm_url
+from usewise.llm.config import fallback_model_name, get_groq_api_key, llm_url
+
+logger = logging.getLogger(__name__)
 from usewise.llm.schemas import (
+    CombinedSummaryLLMOutput,
     FlashSummary,
     FlashSummaryAnswer,
     FlashSummaryLLMOutput,
     FlashSummaryReturnType,
-    get_flash_summary_message,
+    get_combined_summary_message,
     get_json_prompt_template,
     get_system_message,
 )
@@ -65,7 +71,7 @@ class PrivacyPolicyExplainer:
 
     def reassemble_questions(
         self,
-        flags: list[bool],
+        flags: list[bool | None],
         times: list[str],
         questions: list[tuple[str, FlashSummaryReturnType]],
     ) -> list[FlashSummaryAnswer]:
@@ -114,3 +120,42 @@ class PrivacyPolicyExplainer:
         response_text = str(self.model.invoke(self.messages).content)
         self.messages.append(AIMessage(content=response_text))
         return response_text
+
+    def get_combined_summary(
+        self,
+        questions: list[tuple[str, FlashSummaryReturnType]],
+        follow_up_questions: list[str],
+    ) -> tuple[FlashSummary, list[str]]:
+        yes_no_questions, time_based_questions = self.divide_questions(questions)
+        parser = PydanticOutputParser(pydantic_object=CombinedSummaryLLMOutput)
+        prompt = get_json_prompt_template(parser)
+        question = get_combined_summary_message(
+            yes_no_questions, time_based_questions, follow_up_questions
+        )
+        messages = [self.system_msg, *prompt.format_messages(question=question)]
+
+        try:
+            response = self.model.invoke(messages)
+        except RateLimitError as e:
+            logger.warning(
+                f"Rate limit hit with {self.model.model_name}, falling back to {fallback_model_name}"
+            )
+            fallback_model = ChatOpenAI(
+                model=fallback_model_name,
+                base_url=llm_url,
+                api_key=get_groq_api_key(),
+            )
+            response = fallback_model.invoke(messages)
+
+        text = str(response.content)
+        text_parsed = parser.parse(text)
+        answers = self.reassemble_questions(
+            text_parsed.flags, text_parsed.times, questions
+        )
+        flash_summary = FlashSummary(answers=answers, score=text_parsed.score)
+        self.messages.append(
+            AIMessage(
+                content=self._format_flash_summary_memory(questions, flash_summary)
+            )
+        )
+        return flash_summary, text_parsed.follow_up_answers

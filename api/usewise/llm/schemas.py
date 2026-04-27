@@ -16,9 +16,10 @@ def get_system_message(privacy_policy: str) -> SystemMessage:
         )
     )
 
-def get_flash_summary_message(
+def get_combined_summary_message(
     yes_no_questions: list[str],
     time_based_questions: list[str],
+    follow_up_questions: list[str],
 ) -> str:
     yes_no_block = "\n".join(
         f"{i+1}. {q}" for i, q in enumerate(yes_no_questions)
@@ -28,15 +29,20 @@ def get_flash_summary_message(
         f"{i+1}. {q}" for i, q in enumerate(time_based_questions)
     )
 
+    follow_up_block = "\n".join(
+        f"{i+1}. {q}" for i, q in enumerate(follow_up_questions)
+    )
+
     return f"""
 Analyze the privacy policy provided in the system message.
 
 Your task is to extract structured information.
 
 1) For each of the following yes/no statements:
-   - Answer with true or false.
+   - Answer with true, false, or null.
    - Use true only if the policy clearly confirms the statement.
-   - If the policy does not mention it or is unclear, answer false.
+   - Use false only if the policy clearly contradicts the statement.
+   - Use null if the policy does not mention it or is unclear.
    - Keep the same order.
 
 YES/NO STATEMENTS:
@@ -54,6 +60,13 @@ TIME QUESTIONS:
 
 3) Based on your analysis, provide an overall privacy risk score
    from 1 (very low risk) to 10 (very high risk).
+
+4) Answer each of the following follow-up questions based on the policy:
+   - Provide detailed and informative answers.
+   - Keep the same order as provided.
+
+FOLLOW-UP QUESTIONS:
+{follow_up_block}
 
 Return only structured data matching the expected schema.
 """
@@ -100,12 +113,60 @@ class FlashSummaryLLMOutput(BaseModel):
     )
 
 class FlashSummaryAnswer(BaseModel):
-    value: bool | str
+    value: bool | str | None
     type: FlashSummaryReturnType
 
 class FlashSummary(BaseModel):
     answers: list[FlashSummaryAnswer]
     score: int
+
+
+class CombinedSummaryLLMOutput(BaseModel):
+    flags: Annotated[
+        list[bool | None],
+        Field(
+            description=(
+                "Boolean answers to the yes/no privacy questions, "
+                "in the exact same order as provided. "
+                "Use true if the policy clearly confirms the statement, "
+                "false if it clearly contradicts the statement, "
+                "and null if the policy is unclear or does not mention it."
+            ),
+        ),
+    ]
+
+    times: Annotated[
+        list[str],
+        Field(
+            description=(
+                "Short human-readable descriptions of a time "
+                "duration or time limit "
+                "(e.g. '1 year', '6 months', '3 days', "
+                "'Until account deletion', 'Indefinitely')."
+            ),
+        )
+    ]
+
+    score: int = Field(
+        ...,
+        ge=1,
+        le=10,
+        description=(
+            "Overall privacy risk score from 1 (very low risk) "
+            "to 10 (very high risk), based on data sharing, "
+            "tracking, retention length, and user rights."
+        ),
+    )
+
+    follow_up_answers: Annotated[
+        list[str],
+        Field(
+            description=(
+                "Detailed answers to the follow-up questions "
+                "in the exact same order as provided."
+            ),
+        ),
+    ]
 
 
 json_prompt_raw_template = """Return a JSON object that matches this structure:
@@ -115,7 +176,7 @@ Question: {question}
         """
 
 def get_json_prompt_template(
-    parser: PydanticOutputParser[FlashSummaryLLMOutput],
+    parser: PydanticOutputParser,
 ) -> ChatPromptTemplate:
     return ChatPromptTemplate.from_template(
         json_prompt_raw_template,
