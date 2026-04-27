@@ -31,6 +31,8 @@ TIME_BUCKETS = [
     "When account deleted",
 ]
 
+allowed_times = ", ".join(f'"{b}"' for b in TIME_BUCKETS)
+
 
 def get_combined_summary_message(
     yes_no_questions: list[str],
@@ -61,7 +63,7 @@ YES/NO STATEMENTS:
 {yes_no_block}
 
 2) For each of the following time-related questions:
-   - Pick exactly one value from this list: {allowed_times}
+   - Pick exactly one value from this list: {allowed_times}.
    - Choose the closest match to what the policy states.
    - Keep the same order.
 

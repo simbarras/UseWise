@@ -22,7 +22,7 @@ from usewise.db.database import (
 from usewise.db.models import Feedback
 from usewise.llm import config
 from usewise.llm.privacy_policy_explainer import PrivacyPolicyExplainer
-from usewise.llm.schemas import TIME_BUCKETS, FlashSummaryReturnType
+from usewise.llm.schemas import TIME_BUCKETS, FlashSummary, FlashSummaryReturnType
 from usewise.restApi.utils import resolve_content
 
 logger = logging.getLogger(__name__)
@@ -174,6 +174,68 @@ follow_up_questions = [
 ]
 
 
+# ─── Helpers ──────────────────────────────────────────────────────────────────
+### START: Convert None to False (UI compatibility)
+### TODO: Remove this entire block once the UI supports null/undefined states
+def convert_none_to_false(flags: list[bool | None]) -> list[bool]:
+    """Convert None values to False for UI compatibility.
+
+    TODO: Remove this conversion once the UI supports null/undefined states.
+    This is a temporary measure to handle LLM uncertainty (None) as False.
+    """
+    return [flag if flag is not None else False for flag in flags]
+
+
+### END: Convert None to False
+
+
+def _fingerprint(content: str) -> str:
+    return content[:50].replace("\n", " ")
+
+
+def _get_flash_summary(
+    ppe_summary: FlashSummary, policy: str, db: Session
+) -> tuple[list[Summaries], int]:
+    return_summary = []
+    for i, answer in enumerate(ppe_summary.answers):
+        question, q_type = flash_summary_questions[i]
+        if q_type is FlashSummaryReturnType.TIME:
+            user_time_bucket, user_time_count, user_time_percentage = (
+                get_user_response_stats_time(policy=policy, question=question, db=db)
+            )
+            llm_time_bucket = _map_llm_time_to_bucket(str(answer.value))
+            return_summary.append(
+                Summaries(
+                    flash=question,
+                    value=answer.value,
+                    user_count=0,
+                    user_estimation=None,
+                    user_percentage=0,
+                    user_time_bucket=user_time_bucket,
+                    user_time_count=user_time_count,
+                    user_time_percentage=user_time_percentage,
+                    llm_time_bucket=llm_time_bucket,
+                )
+            )
+        else:
+            prediction, user_count, user_percentage = get_user_response_stats_bool(
+                policy=policy, question=question, db=db
+            )
+            return_summary.append(
+                Summaries(
+                    flash=question,
+                    value=answer.value,
+                    user_count=user_count,
+                    user_estimation=prediction,
+                    user_percentage=user_percentage,
+                )
+            )
+    return return_summary, ppe_summary.score
+
+
+# ─── Routes ───────────────────────────────────────────────────────────────────
+
+
 @app.post("/summary/")
 async def get_summary(pp: PrivacyPolicy, db: DbSession) -> PPSummary:
     model = pp.model or config.model_name
@@ -187,31 +249,30 @@ async def get_summary(pp: PrivacyPolicy, db: DbSession) -> PPSummary:
 
     ppe = PrivacyPolicyExplainer(privacy_policy=content, model_name=model)
 
-    ppe_summary = ppe.get_flash_summary(questions=flash_summary_questions)
+    ppe_summary, follow_up_answers = ppe.get_combined_summary(
+        questions=flash_summary_questions,
+        follow_up_questions=follow_up_questions,
+    )
 
-    return_summary = []
-    for i in range(len(ppe_summary.answers)):
-        answer = ppe_summary.answers[i]
-        question = flash_summary_questions[i][0]
-        return_summary.append(
-            Summaries(
-                flash=question,
-                value=answer.value,
-            )
-        )
+    return_summary, risk_score = _get_flash_summary(
+        ppe_summary=ppe_summary, policy=policy_fingerprint, db=db
+    )
+
+    user_risk_average, user_risk_count = get_user_risk_stats(
+        policy=policy_fingerprint, db=db
+    )
 
     follow_up_responses = []
-    for question in follow_up_questions:
-        response = ppe.get_questions_answers([question])[0]
+    for i, question in enumerate(follow_up_questions):
         follow_up_responses.append(
             AiQuestion(
                 question=question,
-                response=response,
+                response=follow_up_answers[i],
             )
         )
 
     return PPSummary(
-        risk_level=risk_level,
+        risk_level=risk_score,
         summaries=return_summary,
         ai=follow_up_responses,
         model_used=model,
