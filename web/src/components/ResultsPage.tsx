@@ -33,7 +33,7 @@ function SummaryRow({
   policyFingerprint,
 }: {
   flash: string;
-  value: boolean | string;
+  value: boolean | string | null;
   userCount: number;
   userEstimation: boolean | null;
   userPercentage: number;
@@ -45,15 +45,24 @@ function SummaryRow({
   policyFingerprint: string;
 }) {
   const isTimeQuestion = typeof value === "string";
+  const isNullAnswer = value === null;
   const isTrue = value === true;
 
   const bg = isTimeQuestion
     ? "rgba(99,102,241,0.12)"
-    : isTrue
-      ? "rgba(16,185,129,0.12)"
-      : "rgba(239,68,68,0.12)";
-  const color = isTimeQuestion ? "#6366f1" : isTrue ? "#10b981" : "#ef4444";
-  const symbol = isTimeQuestion ? "…" : isTrue ? "✓" : "✕";
+    : isNullAnswer
+      ? "rgba(148,163,184,0.12)"
+      : isTrue
+        ? "rgba(16,185,129,0.12)"
+        : "rgba(239,68,68,0.12)";
+  const color = isTimeQuestion
+    ? "#6366f1"
+    : isNullAnswer
+      ? "#94a3b8"
+      : isTrue
+        ? "#10b981"
+        : "#ef4444";
+  const symbol = isTimeQuestion ? "…" : isNullAnswer ? "–" : isTrue ? "✓" : "✕";
 
   // FLAG state
   const [userVote, setUserVote] = useState<boolean | null>(null);
@@ -142,6 +151,7 @@ function SummaryRow({
 
   const hasFlagDivergence =
     !isTimeQuestion &&
+    !isNullAnswer &&
     liveCount > 0 &&
     liveEstimation !== null &&
     liveEstimation !== value;
@@ -315,6 +325,7 @@ export default function ResultsPage() {
   const { state } = useLocation();
 
   const policyText: string | null = state?.policyText ?? null;
+  const isPdfPolicy = policyText?.startsWith("data:application/pdf") ?? false;
 
   const data: PPSummary = state?.result ?? {
     risk_level: 1,
@@ -406,7 +417,8 @@ export default function ResultsPage() {
           onClick={() => setShowPolicy(false)}
         >
           <div
-            className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[80vh] flex flex-col mx-4"
+            className="bg-white rounded-2xl shadow-xl w-full max-w-2xl flex flex-col mx-4"
+              style={{ height: "80vh" }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
@@ -420,11 +432,20 @@ export default function ResultsPage() {
                 ✕
               </button>
             </div>
-            <div className="overflow-y-auto px-6 py-4">
+            <div className={isPdfPolicy ? "flex-1 min-h-0" : "overflow-y-auto px-6 py-4"}>
               {policyText ? (
-                <pre className="text-[10px] text-slate-600 leading-relaxed whitespace-pre-wrap font-sans">
-                  {policyText}
-                </pre>
+                isPdfPolicy ? (
+                  <iframe
+                    src={policyText}
+                    className="w-full h-full rounded-b-2xl"
+                    style={{ minHeight: "60vh" }}
+                    title="Original Policy PDF"
+                  />
+                ) : (
+                  <pre className="text-[10px] text-slate-600 leading-relaxed whitespace-pre-wrap font-sans">
+                    {policyText}
+                  </pre>
+                )
               ) : (
                 <p className="text-[11px] text-slate-400 italic text-center py-8">
                   No policy text available.
@@ -562,7 +583,7 @@ export default function ResultsPage() {
                   style={{
                     left: `${toBarPct(llmRisk)}%`,
                     transform: "translate(-50%, -50%)",
-                    background: risk.color,
+                    background: "var(--secondary)",
                   }}
                   title={`LLM estimate: ${llmRisk.toFixed(1)}/5`}
                 />
@@ -590,7 +611,7 @@ export default function ResultsPage() {
                 <div className="flex items-center gap-1">
                   <div
                     className="w-2 h-3 rounded-sm opacity-70"
-                    style={{ background: risk.color }}
+                    style={{ background: "var(--secondary)" }}
                   />
                   <span className="text-[8px] text-slate-400">LLM</span>
                 </div>

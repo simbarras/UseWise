@@ -14,7 +14,7 @@ export const TIME_BUCKETS = [
 
 export interface Summaries {
   flash: string;
-  value: boolean | string;
+  value: boolean | string | null;
   // FLAG question fields
   user_count: number;
   user_estimation: boolean | null;

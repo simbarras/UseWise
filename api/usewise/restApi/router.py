@@ -67,7 +67,7 @@ class AiQuestion(BaseModel):
 
 class Summaries(BaseModel):
     flash: str
-    value: Any
+    value: Any | None
     # FLAG question fields
     user_count: int
     user_estimation: bool | None
@@ -175,18 +175,6 @@ follow_up_questions = [
 
 
 # ─── Helpers ──────────────────────────────────────────────────────────────────
-### START: Convert None to False (UI compatibility)
-### TODO: Remove this entire block once the UI supports null/undefined states
-def convert_none_to_false(flags: list[bool | None]) -> list[bool]:
-    """Convert None values to False for UI compatibility.
-
-    TODO: Remove this conversion once the UI supports null/undefined states.
-    This is a temporary measure to handle LLM uncertainty (None) as False.
-    """
-    return [flag if flag is not None else False for flag in flags]
-
-
-### END: Convert None to False
 
 
 def _fingerprint(content: str) -> str:
