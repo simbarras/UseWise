@@ -1,6 +1,6 @@
 services:
   api:
-    image: ghcr.io/simbarras/usewise-api:feat-deployment-0.2.0 #TODO: pin to specific version
+    image: ghcr.io/simbarras/usewise-api:feat-deployment-0.3.0 #TODO: pin to specific version
     env_file:
       - .env
     environment:
@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
 
   web:
-    image: ghcr.io/simbarras/usewise-web:feat-deployment-0.2.0 #TODO: pin to specific version
+    image: ghcr.io/simbarras/usewise-web:feat-deployment-0.3.0 #TODO: pin to specific version
     ports:
       - "127.0.0.1:8080:80"
     depends_on:
