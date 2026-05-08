@@ -167,7 +167,7 @@ flash_summary_questions = [
 ]
 
 follow_up_questions = [
-    "Why did you choose this score of risk level ?",
+    "What personal data will be collected about me?",
     "What are the third parties that the data is shared with?",
     "What kind of cookies or tracking technologies are used?",
     "How can I request deletion of my data?",

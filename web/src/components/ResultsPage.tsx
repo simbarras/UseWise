@@ -535,27 +535,25 @@ export default function ResultsPage() {
                   </span>
                   {showRiskTooltip && (
                     <div
-                      className="absolute left-1/2 -translate-x-1/2 top-5 z-20 w-56 rounded-xl bg-white text-slate-700 text-[10px] leading-relaxed px-3 py-2.5 shadow-lg border border-slate-200"
+                      className="absolute left-1/2 -translate-x-1/2 top-5 z-20 w-64 rounded-xl bg-white text-slate-700 text-[10px] leading-relaxed px-3 py-2.5 shadow-lg border border-slate-200"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <p className="font-semibold mb-1 text-[11px] text-slate-800">
                         How is the score calculated?
                       </p>
-                      <p>
-                        Like a review score, but focused on your data privacy:
+                      <p className="mb-1">
+                        Weighted from <strong className="text-green-600">1 (low risk)</strong> to <strong className="text-red-500">5 (high risk)</strong> based on:
                       </p>
-                      <ul className="mt-1 space-y-0.5 list-none">
-                        <li>
-                          <strong className="text-green-600">1</strong> — No
-                          data collected, or collection is minimal, transparent,
-                          and ethically justified.
-                        </li>
-                        <li>
-                          <strong className="text-red-500">5</strong> —
-                          Extensive or opaque data collection with questionable
-                          purpose.
-                        </li>
+                      <ul className="space-y-0.5 list-none">
+                        <li><strong>30%</strong> — Data shared with third parties</li>
+                        <li><strong>20%</strong> — Tracking / commercial cookies</li>
+                        <li><strong>25%</strong> — How long data is retained</li>
+                        <li><strong>15%</strong> — User can request deletion</li>
+                        <li><strong>10%</strong> — Notification of policy changes</li>
                       </ul>
+                      <p className="mt-1 text-[9px] text-slate-400 italic">
+                        Unclear answers add a small penalty. Lower is better for your privacy.
+                      </p>
                     </div>
                   )}
                 </span>

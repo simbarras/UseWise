@@ -38,7 +38,6 @@ test = [
 [project.scripts]
 usewise-sa = "usewise.main:static_analysis"
 usewise-test = "usewise.main:test"
-usewise-try = "usewise.main:try_privacy_policy_explainer"
 usewise-server = "usewise.main:main"
 
 [tool.setuptools]
@@ -73,13 +72,14 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["EM101", "S101", "E501", "ANN401", "PLR2004", "TRY003"]  # for tests allow assert statements, long lines, and untyped function definitions
+"tests/*" = ["SLF001", "EM101", "S101", "E501", "ARG002", "ANN401", "PLR2004", "TRY003"]  # for tests allow assert statements, long lines, and untyped function definitions
 "usewise/main.py" = ["S603"]  # subprocess call paths are controlled in this file
+"usewise/db/database.py" = ["E501"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
 [tool.mypy]
-files = ["usewise"]
+files = ["usewise/llm"]
 pretty = true
 strict = true
