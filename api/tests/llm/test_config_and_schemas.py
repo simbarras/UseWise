@@ -19,31 +19,24 @@ def test_get_openrouter_api_key_retrieves_from_env(
     assert api_key.get_secret_value() == "test-openrouter-key"
 
 
-def test_get_system_message_includes_privacy_policy() -> None:
-    privacy_policy = "This is a test privacy policy."
-    message = get_system_message(privacy_policy)
+def test_get_system_message_is_privacy_analyst() -> None:
+    message = get_system_message()
 
     assert message.content is not None
-    assert "You are a helpful assistant" in message.content
-    assert privacy_policy in message.content
+    assert "privacy policy analyst" in message.content
 
 
 def test_get_system_message_with_prior_feedback_context() -> None:
-    privacy_policy = "This is a test privacy policy."
     feedback_context = "Previous analysis showed high risk."
 
-    message = get_system_message(privacy_policy, feedback_context)
+    message = get_system_message(feedback_context)
 
     assert message.content is not None
-    assert privacy_policy in message.content
     assert feedback_context in message.content
 
 
 def test_get_system_message_without_feedback_context() -> None:
-    privacy_policy = "Test policy"
-
-    message = get_system_message(privacy_policy, None)
+    message = get_system_message(None)
 
     assert message.content is not None
-    assert privacy_policy in message.content
-    assert "Previous analysis" not in message.content
+    assert "privacy policy analyst" in message.content
