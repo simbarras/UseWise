@@ -42,6 +42,7 @@ _CORS_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:5173",
     "https://usewise.live",
+    "https://www.usewise.live",
 ]
 
 app.add_middleware(

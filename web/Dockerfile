@@ -8,7 +8,7 @@ RUN npm ci
 
 COPY . .
 
-ARG VITE_API_URL=https://usewise.live/api
+ARG VITE_API_URL=https://www.usewise.live/api
 ENV VITE_API_URL=$VITE_API_URL
 
 RUN npm run build
