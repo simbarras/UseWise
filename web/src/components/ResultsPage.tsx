@@ -409,7 +409,7 @@ export default function ResultsPage() {
   const suggestedQuestions = data.ai.map((a) => a.question);
 
   return (
-    <div className="h-full w-full flex items-start justify-center bg-[var(--bg)] px-10 py-8 overflow-y-auto">
+    <div className="h-full w-full flex items-start justify-center bg-[var(--bg)] px-4 sm:px-8 lg:px-10 py-6 sm:py-8 overflow-y-auto">
       {/* Policy modal */}
       {showPolicy && (
         <div
@@ -458,7 +458,7 @@ export default function ResultsPage() {
 
       <div className="w-full max-w-5xl flex flex-col gap-5">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-start sm:items-center justify-between gap-3">
           <div>
             <button
               onClick={() => navigate("/")}

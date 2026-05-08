@@ -55,13 +55,13 @@ export default function MainContent() {
     <>
       {showHowItWorks && <HowItWorksModal onClose={() => setShowHowItWorks(false)} />}
 
-      <div className="h-full w-full flex items-center justify-center bg-[var(--bg)]">
-        <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center px-12">
+      <div className="min-h-full w-full flex items-center justify-center bg-[var(--bg)] py-8">
+        <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center px-4 sm:px-8 lg:px-12">
 
           {/* COLONNE GAUCHE */}
           <div className="space-y-6">
             <div className="space-y-4">
-              <h1 className="text-5xl font-serif text-[var(--text)] leading-tight">
+              <h1 className="text-4xl sm:text-5xl font-serif text-[var(--text)] leading-tight">
                 Stop Scrolling.<br />
                 Start <span className="text-[var(--secondary)] italic">Knowing.</span>
               </h1>

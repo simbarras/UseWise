@@ -9,11 +9,13 @@ import LoadingPage from './components/LoadingPage';
 import { analyzePolicy, type PPSummary } from './api';
 
 function Layout({ children }: { children: React.ReactNode }) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden font-sans">
-      <Navbar />
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
+      <Navbar onMenuToggle={() => setMobileMenuOpen((o) => !o)} />
+      <div className="flex flex-1 overflow-hidden relative">
+        <Sidebar mobileOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
         <main className="flex-1 bg-[var(--bg)] overflow-y-auto">
           {children}
         </main>

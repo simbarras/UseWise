@@ -9,10 +9,15 @@ const gdprArticles = [
   { id: 'Art. 25', subject: 'Privacy by design & default',       url: 'https://gdpr-info.eu/art-25-gdpr/' },
 ];
 
-export default function Sidebar() {
+interface Props {
+  mobileOpen: boolean;
+  onClose: () => void;
+}
+
+export default function Sidebar({ mobileOpen, onClose }: Props) {
   const navigate = useNavigate();
 
-  return (
+  const content = (
     <aside className="w-52 bg-primary text-slate-400 p-5 flex flex-col h-full border-r border-white/5 overflow-hidden">
       <nav className="flex flex-col mt-4 gap-4">
 
@@ -22,7 +27,7 @@ export default function Sidebar() {
             About UseWise
           </p>
           <button
-            onClick={() => navigate('/about')}
+            onClick={() => { navigate('/about'); onClose(); }}
             className="w-full flex items-center gap-2 py-2 px-2 rounded-lg hover:bg-white/5 hover:text-white transition-all group text-left"
           >
             <span className="text-[10px] font-medium">Our Mission </span>
@@ -71,5 +76,29 @@ export default function Sidebar() {
 
       </nav>
     </aside>
+  );
+
+  return (
+    <>
+      {/* Desktop: always-visible inline sidebar */}
+      <div className="hidden md:flex h-full">
+        {content}
+      </div>
+
+      {/* Mobile: overlay drawer */}
+      {mobileOpen && (
+        <div className="md:hidden fixed inset-0 z-40 flex">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={onClose}
+          />
+          {/* Drawer */}
+          <div className="relative z-50 flex h-full">
+            {content}
+          </div>
+        </div>
+      )}
+    </>
   );
 }

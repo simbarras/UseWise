@@ -37,7 +37,7 @@ export default function AboutPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-full bg-[var(--bg)] px-10 py-8">
+    <div className="min-h-full bg-[var(--bg)] px-4 sm:px-8 lg:px-10 py-6 sm:py-8">
       <div className="max-w-4xl mx-auto flex flex-col gap-10">
 
         {/* ── Header ── */}
@@ -77,7 +77,7 @@ export default function AboutPage() {
         </div>
 
         {/* ── Report download ── */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-7 flex items-center justify-between gap-6">
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 sm:p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-[var(--secondary)]/10 flex items-center justify-center shrink-0">
               <span className="text-2xl">📄</span>
