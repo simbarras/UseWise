@@ -6,6 +6,7 @@ export default function MainContent() {
   const navigate = useNavigate();
   const [inputText, setInputText] = useState('');
   const [pdfContent, setPdfContent] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -15,11 +16,12 @@ export default function MainContent() {
   };
 
   const loadFile = (file: File) => {
+    setFileName(file.name);
     if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
       const reader = new FileReader();
       reader.onload = (ev) => {
         setPdfContent(ev.target?.result as string);
-        setInputText(`📄 ${file.name}`);
+        setInputText('');
       };
       reader.readAsDataURL(file);
     } else {
@@ -30,6 +32,13 @@ export default function MainContent() {
       };
       reader.readAsText(file);
     }
+  };
+
+  const clearFile = () => {
+    setFileName(null);
+    setPdfContent(null);
+    setInputText('');
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -58,7 +67,7 @@ export default function MainContent() {
       <div className="min-h-full w-full flex items-center justify-center bg-[var(--bg)] py-8">
         <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center px-4 sm:px-8 lg:px-12">
 
-          {/* COLONNE GAUCHE */}
+          {/* LEFT COLUMN */}
           <div className="space-y-6">
             <div className="space-y-4">
               <h1 className="text-4xl sm:text-5xl font-serif text-[var(--text)] leading-tight">
@@ -76,8 +85,7 @@ export default function MainContent() {
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
-              onClick={() => fileInputRef.current?.click()}
-              className={`border-2 border-dashed p-8 flex flex-col gap-6 cursor-pointer transition-all duration-200 ${
+              className={`border-2 border-dashed p-6 sm:p-8 flex flex-col gap-5 transition-all duration-200 ${
                 isDragging
                   ? 'border-[var(--secondary)] bg-[var(--secondary)]/10 scale-[1.01]'
                   : 'border-[var(--secondary)] bg-white/40'
@@ -90,30 +98,85 @@ export default function MainContent() {
                 className="hidden"
                 onChange={handleFileChange}
               />
+
+              {/* Header */}
               <div className="flex flex-col items-start gap-1">
                 <h3 className="font-bold text-[var(--text)] text-sm">
-                  {isDragging ? '📂 Drop the file here…' : 'Drag & Drop your Privacy Policy here'}
+                  {isDragging ? '📂 Drop the file here…' : 'Upload your Privacy Policy'}
                 </h3>
-                <p className="text-slate-400 text-[10px]">Or paste URL or text below</p>
+                <p className="text-slate-400 text-[10px] hidden sm:block">
+                  Drag & drop, tap the button, or paste text below
+                </p>
+                <p className="text-slate-400 text-[10px] sm:hidden">
+                  Choose a file from your device or paste text below
+                </p>
               </div>
 
+              {/* File upload button + selected file indicator */}
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex items-center gap-2 bg-white border border-[var(--secondary)] text-[var(--secondary)] px-4 py-2 rounded-md font-bold text-xs shadow-sm hover:bg-[var(--secondary)] hover:text-white transition-all active:scale-95"
+                >
+                  {/* Upload icon */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-3.5 h-3.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                  Choose a file
+                </button>
+
+                {fileName && (
+                  <div className="flex items-center gap-1.5 bg-[var(--secondary)]/10 border border-[var(--secondary)]/30 rounded-md px-3 py-1.5 max-w-full">
+                    <span className="text-[10px] text-[var(--secondary)] font-medium truncate max-w-[180px] sm:max-w-[260px]">
+                      📄 {fileName}
+                    </span>
+                    <button
+                      onClick={clearFile}
+                      className="text-[var(--secondary)] opacity-60 hover:opacity-100 transition-opacity shrink-0 leading-none text-xs ml-1"
+                      aria-label="Remove file"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Divider */}
+              <div className="flex items-center gap-3">
+                <div className="flex-1 h-px bg-slate-200" />
+                <span className="text-[10px] text-slate-400 shrink-0">or paste text</span>
+                <div className="flex-1 h-px bg-slate-200" />
+              </div>
+
+              {/* Textarea */}
               <textarea
                 value={inputText}
-                onChange={(e) => { e.stopPropagation(); setInputText(e.target.value); setPdfContent(null); }}
-                onClick={(e) => e.stopPropagation()}
+                onChange={(e) => { setInputText(e.target.value); setPdfContent(null); setFileName(null); }}
                 placeholder="Paste your privacy policy text or URL here..."
                 className="w-full h-20 bg-white/60 border border-slate-200 rounded text-[10px] text-slate-600 p-2 resize-none focus:outline-none focus:border-[var(--secondary)] placeholder:text-slate-300"
               />
 
-              <div className="flex items-center gap-6">
+              {/* Actions */}
+              <div className="flex flex-wrap items-center gap-4">
                 <button
-                  onClick={(e) => { e.stopPropagation(); handleAnalyze(); }}
+                  onClick={handleAnalyze}
                   className="bg-[var(--secondary)] text-white px-6 py-2 rounded-md font-bold text-xs shadow-md hover:brightness-110 transition-all active:scale-95"
                 >
                   Analyze with UseWise
                 </button>
                 <button
-                  onClick={(e) => { e.stopPropagation(); setShowHowItWorks(true); }}
+                  onClick={() => setShowHowItWorks(true)}
                   className="text-[var(--secondary)] font-bold text-xs hover:underline"
                 >
                   How it Works
@@ -122,7 +185,7 @@ export default function MainContent() {
             </div>
           </div>
 
-          {/* COLONNE DROITE */}
+          {/* RIGHT COLUMN */}
           <div className="hidden lg:flex justify-center">
             <div className="relative w-full h-full flex items-center justify-center">
               <img
