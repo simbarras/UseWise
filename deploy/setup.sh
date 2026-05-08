@@ -48,8 +48,7 @@ docker compose pull
 echo "=== Start containers ==="
 docker compose up -d
 
-echo "=== Nginx config (HTTP only — certbot adds SSL) ==="
-# Write a plain HTTP config so certbot can complete its challenge
+echo "=== Nginx config (HTTP only — for certbot ACME challenge) ==="
 cat > /etc/nginx/sites-available/usewise <<EOF
 server {
     listen 80;
@@ -69,13 +68,54 @@ ln -sf /etc/nginx/sites-available/usewise /etc/nginx/sites-enabled/usewise
 rm -f /etc/nginx/sites-enabled/default
 nginx -t && systemctl reload nginx
 
-echo "=== SSL (Let's Encrypt) ==="
-certbot --nginx -d "$DOMAIN" -d "www.$DOMAIN" \
+echo "=== SSL (Let's Encrypt — certonly so we control the final nginx config) ==="
+certbot certonly --nginx -d "$DOMAIN" -d "www.$DOMAIN" \
     --non-interactive --agree-tos \
-    --email "simon.barras@epfl.ch" --redirect
+    --email "simon.barras@epfl.ch"
 
-systemctl reload nginx
+echo "=== Nginx config (final — www.$DOMAIN is canonical) ==="
+# www.$DOMAIN is the real app; bare $DOMAIN redirects to www.
+cat > /etc/nginx/sites-available/usewise <<EOF
+# HTTP: redirect everything to https://www.$DOMAIN
+server {
+    listen 80;
+    server_name $DOMAIN www.$DOMAIN;
+    return 301 https://www.$DOMAIN\$request_uri;
+}
+
+# HTTPS: bare domain → redirect to www
+server {
+    listen 443 ssl;
+    server_name $DOMAIN;
+    ssl_certificate     /etc/letsencrypt/live/$DOMAIN/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/$DOMAIN/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+    return 301 https://www.$DOMAIN\$request_uri;
+}
+
+# HTTPS: www.$DOMAIN — the real app
+server {
+    listen 443 ssl;
+    server_name www.$DOMAIN;
+    ssl_certificate     /etc/letsencrypt/live/$DOMAIN/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/$DOMAIN/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host              \$host;
+        proxy_set_header X-Real-IP         \$remote_addr;
+        proxy_set_header X-Forwarded-For   \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        client_max_body_size 5M;
+    }
+}
+EOF
+nginx -t && systemctl reload nginx
 
 echo ""
-echo "UseWise deployed at https://$DOMAIN"
-echo "Health check: curl https://$DOMAIN/api/health/"
+echo "UseWise deployed at https://www.$DOMAIN"
+echo "NOTE: Ensure your DNS has an A record for www.$DOMAIN pointing to this server's IP."
+echo "Health check: curl https://www.$DOMAIN/api/health/"
