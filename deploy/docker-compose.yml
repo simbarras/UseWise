@@ -1,6 +1,6 @@
 services:
   api:
-    image: ghcr.io/simbarras/usewise-api:main-1.0.2 #TODO: pin to specific version
+    image: ghcr.io/simbarras/usewise-api:main-1.0.3 #TODO: pin to specific version
     env_file:
       - .env
     environment:
@@ -8,9 +8,8 @@ services:
     volumes:
       - ./data:/data # SQLite DB persists here
     restart: unless-stopped
-
   web:
-    image: ghcr.io/simbarras/usewise-web:main-1.0.2 #TODO: pin to specific version
+    image: ghcr.io/simbarras/usewise-web:main-1.0.3 #TODO: pin to specific version
     ports:
       - "127.0.0.1:8080:80"
     depends_on:
