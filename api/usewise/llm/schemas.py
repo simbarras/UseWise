@@ -8,13 +8,14 @@ from pydantic import BaseModel, Field
 
 
 def get_system_message(
-    privacy_policy: str,
     prior_feedback_context: str | None = None,
 ) -> SystemMessage:
     content = (
-        "You are a helpful assistant that answers questions"
-        " on the following privacy policy:\n\n"
-        f"{privacy_policy}"
+        "You are a privacy policy analyst. Analyze the privacy policy carefully and "
+        "extract structured information based on the provided questions. "
+        "Be precise: only mark answers as true/false if the policy clearly "
+        "confirms or contradicts them. Mark as null if the policy is unclear "
+        "or silent on the matter."
     )
     if prior_feedback_context:
         content += f"\n\n{prior_feedback_context}"
@@ -35,6 +36,7 @@ allowed_times = ", ".join(f'"{b}"' for b in TIME_BUCKETS)
 
 
 def get_combined_summary_message(
+    privacy_policy: str,
     yes_no_questions: list[str],
     time_based_questions: list[str],
     follow_up_questions: list[str],
@@ -48,9 +50,12 @@ def get_combined_summary_message(
     )
 
     return f"""
-Analyze the privacy policy provided in the system message.
+PRIVACY POLICY:
+{privacy_policy}
 
-Your task is to extract structured information.
+---
+
+Analyze the privacy policy above and extract structured information.
 
 1) For each of the following yes/no statements:
    - Answer with true, false, or null.

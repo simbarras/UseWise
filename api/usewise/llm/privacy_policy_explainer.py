@@ -22,7 +22,8 @@ logger = logging.getLogger(__name__)
 
 class PrivacyPolicyExplainer:
     def __init__(self, privacy_policy: str, model_name: str) -> None:
-        self.system_msg = get_system_message(privacy_policy=privacy_policy)
+        self.privacy_policy = privacy_policy
+        self.system_msg = get_system_message()
         self.messages: list[BaseMessage] = [self.system_msg]
         self.model = ChatOpenAI(
             model=model_name,
@@ -59,7 +60,8 @@ class PrivacyPolicyExplainer:
         yes_no_questions, time_based_questions = self.divide_questions(questions)
         prompt = get_json_prompt_template(parser)
         question = get_combined_summary_message(
-            yes_no_questions, time_based_questions, follow_up_questions
+            self.privacy_policy, yes_no_questions,
+              time_based_questions, follow_up_questions
         )
         return prompt.format_messages(question=question)
 
